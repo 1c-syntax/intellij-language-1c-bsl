@@ -1,0 +1,20 @@
+{
+    parserClass="org.bslplugin.parser.BSLParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="BSL"
+    psiImplClassSuffix="Impl"
+    psiPackage="org.bslplugin.psi"
+    psiImplPackage="org.bslplugin.psi.impl"
+
+    elementTypeHolderClass="org.bslplugin.psi.BSLTypes"
+    elementTypeClass="org.bslplugin.psi.BSLElementType"
+    tokenTypeClass="org.bslplugin.psi.BSLTokenType"
+}
+
+bslFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY

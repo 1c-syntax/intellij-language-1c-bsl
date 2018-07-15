@@ -1,0 +1,9 @@
+BSL File
+  PsiComment(BSLTokenType.COMMENT)('// Это комментарий')
+  PsiWhiteSpace('\n\n')
+  BSLPropertyImpl(PROPERTY)
+    PsiElement(BSLTokenType.KEY)('А')
+    PsiWhiteSpace(' ')
+    PsiElement(BSLTokenType.SEPARATOR)('=')
+    PsiWhiteSpace(' ')
+    PsiElement(BSLTokenType.VALUE)('0;')

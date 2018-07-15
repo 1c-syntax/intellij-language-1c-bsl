@@ -1,6 +1,6 @@
 <idea-plugin>
-  <id>com.your.company.unique.plugin.id</id>
-  <name>Plugin display name here</name>
+  <id>org.1c-syntax.idea.language.1c.bsl</id>
+  <name>Language 1C (BSL)</name>
   <version>1.0</version>
   <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 

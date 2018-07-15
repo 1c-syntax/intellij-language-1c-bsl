@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/idea-bsl-plugin.iml" filepath="$PROJECT_DIR$/idea-bsl-plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idea-language-1c-bsl.iml" filepath="$PROJECT_DIR$/idea-language-1c-bsl.iml" />
     </modules>
   </component>
 </project>

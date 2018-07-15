@@ -6,6 +6,7 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
+test/resources/.idea/
 
 gen/
 out/

@@ -11,3 +11,5 @@ gen/
 out/
 
 jflex-*.jar
+
+\.idea/sonarlint/

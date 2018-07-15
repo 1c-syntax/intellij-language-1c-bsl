@@ -14,3 +14,11 @@ out/
 jflex-*.jar
 
 \.idea/sonarlint/
+
+# From https://github.com/github/gitignore/blob/master/Gradle.gitignore
+build/
+\.gradle/
+
+# Gradle:
+.idea/gradle.xml
+.idea/libraries

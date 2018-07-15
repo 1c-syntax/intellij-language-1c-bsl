@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/idea-language-1c-bsl.iml" filepath="$PROJECT_DIR$/idea-language-1c-bsl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/idea-language-1c-bsl_main.iml" filepath="$PROJECT_DIR$/.idea/modules/idea-language-1c-bsl_main.iml" group="idea-language-1c-bsl" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/idea-language-1c-bsl_test.iml" filepath="$PROJECT_DIR$/.idea/modules/idea-language-1c-bsl_test.iml" group="idea-language-1c-bsl" />
     </modules>
   </component>
 </project>

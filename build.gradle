@@ -12,6 +12,11 @@ repositories {
     maven { url 'https://dl.bintray.com/jetbrains/intellij-plugin-service' }
 }
 
+dependencies {
+    // https://mvnrepository.com/artifact/org.eclipse.lsp4j/org.eclipse.lsp4j
+    compile group: 'org.eclipse.lsp4j', name: 'org.eclipse.lsp4j', version: '0.4.1'
+}
+
 apply plugin: 'idea'
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
@@ -41,7 +46,6 @@ idea {
 
 intellij {
     version 'IC-2017.3' //Corresponds to 173. branch from plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
-    plugins 'coverage' //Bundled plugin dependencies
     pluginName 'Language 1C (BSL)'
 }
 

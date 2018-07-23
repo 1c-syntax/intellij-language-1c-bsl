@@ -89,6 +89,9 @@ task generateLexer(type: GenerateLexer) {
 
     // if set, plugin will remove a lexer output file before generating new one. Default: false
     purgeOldFiles = true
+
+    systemProperty "file.encoding", "utf-8"
+
 }
 
 task generateSources() {

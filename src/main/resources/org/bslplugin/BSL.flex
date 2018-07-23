@@ -10,6 +10,7 @@ import com.intellij.psi.TokenType;
 %class BSLLexer
 %implements FlexLexer
 %unicode
+%ignorecase
 %function advance
 %type IElementType
 %eof{   return;

@@ -1,5 +1,6 @@
 package org.bslplugin.lsp.server;
 
+import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.ServerCapabilities;
@@ -22,6 +23,8 @@ public class BSLLanguageServer implements LanguageServer, LanguageClientAware {
     public CompletableFuture<InitializeResult> initialize(InitializeParams params) {
 
         ServerCapabilities capabilities = new ServerCapabilities();
+        capabilities.setCompletionProvider(new CompletionOptions());
+
         InitializeResult result = new InitializeResult(capabilities);
 
         return CompletableFuture.completedFuture(result);

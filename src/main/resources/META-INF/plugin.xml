@@ -21,11 +21,16 @@
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
   <depends>com.intellij.modules.lang</depends>
+  <depends>com.github.gtache.lsp</depends>
 
   <extensions defaultExtensionNs="com.intellij">
+    <preloadingActivity implementation="org.bslplugin.BSLPreloadingActivity"/>
     <fileTypeFactory implementation="org.bslplugin.BSLFileTypeFactory"/>
     <lang.parserDefinition language="BSL" implementationClass="org.bslplugin.BSLParserDefinition"/>
     <lang.syntaxHighlighterFactory language="BSL" implementationClass="org.bslplugin.BSLSyntaxHighlighterFactory"/>
+    <completion.contributor language="BSL" implementationClass="org.bslplugin.BSLCompletionContributor"/>
+    <!--<completion.contributor implementationClass="com.github.gtache.lsp.contributors.LSPCompletionContributor"-->
+                            <!--language="BSL" id="BSLLSPCompletionContributor"/>-->
   </extensions>
 
   <actions>

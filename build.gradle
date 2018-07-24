@@ -47,7 +47,7 @@ idea {
 intellij {
     version 'IC-2017.3' //Corresponds to 173. branch from plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
     pluginName 'Language 1C (BSL)'
-    plugins ['com.github.gtache.lsp']
+    plugins = ['com.github.gtache.lsp:1.4.0']
 }
 
 jacocoTestReport {

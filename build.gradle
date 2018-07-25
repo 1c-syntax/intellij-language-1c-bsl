@@ -113,3 +113,6 @@ compileJava {
     dependsOn generateSources
 }
 
+runIde {
+    dependsOn ":languageserver:uploadArchives"
+}

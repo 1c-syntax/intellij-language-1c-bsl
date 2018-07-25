@@ -12,18 +12,13 @@ repositories {
     maven { url 'https://dl.bintray.com/jetbrains/intellij-plugin-service' }
 }
 
-dependencies {
-    // https://mvnrepository.com/artifact/org.eclipse.lsp4j/org.eclipse.lsp4j
-    compile group: 'org.eclipse.lsp4j', name: 'org.eclipse.lsp4j', version: '0.4.1'
-}
-
 apply plugin: 'idea'
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
 apply plugin: 'de.undercouch.download'
 apply plugin: 'org.jetbrains.grammarkit'
 
-group 'org.jetbrains'
+group 'org.bslplugin'
 version '1.0' // Plugin version
 
 sourceSets {
@@ -35,6 +30,10 @@ sourceSets {
         java.srcDirs = ['src/test/java']
         resources.srcDirs = ['src/test/resources']
     }
+}
+
+dependencies {
+    compile project(':languageserver')
 }
 
 idea {

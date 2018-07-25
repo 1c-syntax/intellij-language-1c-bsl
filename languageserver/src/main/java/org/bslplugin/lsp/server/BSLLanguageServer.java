@@ -1,5 +1,6 @@
 package org.bslplugin.lsp.server;
 
+import com.google.common.collect.Lists;
 import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
@@ -23,7 +24,7 @@ public class BSLLanguageServer implements LanguageServer, LanguageClientAware {
     public CompletableFuture<InitializeResult> initialize(InitializeParams params) {
 
         ServerCapabilities capabilities = new ServerCapabilities();
-        capabilities.setCompletionProvider(new CompletionOptions());
+        capabilities.setCompletionProvider(new CompletionOptions(true, Lists.newArrayList(".")));
 
         InitializeResult result = new InitializeResult(capabilities);
 

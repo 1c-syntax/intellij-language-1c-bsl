@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="idea-language-1c-bsl:main" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="org.jetbrains" external.system.module.type="sourceSet" external.system.module.version="1.0" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="idea-language-1c-bsl:main" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="org.blsplugin" external.system.module.type="sourceSet" external.system.module.version="1.0" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/../../out/production/classes" />
     <exclude-output />
@@ -8,18 +8,26 @@
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/gen" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: org.eclipse.lsp4j:org.eclipse.lsp4j:0.4.1" level="project" />
+    <orderEntry type="module" module-name="languageserver_main" />
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/jdk1.8.0_162/lib/tools.jar!/" />
+          <root url="jar://C:/Program Files/Java/jdk1.8.0_172/lib/tools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:21.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.xtext:org.eclipse.xtext.xbase.lib:2.14.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.xtend:org.eclipse.xtend.lib.macro:2.14.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.7" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.xtend:org.eclipse.xtend.lib:2.14.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc:0.4.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.lsp4j:org.eclipse.lsp4j.generator:0.4.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.lsp4j:org.eclipse.lsp4j:0.4.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.github.JetBrains:Grammar-Kit:2017.1.4" level="project" />
     <orderEntry type="module-library" scope="PROVIDED">
       <library name="Gradle: com.jetbrains:ideaIC:2017.3">
@@ -168,18 +176,40 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="PROVIDED">
-      <library name="Gradle: org.jetbrains.plugins:coverage:ideaIC-2017.3-withSources">
+      <library name="Gradle: org.jetbrains.plugins:com.github.gtache.lsp:1.4.0">
         <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2017.3/6b687670c9f987e74932316665ef9b58823a177/ideaIC-2017.3/plugins/coverage/lib/coverage-report-idea.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2017.3/6b687670c9f987e74932316665ef9b58823a177/ideaIC-2017.3/plugins/coverage/lib/coverage-report.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2017.3/6b687670c9f987e74932316665ef9b58823a177/ideaIC-2017.3/plugins/coverage/lib/coverage.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2017.3/6b687670c9f987e74932316665ef9b58823a177/ideaIC-2017.3/plugins/coverage/lib/coverage_rt.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2017.3/6b687670c9f987e74932316665ef9b58823a177/ideaIC-2017.3/plugins/coverage/lib/freemarker.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2017.3/6b687670c9f987e74932316665ef9b58823a177/ideaIC-2017.3/plugins/coverage/lib/jacocoagent.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2017.3/6b687670c9f987e74932316665ef9b58823a177/ideaIC-2017.3/plugins/coverage/lib/jacocoant.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/animal-sniffer-annotations-1.14.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/coursier-cache_2.12-1.0.3.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/coursier_2.12-1.0.3.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/error_prone_annotations-2.0.18.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/flexmark-0.32.24.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/flexmark-util-0.32.24.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/gson-2.7.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/guava-22.0-SNAPSHOT.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/j2objc-annotations-1.1.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/jsr305-1.3.9.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/LSP.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/org.eclipse.lsp4j-0.4.1.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/org.eclipse.lsp4j.generator-0.4.1.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/org.eclipse.lsp4j.jsonrpc-0.4.1.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/org.eclipse.xtend.lib-2.15.0-SNAPSHOT.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/org.eclipse.xtend.lib.macro-2.15.0-SNAPSHOT.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/org.eclipse.xtext.xbase.lib-2.15.0-SNAPSHOT.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/scala-library-2.12.4.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/scala-library-2.12.5-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/scala-library-2.12.5.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/scala-reflect-2.12.5-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/scala-reflect-2.12.5.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/scala-xml_2.12-1.0.6.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/scalaz-concurrent_2.12-7.2.16.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/scalaz-core_2.12-7.2.16.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/plugins.jetbrains.com/com.github.gtache.lsp-1.4.0/LSP/lib/scalaz-effect_2.12-7.2.16.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../../../gtache/intellij-lsp/intellij-lsp" />
+          <root url="file://$MODULE_DIR$/../../../../gtache/intellij-lsp/intellij-lsp/src" />
+        </SOURCES>
       </library>
     </orderEntry>
   </component>

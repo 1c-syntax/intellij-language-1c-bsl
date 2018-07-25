@@ -20,6 +20,8 @@ build:
   artifacts:
     paths:
       - build/libs/*.jar
+      - distributions/*.zip
+      - languageserver/build/libs/*.jar
     expire_in: 4 week
   cache:
     key: "$CI_COMMIT_REF_NAME"

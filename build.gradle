@@ -51,7 +51,7 @@ intellij {
 
 jacocoTestReport {
     reports {
-        xml.enabled true
+        xml.enabled = true
     }
 }
 
@@ -114,5 +114,5 @@ compileJava {
 }
 
 runIde {
-    dependsOn ":languageserver:uploadArchives"
+    systemProperty "idea.plugins.path", properties.sandboxDirectory
 }

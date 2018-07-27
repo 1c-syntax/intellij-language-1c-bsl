@@ -28,7 +28,6 @@
     <fileTypeFactory implementation="org.bslplugin.BSLFileTypeFactory"/>
     <lang.parserDefinition language="BSL" implementationClass="org.bslplugin.BSLParserDefinition"/>
     <lang.syntaxHighlighterFactory language="BSL" implementationClass="org.bslplugin.BSLSyntaxHighlighterFactory"/>
-    <completion.contributor language="BSL" implementationClass="org.bslplugin.BSLCompletionContributor"/>
   </extensions>
 
   <actions>

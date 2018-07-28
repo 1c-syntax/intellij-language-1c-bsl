@@ -5,6 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/idea-language-1c-bsl.iml" filepath="$PROJECT_DIR$/idea-language-1c-bsl.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/idea-language-1c-bsl_main.iml" filepath="$PROJECT_DIR$/.idea/modules/idea-language-1c-bsl_main.iml" group="idea-language-1c-bsl" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/idea-language-1c-bsl_test.iml" filepath="$PROJECT_DIR$/.idea/modules/idea-language-1c-bsl_test.iml" group="idea-language-1c-bsl" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/languageserver/languageserver.iml" filepath="$PROJECT_DIR$/.idea/modules/languageserver/languageserver.iml" group="languageserver" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/languageserver/languageserver_main.iml" filepath="$PROJECT_DIR$/.idea/modules/languageserver/languageserver_main.iml" group="languageserver" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/languageserver/languageserver_test.iml" filepath="$PROJECT_DIR$/.idea/modules/languageserver/languageserver_test.iml" group="languageserver" />
     </modules>
   </component>
 </project>

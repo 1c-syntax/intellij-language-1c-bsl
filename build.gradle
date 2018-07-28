@@ -18,7 +18,7 @@ apply plugin: 'java'
 apply plugin: 'de.undercouch.download'
 apply plugin: 'org.jetbrains.grammarkit'
 
-group 'org.jetbrains'
+group 'org.bslplugin'
 version '1.0' // Plugin version
 
 sourceSets {
@@ -32,6 +32,10 @@ sourceSets {
     }
 }
 
+dependencies {
+    compile project(':languageserver')
+}
+
 idea {
     module {
         // Marks the already(!) added srcDir as "generated"
@@ -41,13 +45,13 @@ idea {
 
 intellij {
     version 'IC-2017.3' //Corresponds to 173. branch from plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
-    plugins 'coverage' //Bundled plugin dependencies
     pluginName 'Language 1C (BSL)'
+    plugins = ['com.github.gtache.lsp:1.4.0']
 }
 
 jacocoTestReport {
     reports {
-        xml.enabled true
+        xml.enabled = true
     }
 }
 
@@ -112,3 +116,6 @@ compileJava {
     dependsOn generateSources
 }
 
+runIde {
+    systemProperty "idea.plugins.path", properties.sandboxDirectory
+}

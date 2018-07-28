@@ -6,6 +6,8 @@
       <module name="idea-bsl-plugin_test" target="1.8" />
       <module name="idea-language-1c-bsl_main" target="1.8" />
       <module name="idea-language-1c-bsl_test" target="1.8" />
+      <module name="languageserver_main" target="1.8" />
+      <module name="languageserver_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

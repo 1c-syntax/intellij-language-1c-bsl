@@ -1,2 +1,3 @@
-rootProject.name = 'idea-language-1c-bsl'
+rootProject.name = 'intellij-bsl'
+include 'intellij-bsl'
 include 'languageserver'

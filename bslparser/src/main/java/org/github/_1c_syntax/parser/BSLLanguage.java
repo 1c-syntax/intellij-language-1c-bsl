@@ -1,4 +1,4 @@
-package org.github._1c_syntax.intellij.bsl;
+package org.github._1c_syntax.parser;
 
 import com.intellij.lang.Language;
 

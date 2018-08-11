@@ -1,6 +1,7 @@
 package org.github._1c_syntax.intellij.bsl;
 
 import com.intellij.lexer.FlexAdapter;
+import org.github._1c_syntax.parser.BSLLexer;
 
 import java.io.Reader;
 

@@ -1,16 +1,16 @@
 {
-    parserClass="org.github._1c_syntax.intellij.bsl.parser.BSLParser"
+    parserClass="org.github._1c_syntax.parser.BSLParser"
 
     extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
     psiClassPrefix="BSL"
     psiImplClassSuffix="Impl"
-    psiPackage="org.bslplugin.psi"
-    psiImplPackage="org.bslplugin.psi.impl"
+    psiPackage="org.github._1c_syntax.parser.psi"
+    psiImplPackage="org.github._1c_syntax.parser.impl"
 
-    elementTypeHolderClass="org.github._1c_syntax.intellij.bsl.psi.BSLTypes"
-    elementTypeClass="org.github._1c_syntax.intellij.bsl.psi.BSLElementType"
-    tokenTypeClass="org.github._1c_syntax.intellij.bsl.psi.BSLTokenType"
+    elementTypeHolderClass="org.github._1c_syntax.parser.psi.BSLTypes"
+    elementTypeClass="org.github._1c_syntax.parser.psi.BSLElementType"
+    tokenTypeClass="org.github._1c_syntax.parser.psi.BSLTokenType"
 
     tokens=[
         LBRACK               =  '['

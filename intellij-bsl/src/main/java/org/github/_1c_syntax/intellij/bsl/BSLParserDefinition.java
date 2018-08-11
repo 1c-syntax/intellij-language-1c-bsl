@@ -5,9 +5,10 @@ import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.tree.*;
-import org.github._1c_syntax.intellij.bsl.parser.BSLParser;
+import org.github._1c_syntax.parser.BSLLanguage;
+import org.github._1c_syntax.parser.BSLParser;
 import org.github._1c_syntax.intellij.bsl.psi.BSLFile;
-import org.github._1c_syntax.intellij.bsl.psi.BSLTypes;
+import org.github._1c_syntax.parser.psi.BSLTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class BSLParserDefinition implements ParserDefinition {

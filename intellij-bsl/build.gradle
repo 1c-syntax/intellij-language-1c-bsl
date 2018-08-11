@@ -1,46 +1,24 @@
-import org.jetbrains.grammarkit.tasks.GenerateLexer
-import org.jetbrains.grammarkit.tasks.GenerateParser
-
 plugins {
     id "org.jetbrains.intellij" version "0.3.4"
     id "jacoco"
-    id "org.jetbrains.grammarkit" version "2018.1.6"
 }
 
 repositories {
     mavenCentral()
     maven { url 'https://dl.bintray.com/jetbrains/intellij-plugin-service' }
+    maven { url 'https://maven.atlassian.com/3rdparty' }
 }
 
 apply plugin: 'idea'
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
-apply plugin: 'de.undercouch.download'
-apply plugin: 'org.jetbrains.grammarkit'
 
 group 'org.github._1c_syntax.intellij.bsl'
 version '1.0' // Plugin version
 
-sourceSets {
-    main {
-        java.srcDirs = ['src/main/java', 'src/main/gen']
-        resources.srcDirs = ['src/main/resources']
-    }
-    test {
-        java.srcDirs = ['src/test/java']
-        resources.srcDirs = ['src/test/resources']
-    }
-}
-
 dependencies {
     compile project(':languageserver')
-}
-
-idea {
-    module {
-        // Marks the already(!) added srcDir as "generated"
-        generatedSourceDirs += file('src/main/gen')
-    }
+    compile project(':bslparser')
 }
 
 intellij {
@@ -61,59 +39,10 @@ test {
     }
 }
 
-task generateParser(type: GenerateParser) {
-    // source bnf file
-    source = "src/main/resources/org/github/_1c_syntax/intellij/bsl/BSL.bnf"
-
-    // optional, task-specific root for the generated files. Default: none
-    targetRoot = 'src/main/gen'
-
-    // path to a parser file, relative to the targetRoot
-    pathToParser = '/org/bslplugin/parser/BSLParser.java'
-
-    // path to a directory with generated psi files, relative to the targetRoot
-    pathToPsiRoot = '/org/bslplugin/psi'
-
-    // if set, plugin will remove a parser output file and psi output directory before generating new ones. Default: false
-    purgeOldFiles = true
-}
-
-task generateLexer(type: GenerateLexer) {
-    // source flex file
-    source = "src/main/resources/org/github/_1c_syntax/intellij/bsl/BSL.flex"
-
-    // target directory for lexer
-    targetDir = "src/main/gen/org/github/_1c_syntax/intellij/bsl/"
-
-    // target classname, target file will be targetDir/targetClass.java
-    targetClass = "BSLLexer"
-
-    // optional, path to the task-specific skeleton file. Default: none
-    // skeleton = '/idea-flex.skeleton'
-
-    // if set, plugin will remove a lexer output file before generating new one. Default: false
-    purgeOldFiles = true
-
-    systemProperty "file.encoding", "utf-8"
-
-}
-
-task generateSources() {
-    dependsOn generateParser, generateLexer
-}
-
-clean.doFirst {
-    delete 'src/main/gen', 'out'
-}
-
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
     options.incremental = true
     options.fork = true
-}
-
-compileJava {
-    dependsOn generateSources
 }
 
 runIde {

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":bslparser" external.linked.project.path="$MODULE_DIR$/../../../bslparser" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="org.github._1c_syntax.intellij.bsl" external.system.module.version="1.0" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../bslparser">
+      <excludeFolder url="file://$MODULE_DIR$/../../../bslparser/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../bslparser/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../bslparser/out" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

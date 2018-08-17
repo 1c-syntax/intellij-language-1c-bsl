@@ -5,43 +5,50 @@ import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
-import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
-import org.github._1c_syntax.parser.psi.BSLTypes;
+import org.antlr.jetbrains.adaptor.lexer.ANTLRLexerAdaptor;
+import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
+import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
+import org.github._1c_syntax.parser.BSLLexer;
+import org.github._1c_syntax.parser.BSLParser;
 import org.jetbrains.annotations.NotNull;
 
 public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
-  public static final TextAttributesKey COMMENT =
+
+  private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
+
+  private static final TextAttributesKey COMMENT =
           TextAttributesKey.createTextAttributesKey("ONESCRIPT_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
-  public static final TextAttributesKey BAD_CHARACTER =
+  private static final TextAttributesKey BAD_CHARACTER =
           TextAttributesKey.createTextAttributesKey("ONESCRIPT_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
-  public static final TextAttributesKey KEYWORDS =
+  private static final TextAttributesKey KEYWORDS =
           TextAttributesKey.createTextAttributesKey("ONESCRIPT_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
 
-  public static final TextAttributesKey STRING =
+  private static final TextAttributesKey STRING =
           TextAttributesKey.createTextAttributesKey("ONESCRIPT_STRING", DefaultLanguageHighlighterColors.STRING);
 
-  public static final TextAttributesKey DATETIME =
+  private static final TextAttributesKey DATETIME =
           TextAttributesKey.createTextAttributesKey("ONESCRIPT_DATETIME", DefaultLanguageHighlighterColors.STRING);
 
-  public static final TextAttributesKey LITERAL_CONSTANT =
+  private static final TextAttributesKey LITERAL_CONSTANT =
           TextAttributesKey.createTextAttributesKey("ONESCRIPT_LITERAL_CONSTANT", DefaultLanguageHighlighterColors.CONSTANT);
 
-  public static final TextAttributesKey COMPILER_DIRECTIVE =
+  private static final TextAttributesKey COMPILER_DIRECTIVE =
           TextAttributesKey.createTextAttributesKey("ONESCRIPT_COMPILER_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
 
-  public static final TextAttributesKey USING_DIRECTIVE =
+  private static final TextAttributesKey USING_DIRECTIVE =
           TextAttributesKey.createTextAttributesKey("ONESCRIPT_USING_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
 
-  public static final TextAttributesKey PREPROCESSOR_DIRECTIVE =
+  private static final TextAttributesKey PREPROCESSOR_DIRECTIVE =
           TextAttributesKey.createTextAttributesKey("ONESCRIPT_PREPROCESSOR_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
 
-  private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
+  static {
+    PSIElementTypeFactory.defineLanguageIElementTypes(BSLLanguage.INSTANCE,
+      BSLParser.tokenNames,
+      BSLParser.ruleNames);
+  }
+
   private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
-  private static final TextAttributesKey[] KEYWORD_KEYS = new TextAttributesKey[]{KEYWORDS};
-  private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{STRING};
-  private static final TextAttributesKey[] DATETIME_KEYS = new TextAttributesKey[]{DATETIME};
-  private static final TextAttributesKey[] LITERAL_CONSTANT_KEYS = new TextAttributesKey[]{LITERAL_CONSTANT};
   private static final TextAttributesKey[] COMPILER_DIRECTIVE_KEYS = new TextAttributesKey[]{COMPILER_DIRECTIVE};
   private static final TextAttributesKey[] USING_DIRECTIVE_KEYS = new TextAttributesKey[]{USING_DIRECTIVE};
   private static final TextAttributesKey[] PREPROCESSOR_DIRECTIVE_KEYS = new TextAttributesKey[]{PREPROCESSOR_DIRECTIVE};
@@ -50,38 +57,83 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
   @NotNull
   @Override
   public Lexer getHighlightingLexer() {
-    return new BSLLexerAdapter();
+    BSLLexer lexer = new BSLLexer(null);
+    return new ANTLRLexerAdaptor(BSLLanguage.INSTANCE, lexer);
   }
 
   @NotNull
   @Override
   public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
-    if (tokenType.equals(BSLTypes.COMMENT)) {
-      return COMMENT_KEYS;
-    } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
-      return BAD_CHAR_KEYS;
-    } else if (tokenType.equals(BSLTypes.STRING)
-            || tokenType.equals(BSLTypes.STRINGSTART)
-            || tokenType.equals(BSLTypes.STRINGPART)
-            || tokenType.equals(BSLTypes.STRINGTAIL)) {
-      return STRING_KEYS;
-    } else if (tokenType.equals(BSLTypes.DATETIME)) {
-      return DATETIME_KEYS;
-    } else if (tokenType.equals(BSLTypes.COMPILER_DIRECTIVE)) {
-      return COMPILER_DIRECTIVE_KEYS;
-    } else if (tokenType.equals(BSLTypes.USING)) {
-      return USING_DIRECTIVE_KEYS;
-    } else if (tokenType.equals(BSLTypes.PREPROCESSOR)) {
-      return PREPROCESSOR_DIRECTIVE_KEYS;
-    } else if (tokenType.equals(BSLTypes.BOOLEAN_TRUE)
-            || tokenType.equals(BSLTypes.BOOLEAN_FALSE)
-            || tokenType.equals(BSLTypes.UNDEFINED)
-            || tokenType.equals(BSLTypes.NULL)) {
-      return LITERAL_CONSTANT_KEYS;
-    } else if (tokenType.toString().endsWith("_KEYWORD")) {
-      return KEYWORD_KEYS;
-    } else {
-      return new TextAttributesKey[0];
+    if ( !(tokenType instanceof TokenIElementType) ) return EMPTY_KEYS;
+    TokenIElementType myType = (TokenIElementType)tokenType;
+    int ttype = myType.getANTLRTokenType();
+    TextAttributesKey attrKey;
+
+    switch ( ttype ) {
+      case BSLLexer.PROCEDURE_KEYWORD:
+      case BSLLexer.FUNCTION_KEYWORD:
+      case BSLLexer.ENDPROCEDURE_KEYWORD:
+      case BSLLexer.ENDFUNCTION_KEYWORD:
+      case BSLLexer.EXPORT_KEYWORD:
+      case BSLLexer.VAL_KEYWORD:
+      case BSLLexer.ENDIF_KEYWORD:
+      case BSLLexer.ENDDO_KEYWORD:
+      case BSLLexer.IF_KEYWORD:
+      case BSLLexer.ELSEIF_KEYWORD:
+      case BSLLexer.ELSE_KEYWORD:
+      case BSLLexer.THEN_KEYWORD:
+      case BSLLexer.WHILE_KEYWORD:
+      case BSLLexer.DO_KEYWORD:
+      case BSLLexer.FOR_KEYWORD:
+      case BSLLexer.TO_KEYWORD:
+      case BSLLexer.EACH_KEYWORD:
+      case BSLLexer.FROM_KEYWORD:
+      case BSLLexer.TRY_KEYWORD:
+      case BSLLexer.EXCEPT_KEYWORD:
+      case BSLLexer.ENDTRY_KEYWORD:
+      case BSLLexer.RETURN_KEYWORD:
+      case BSLLexer.CONTINUE_KEYWORD:
+      case BSLLexer.RAISE_KEYWORD:
+      case BSLLexer.VAR_KEYWORD:
+      case BSLLexer.NOT_KEYWORD:
+      case BSLLexer.OR_KEYWORD:
+      case BSLLexer.AND_KEYWORD:
+      case BSLLexer.NEW_KEYWORD:
+        attrKey = KEYWORDS;
+        break;
+      case BSLLexer.TRUE :
+      case BSLLexer.FALSE :
+      case BSLLexer.UNDEFINED :
+      case BSLLexer.NULL :
+        attrKey = LITERAL_CONSTANT;
+        break;
+      case BSLLexer.STRING :
+      case BSLLexer.STRINGSTART :
+      case BSLLexer.STRINGPART :
+      case BSLLexer.STRINGTAIL :
+        attrKey = STRING;
+        break;
+      case BSLLexer.DATETIME :
+        attrKey = DATETIME;
+        break;
+      case BSLLexer.LINE_COMMENT :
+        attrKey = COMMENT;
+        break;
+      default :
+        return EMPTY_KEYS;
     }
+    return new TextAttributesKey[] {attrKey};
+
+//    } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
+//      return BAD_CHAR_KEYS;
+//    } else if (tokenType.equals(BSLTypes.COMPILER_DIRECTIVE)) {
+//      return COMPILER_DIRECTIVE_KEYS;
+//    } else if (tokenType.equals(BSLTypes.USING)) {
+//      return USING_DIRECTIVE_KEYS;
+//    } else if (tokenType.equals(BSLTypes.PREPROCESSOR)) {
+//      return PREPROCESSOR_DIRECTIVE_KEYS;
+//    } else {
+//      return new TextAttributesKey[0];
+//    }
   }
 }

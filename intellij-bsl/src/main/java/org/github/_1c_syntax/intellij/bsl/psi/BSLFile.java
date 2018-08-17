@@ -4,7 +4,7 @@ import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
 import org.github._1c_syntax.intellij.bsl.BSLFileType;
-import org.github._1c_syntax.parser.BSLLanguage;
+import org.github._1c_syntax.intellij.bsl.BSLLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,0 +1,3 @@
+[submodule "intellij-bsl/vendor/adaptor"]
+	path = intellij-bsl/vendor/adaptor
+	url = git@github.com:antlr/jetbrains.git

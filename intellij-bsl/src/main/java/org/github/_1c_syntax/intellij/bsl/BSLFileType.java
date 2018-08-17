@@ -1,7 +1,6 @@
 package org.github._1c_syntax.intellij.bsl;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
-import org.github._1c_syntax.parser.BSLLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

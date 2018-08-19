@@ -99,11 +99,11 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
       case BSLLexer.OR_KEYWORD:
       case BSLLexer.AND_KEYWORD:
       case BSLLexer.NEW_KEYWORD:
-        attrKey = KEYWORDS;
-        break;
       case BSLLexer.GOTO_KEYWORD:
       case BSLLexer.BREAK_KEYWORD:
       case BSLLexer.EXECUTE_KEYWORD:
+        attrKey = KEYWORDS;
+        break;
       case BSLLexer.TRUE :
       case BSLLexer.FALSE :
       case BSLLexer.UNDEFINED :

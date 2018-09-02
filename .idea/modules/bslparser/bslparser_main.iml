@@ -4,6 +4,7 @@
     <output url="file://$MODULE_DIR$/../../../bslparser/out/production/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../bslparser/src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../../bslparser/src/main/antlr" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../bslparser/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../bslparser/src/main/gen" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../bslparser/src/main/resources" type="java-resource" />

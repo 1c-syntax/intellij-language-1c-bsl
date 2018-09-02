@@ -1,6 +1,7 @@
 plugins {
     id "org.jetbrains.intellij" version "0.3.4"
     id "jacoco"
+    id "com.github.hierynomus.license"
 }
 
 repositories {
@@ -44,6 +45,14 @@ test {
     jacoco {
         append = false
     }
+}
+
+license {
+    header = rootProject.file("license/HEADER.txt")
+    ext.year = Calendar.getInstance().get(Calendar.YEAR)
+    ext.name = 'Alexey Sosnoviy <labotamy@yandex.ru>, Nikita Gryzlov <nixel2007@gmail.com>'
+    ext.project = "IntelliJ Language 1C (BSL) Plugin"
+    strictCheck = true
 }
 
 tasks.withType(JavaCompile) {

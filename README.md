@@ -2,7 +2,7 @@
 
 [![pipeline status](https://gitlab.com/nixel2007/idea-language-1c-bsl/badges/master/pipeline.svg)](https://gitlab.com/nixel2007/idea-language-1c-bsl/commits/master)
 
-Сводный проект, решающий три цели:
+Сводный проект, призванный достич трех целей:
 
 * разработка около-BNF грамматики для 1С/OneScript с возможностью генерации лексера/парсера, AST и AST-visitors - проект [BSL Parser](./bslparser)
 * разработка Language Server для 1С/OneScript на базе [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) - проект [BSL Language Server](./languageserver)

@@ -10,6 +10,7 @@ image: gradle:alpine
 # isolated from any previous builds.
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  GIT_SUBMODULE_STRATEGY: recursive
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle

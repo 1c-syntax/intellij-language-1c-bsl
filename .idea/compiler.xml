@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="bslparser_main" target="1.8" />
+      <module name="bslparser_test" target="1.8" />
       <module name="idea-bsl-plugin_main" target="1.8" />
       <module name="idea-bsl-plugin_test" target="1.8" />
       <module name="idea-language-1c-bsl_main" target="1.8" />

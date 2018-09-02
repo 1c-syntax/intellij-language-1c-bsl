@@ -1,13 +1,14 @@
-package org.github._1c_syntax.intellij.bsl;
+package org.github._1c_syntax.parser;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.TokenType;
 
-import static org.github._1c_syntax.intellij.bsl.psi.BSLTypes.*;
+import static org.github._1c_syntax.parser.psi.BSLTypes.*;
 
 %%
 
+%public
 %class BSLLexer
 %implements FlexLexer
 %unicode

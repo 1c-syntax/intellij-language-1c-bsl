@@ -52,7 +52,9 @@ license {
     ext.name = 'Alexey Sosnoviy <labotamy@yandex.ru>, Nikita Gryzlov <nixel2007@gmail.com>'
     ext.project = "IntelliJ Language 1C (BSL) Plugin"
     strictCheck = true
-    excludes(["vendor/**/*.*", "src/test/resources/**/*.*"])
+    exclude "org/antlr/jetbrains/adaptor/**"
+    exclude "**/*.txt"
+    exclude "**/*.xml"
 }
 
 tasks.withType(JavaCompile) {

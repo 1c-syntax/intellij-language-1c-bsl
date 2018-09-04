@@ -1,6 +1,6 @@
 # idea-language-1c-bsl
 
-[![pipeline status](https://gitlab.com/nixel2007/idea-language-1c-bsl/badges/master/pipeline.svg)](https://gitlab.com/nixel2007/idea-language-1c-bsl/commits/master)
+[![Build Status](https://travis-ci.org/1c-syntax/idea-language-1c-bsl.svg?branch=master)](https://travis-ci.org/1c-syntax/idea-language-1c-bsl)
 
 Сводный проект, призванный достич трех целей:
 

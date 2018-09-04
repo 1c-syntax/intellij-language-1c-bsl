@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/1c-syntax/idea-language-1c-bsl.svg?branch=master)](https://travis-ci.org/1c-syntax/idea-language-1c-bsl)
 [![Maintainability](https://api.codeclimate.com/v1/badges/a5b9d528d8fd58686c0e/maintainability)](https://codeclimate.com/github/1c-syntax/idea-language-1c-bsl/maintainability)
 
-Сводный проект, призванный достич трех целей:
+Сводный проект, призванный достичь трех целей:
 
 * разработка около-BNF грамматики для 1С/OneScript с возможностью генерации лексера/парсера, AST - проект [BSL Parser](./bslparser)
 * разработка Language Server для 1С/OneScript на базе [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) как единого движка для реализации функций автодополнения, перехода к определению, данных Синтакс-Помощника и прочего в различных редакторах - проект [BSL Language Server](./languageserver)

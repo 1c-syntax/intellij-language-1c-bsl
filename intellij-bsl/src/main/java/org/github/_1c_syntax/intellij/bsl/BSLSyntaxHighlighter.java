@@ -39,29 +39,29 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
   private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
   private static final TextAttributesKey COMMENT =
-          TextAttributesKey.createTextAttributesKey("ONESCRIPT_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
+          TextAttributesKey.createTextAttributesKey("BSL_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
   private static final TextAttributesKey BAD_CHARACTER =
-          TextAttributesKey.createTextAttributesKey("ONESCRIPT_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
+          TextAttributesKey.createTextAttributesKey("BSL_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
   private static final TextAttributesKey KEYWORDS =
-          TextAttributesKey.createTextAttributesKey("ONESCRIPT_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
+          TextAttributesKey.createTextAttributesKey("BSL_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
 
   private static final TextAttributesKey STRING =
-          TextAttributesKey.createTextAttributesKey("ONESCRIPT_STRING", DefaultLanguageHighlighterColors.STRING);
+          TextAttributesKey.createTextAttributesKey("BSL_STRING", DefaultLanguageHighlighterColors.STRING);
 
   private static final TextAttributesKey DATETIME =
-          TextAttributesKey.createTextAttributesKey("ONESCRIPT_DATETIME", DefaultLanguageHighlighterColors.STRING);
+          TextAttributesKey.createTextAttributesKey("BSL_DATETIME", DefaultLanguageHighlighterColors.STRING);
 
   private static final TextAttributesKey LITERAL_CONSTANT =
-          TextAttributesKey.createTextAttributesKey("ONESCRIPT_LITERAL_CONSTANT", DefaultLanguageHighlighterColors.CONSTANT);
+          TextAttributesKey.createTextAttributesKey("BSL_LITERAL_CONSTANT", DefaultLanguageHighlighterColors.CONSTANT);
 
   private static final TextAttributesKey COMPILER_DIRECTIVE =
-          TextAttributesKey.createTextAttributesKey("ONESCRIPT_COMPILER_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
+          TextAttributesKey.createTextAttributesKey("BSL_COMPILER_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
 
   private static final TextAttributesKey USING_DIRECTIVE =
-          TextAttributesKey.createTextAttributesKey("ONESCRIPT_USING_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
+          TextAttributesKey.createTextAttributesKey("BSL_USING_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
 
   private static final TextAttributesKey PREPROCESSOR_DIRECTIVE =
-          TextAttributesKey.createTextAttributesKey("ONESCRIPT_PREPROCESSOR_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
+          TextAttributesKey.createTextAttributesKey("BSL_PREPROCESSOR_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
 
   static {
     PSIElementTypeFactory.defineLanguageIElementTypes(BSLLanguage.INSTANCE,

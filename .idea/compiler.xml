@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="org.github._1c_syntax.bslparser.main" target="1.8" />
+      <module name="org.github._1c_syntax.bslparser.test" target="1.8" />
+      <module name="org.github._1c_syntax.intellij.bsl.intellij-bsl.main" target="1.8" />
+      <module name="org.github._1c_syntax.intellij.bsl.intellij-bsl.test" target="1.8" />
+      <module name="org.github._1c_syntax.intellij.bsl.languageserver.main" target="1.8" />
+      <module name="org.github._1c_syntax.intellij.bsl.languageserver.test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

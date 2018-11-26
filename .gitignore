@@ -61,3 +61,7 @@ gen/
 out/
 
 jflex-*.jar
+
+\.idea/sonarlint-state\.xml
+
+\.idea/sonarlint\.xml

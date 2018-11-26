@@ -1,8 +1,13 @@
 language: java
 
 jdk:
-  - oraclejdk8
   - openjdk8
+
+addons:
+  sonarcloud: true
+
+after_script:
+  - ./gradlew sonarqube
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

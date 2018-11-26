@@ -1,4 +1,4 @@
-/**
+/*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
  * Copyright © 2018
@@ -23,7 +23,7 @@ package org.github._1c_syntax.intellij.bsl;
 
 import com.intellij.lang.Language;
 
-public class BSLLanguage extends Language {
+public final class BSLLanguage extends Language {
 
   public static final BSLLanguage INSTANCE = new BSLLanguage();
 

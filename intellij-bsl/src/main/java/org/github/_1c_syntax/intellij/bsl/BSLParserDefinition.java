@@ -1,4 +1,4 @@
-/**
+/*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
  * Copyright © 2018
@@ -78,6 +78,7 @@ public class BSLParserDefinition implements ParserDefinition {
   }
 
   @NotNull
+  @Override
   public PsiParser createParser(final Project project) {
     final BSLParser parser = new BSLParser(null);
     return new ANTLRParserAdaptor(BSLLanguage.INSTANCE, parser) {
@@ -101,16 +102,19 @@ public class BSLParserDefinition implements ParserDefinition {
   }
 
   @NotNull
+  @Override
   public TokenSet getCommentTokens() {
     return COMMENTS;
   }
 
   @NotNull
+  @Override
   public TokenSet getStringLiteralElements() {
     return STRING;
   }
 
-  public SpaceRequirements spaceExistanceTypeBetweenTokens(ASTNode left, ASTNode right) {
+  @Override
+  public SpaceRequirements spaceExistenceTypeBetweenTokens(ASTNode left, ASTNode right) {
     return SpaceRequirements.MAY;
   }
 
@@ -159,6 +163,7 @@ public class BSLParserDefinition implements ParserDefinition {
    *  the parse tree node
    */
   @NotNull
+  @Override
   public PsiElement createElement(ASTNode node) {
     return new ANTLRPsiNode(node);
   }

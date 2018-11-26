@@ -1,5 +1,5 @@
 plugins {
-    id "org.jetbrains.intellij" version "0.3.4"
+    id "org.jetbrains.intellij" version "0.3.12"
     id "jacoco"
 }
 
@@ -29,7 +29,7 @@ sourceSets {
 }
 
 intellij {
-    version 'IC-2017.3' //Corresponds to 173. branch from plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
+    version 'IC-2018.3' //Corresponds to 183.4284.85 from plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
     pluginName 'Language 1C (BSL)'
     plugins = ['com.github.gtache.lsp:1.4.0']
 }
@@ -55,6 +55,7 @@ license {
     exclude "org/antlr/jetbrains/adaptor/**"
     exclude "**/*.txt"
     exclude "**/*.xml"
+    mapping "java", "SLASHSTAR_STYLE"
 }
 
 tasks.withType(JavaCompile) {

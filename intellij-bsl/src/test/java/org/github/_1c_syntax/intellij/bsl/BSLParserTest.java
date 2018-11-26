@@ -1,4 +1,4 @@
-/**
+/*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
  * Copyright © 2018

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
  * Copyright © 2018
@@ -29,7 +29,7 @@ import org.github._1c_syntax.intellij.bsl.BSLLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
+import javax.swing.Icon;
 
 public class BSLFile extends PsiFileBase {
 

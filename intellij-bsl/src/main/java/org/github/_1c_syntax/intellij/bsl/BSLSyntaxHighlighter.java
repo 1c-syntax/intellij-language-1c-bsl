@@ -1,4 +1,4 @@
-/**
+/*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
  * Copyright © 2018
@@ -85,7 +85,9 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
   @NotNull
   @Override
   public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
-    if ( !(tokenType instanceof TokenIElementType) ) return EMPTY_KEYS;
+    if ( !(tokenType instanceof TokenIElementType) ) {
+      return EMPTY_KEYS;
+    }
     TokenIElementType myType = (TokenIElementType)tokenType;
     int ttype = myType.getANTLRTokenType();
     TextAttributesKey attrKey;

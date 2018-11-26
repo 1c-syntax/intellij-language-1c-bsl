@@ -55,6 +55,7 @@ license {
     exclude "org/antlr/jetbrains/adaptor/**"
     exclude "**/*.txt"
     exclude "**/*.xml"
+    mapping "java", "SLASHSTAR_STYLE"
 }
 
 tasks.withType(JavaCompile) {

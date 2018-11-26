@@ -23,11 +23,10 @@ package org.github._1c_syntax.intellij.bsl;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.Icon;
 
-public class BSLFileType extends LanguageFileType {
+public final class BSLFileType extends LanguageFileType {
 
   public static final BSLFileType INSTANCE = new BSLFileType();
 
@@ -53,7 +52,6 @@ public class BSLFileType extends LanguageFileType {
     return "bsl";
   }
 
-  @Nullable
   @Override
   public Icon getIcon() {
     return BSLIcons.FILE;

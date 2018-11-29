@@ -60,7 +60,11 @@ intellij-bsl/src/test/resources/parser/.idea/
 gen/
 out/
 
-jflex-*.jar
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
 
 \.idea/sonarlint-state\.xml
 

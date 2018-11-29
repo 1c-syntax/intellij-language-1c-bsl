@@ -21,53 +21,51 @@
  */
 package org.github._1c_syntax.intellij.bsl.lsp.server.diagnostics;
 
-import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.Trees;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.github._1c_syntax.intellij.bsl.lsp.server.FileInfo;
 import org.github._1c_syntax.intellij.bsl.lsp.server.utils.RangeHelper;
+import org.github._1c_syntax.parser.BSLLexer;
+import org.github._1c_syntax.parser.BSLParser;
+import org.github._1c_syntax.parser.BSLParserBaseVisitor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-public class LineLengthDiagnostic implements BSLDiagnostic {
-
+public class FunctionShouldHaveReturnDiagnostic extends BSLParserBaseVisitor<ParseTree> implements BSLDiagnostic {
   private FileInfo fileInfo;
+  private List<Diagnostic> diagnostics = new ArrayList<>();
 
+  @Override
   public List<Diagnostic> getDiagnostics() {
-    List<Token> tokens = fileInfo.getTokens();
-    List<Diagnostic> diagnostics = new ArrayList<>();
-
-    Map<Integer, List<Integer>> tokensInOneLine = new HashMap<>();
-    tokens.forEach((Token token) -> {
-        List<Integer> tokenList = tokensInOneLine.getOrDefault(token.getLine(), new ArrayList<>());
-        tokenList.add(token.getCharPositionInLine());
-        tokensInOneLine.put(token.getLine() - 1, tokenList);
-      });
-
-    tokensInOneLine.forEach((key, value) -> {
-      Optional<Integer> max = value.stream().max(Integer::compareTo);
-      Integer maxCharPosition = max.orElse(0);
-      if (maxCharPosition > 120) {
-        Diagnostic diagnostic = new Diagnostic(
-          RangeHelper.newRange(key, 0, key, maxCharPosition),
-          "Превышена длина строки",
-          DiagnosticSeverity.Error,
-          DiagnosticProvider.SOURCE
-        );
-        diagnostics.add(diagnostic);
-      }
-    });
-
-    return diagnostics;
+    this.visitFile(fileInfo.getTree());
+    return new ArrayList<>(diagnostics);
   }
 
   @Override
   public void setFileInfo(FileInfo fileInfo) {
     this.fileInfo = fileInfo;
+    diagnostics.clear();
+  }
+
+  @Override
+  public ParseTree visitFunction(BSLParser.FunctionContext ctx) {
+
+    Collection<ParseTree> tokens = Trees.findAllTokenNodes(ctx, BSLLexer.RETURN_KEYWORD);
+    if (tokens.isEmpty()) {
+      BSLParser.SubNameContext subName = ctx.funcDeclaration().subName();
+      Diagnostic diagnostic = new Diagnostic(
+        RangeHelper.newRange(subName.getStart(), subName.getStop()),
+        getDiagnosticMessage(),
+        DiagnosticSeverity.Error,
+        DiagnosticProvider.SOURCE
+      );
+      diagnostics.add(diagnostic);
+    }
+    return ctx;
   }
 
 }

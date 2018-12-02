@@ -6,6 +6,9 @@ plugins {
 repositories {
     mavenCentral()
     maven { url 'https://dl.bintray.com/jetbrains/intellij-plugin-service' }
+    maven {
+        url "https://dl.bintray.com/antlr/maven/"
+    }
 }
 
 apply plugin: 'idea'
@@ -19,12 +22,8 @@ version '1.0' // Plugin version
 dependencies {
     compile project(':languageserver')
     compile project(':bslparser')
-}
-
-sourceSets {
-    main {
-        java.srcDirs = ['src/main/java', 'vendor/adaptor/src']
-        resources.srcDirs = ['src/main/resources']
+    implementation ('org.antlr:antlr4-jetbrains-adapter:2.1.0') {
+        exclude group: 'com.jetbrains'
     }
 }
 

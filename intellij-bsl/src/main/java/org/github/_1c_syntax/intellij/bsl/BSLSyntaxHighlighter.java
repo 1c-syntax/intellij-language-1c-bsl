@@ -27,15 +27,16 @@ import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
-import org.antlr.jetbrains.adaptor.lexer.ANTLRLexerAdaptor;
-import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
-import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
+import org.antlr.jetbrains.adapter.lexer.AntlrLexerAdapter;
+import org.antlr.jetbrains.adapter.lexer.PsiElementTypeFactory;
+import org.antlr.jetbrains.adapter.lexer.TokenIElementType;
 import org.github._1c_syntax.parser.BSLLexer;
 import org.github._1c_syntax.parser.BSLParser;
 import org.jetbrains.annotations.NotNull;
 
 public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
 
+  private static final PsiElementTypeFactory psiElementTypeFactory = PsiElementTypeFactory.create(BSLLanguage.INSTANCE, new BSLParser(null));
   private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
   private static final TextAttributesKey COMMENT =
@@ -63,12 +64,6 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
   private static final TextAttributesKey PREPROCESSOR_DIRECTIVE =
           TextAttributesKey.createTextAttributesKey("BSL_PREPROCESSOR_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
 
-  static {
-    PSIElementTypeFactory.defineLanguageIElementTypes(BSLLanguage.INSTANCE,
-      BSLParser.tokenNames,
-      BSLParser.ruleNames);
-  }
-
   private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
   private static final TextAttributesKey[] COMPILER_DIRECTIVE_KEYS = new TextAttributesKey[]{COMPILER_DIRECTIVE};
   private static final TextAttributesKey[] USING_DIRECTIVE_KEYS = new TextAttributesKey[]{USING_DIRECTIVE};
@@ -79,7 +74,7 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
   @Override
   public Lexer getHighlightingLexer() {
     BSLLexer lexer = new BSLLexer(null);
-    return new ANTLRLexerAdaptor(BSLLanguage.INSTANCE, lexer);
+    return new AntlrLexerAdapter(BSLLanguage.INSTANCE, lexer, psiElementTypeFactory);
   }
 
   @NotNull
@@ -89,7 +84,7 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
       return EMPTY_KEYS;
     }
     TokenIElementType myType = (TokenIElementType)tokenType;
-    int ttype = myType.getANTLRTokenType();
+    int ttype = myType.getAntlrTokenType();
     TextAttributesKey attrKey;
 
     switch ( ttype ) {

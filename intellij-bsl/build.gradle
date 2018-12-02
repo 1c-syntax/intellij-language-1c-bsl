@@ -22,7 +22,7 @@ version '1.0' // Plugin version
 dependencies {
     compile project(':languageserver')
     compile project(':bslparser')
-    implementation ('org.antlr:antlr4-jetbrains-adapter:2.1.0') {
+    compile ('org.antlr:antlr4-jetbrains-adapter:2.1.0') {
         exclude group: 'com.jetbrains'
     }
 }

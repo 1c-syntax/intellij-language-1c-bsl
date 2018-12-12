@@ -1,6 +1,9 @@
 plugins {
     id "org.jetbrains.intellij" version "0.3.12"
     id "jacoco"
+    id "idea"
+    id "java"
+    id "com.github.hierynomus.license"
 }
 
 repositories {
@@ -10,11 +13,6 @@ repositories {
         url "https://dl.bintray.com/antlr/maven/"
     }
 }
-
-apply plugin: 'idea'
-apply plugin: 'org.jetbrains.intellij'
-apply plugin: 'java'
-apply plugin: 'com.github.hierynomus.license'
 
 group 'org.github._1c_syntax.intellij.bsl'
 version '1.0' // Plugin version

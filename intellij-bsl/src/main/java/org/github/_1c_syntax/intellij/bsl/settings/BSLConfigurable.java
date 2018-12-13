@@ -1,18 +1,18 @@
 package org.github._1c_syntax.intellij.bsl.settings;
 
+import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.options.UnnamedConfigurable;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JComponent;
 
-public class BSLConfigurable implements UnnamedConfigurable {
+public class BSLConfigurable implements Configurable {
 
   private BSLConfigurabeGUI form;
 
   @Nls(capitalization = Nls.Capitalization.Title)
-//  @Override
+  @Override
   public String getDisplayName() {
     return "Language 1C (BSL)";
   }

@@ -25,7 +25,9 @@ import com.github.gtache.lsp.client.languageserver.serverdefinition.ExeLanguageS
 import com.github.gtache.lsp.client.languageserver.serverdefinition.LanguageServerDefinition;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.application.PreloadingActivity;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
+import org.github._1c_syntax.intellij.bsl.settings.LanguageServerSettingsState;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
@@ -44,7 +46,11 @@ public class BSLPreloadingActivity extends PreloadingActivity {
     List<String> args = new ArrayList<>();
     args.add("-jar");
     args.add(languageServer.toString());
-    args.add("-debug");
+
+    LanguageServerSettingsState languageServerSettings = ServiceManager.getService(LanguageServerSettingsState.class);
+    args.add("--diagnosticLanguage");
+    args.add(languageServerSettings.diagnosticLanguage.getLanguageCode());
+
     LanguageServerDefinition.register(
       new ExeLanguageServerDefinition("bsl", "java", args.toArray(new String[0]))
     );

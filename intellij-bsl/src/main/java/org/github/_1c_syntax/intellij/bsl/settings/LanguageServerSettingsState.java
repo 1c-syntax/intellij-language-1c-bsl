@@ -21,47 +21,35 @@
  */
 package org.github._1c_syntax.intellij.bsl.settings;
 
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
-import org.jetbrains.annotations.Nls;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.JComponent;
+@State(
+  name = "LanguageServerSettingsState",
+  storages = @Storage("intellij-bsl.xml")
+)
+public class LanguageServerSettingsState implements PersistentStateComponent<LanguageServerSettingsState> {
 
-public class BSLConfigurable implements Configurable {
+  public DiagnosticLanguage diagnosticLanguage = DiagnosticLanguage.EN;
 
-  private BSLConfigurableGUI form;
-
-  @Nls(capitalization = Nls.Capitalization.Title)
-  @Override
-  public String getDisplayName() {
-    return "Language 1C (BSL)";
+  public static LanguageServerSettingsState getInstance() {
+    return ServiceManager.getService(LanguageServerSettingsState.class);
   }
 
   @Nullable
   @Override
-  public JComponent createComponent() {
-    form = new BSLConfigurableGUI();
-    return form.getRootPanel();
+  public LanguageServerSettingsState getState() {
+    return this;
   }
 
   @Override
-  public void disposeUIResources() {
-    form = null;
-  }
-
-  @Override
-  public boolean isModified() {
-    return form.isModified();
-  }
-
-  @Override
-  public void apply() throws ConfigurationException {
-    form.apply();
-  }
-
-  @Override
-  public void reset() {
-    form.reset();
+  public void loadState(@NotNull LanguageServerSettingsState state) {
+    XmlSerializerUtil.copyBean(state, this);
   }
 }
+

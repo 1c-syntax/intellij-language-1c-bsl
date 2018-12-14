@@ -21,16 +21,17 @@
  */
 package org.github._1c_syntax.intellij.bsl.settings;
 
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+public enum DiagnosticLanguage {
+  RU("ru"),
+  EN("en");
 
-public class BSLConfigurabeGUI {
-  private JRadioButton diagnosticLanguageRu;
-  private JRadioButton diagnosticLanguageEn;
-  private JPanel rootPanel;
+  private final String languageCode;
 
+  DiagnosticLanguage(String languageCode) {
+    this.languageCode = languageCode;
+  }
 
-  public JPanel getRootPanel() {
-    return rootPanel;
+  public String getLanguageCode() {
+    return languageCode;
   }
 }

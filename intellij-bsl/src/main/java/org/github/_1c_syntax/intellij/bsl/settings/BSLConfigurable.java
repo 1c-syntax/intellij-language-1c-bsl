@@ -22,7 +22,6 @@
 package org.github._1c_syntax.intellij.bsl.settings;
 
 import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +30,7 @@ import javax.swing.JComponent;
 public class BSLConfigurable implements Configurable {
 
   private BSLConfigurableGUI form;
+  private LanguageServerSettingsState state = LanguageServerSettingsState.getInstance();
 
   @Nls(capitalization = Nls.Capitalization.Title)
   @Override
@@ -41,8 +41,7 @@ public class BSLConfigurable implements Configurable {
   @Nullable
   @Override
   public JComponent createComponent() {
-    form = new BSLConfigurableGUI();
-    return form.getRootPanel();
+    return getForm().getRootPanel();
   }
 
   @Override
@@ -52,16 +51,40 @@ public class BSLConfigurable implements Configurable {
 
   @Override
   public boolean isModified() {
-    return form.isModified();
+    return state.diagnosticLanguage != getDiagnosticLanguage();
   }
 
   @Override
-  public void apply() throws ConfigurationException {
-    form.apply();
+  public void apply() {
+    state.diagnosticLanguage = getDiagnosticLanguage();
   }
 
   @Override
   public void reset() {
-    form.reset();
+    setDiagnosticLanguage();
   }
+
+  private BSLConfigurableGUI getForm() {
+    if (form == null) {
+      form = new BSLConfigurableGUI();
+    }
+    return form;
+  }
+
+  private DiagnosticLanguage getDiagnosticLanguage() {
+    DiagnosticLanguage diagnosticLanguage;
+    if (getForm().getDiagnosticLanguageRu().isSelected()) {
+      diagnosticLanguage = DiagnosticLanguage.RU;
+    } else {
+      diagnosticLanguage = DiagnosticLanguage.EN;
+    }
+
+    return diagnosticLanguage;
+  }
+
+  private void setDiagnosticLanguage() {
+    getForm().getDiagnosticLanguageEn().setSelected(state.diagnosticLanguage == DiagnosticLanguage.EN);
+    getForm().getDiagnosticLanguageRu().setSelected(state.diagnosticLanguage == DiagnosticLanguage.RU);
+  }
+
 }

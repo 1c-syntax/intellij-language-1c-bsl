@@ -25,41 +25,19 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 public class BSLConfigurableGUI {
-  private JRadioButton diagnosticLanguageRu;
   private JRadioButton diagnosticLanguageEn;
+  private JRadioButton diagnosticLanguageRu;
   private JPanel rootPanel;
-
-  private LanguageServerSettingsState state = LanguageServerSettingsState.getInstance();
 
   public JPanel getRootPanel() {
     return rootPanel;
   }
 
-  public boolean isModified() {
-    return state.diagnosticLanguage != getDiagnosticLanguage();
+  public JRadioButton getDiagnosticLanguageEn() {
+    return diagnosticLanguageEn;
   }
 
-  public void apply() {
-    state.diagnosticLanguage = getDiagnosticLanguage();
-  }
-
-  public void reset() {
-    setDiagnosticLanguage();
-  }
-
-  private DiagnosticLanguage getDiagnosticLanguage() {
-    DiagnosticLanguage diagnosticLanguage;
-    if (diagnosticLanguageRu.isSelected()) {
-      diagnosticLanguage = DiagnosticLanguage.RU;
-    } else {
-      diagnosticLanguage = DiagnosticLanguage.EN;
-    }
-
-    return diagnosticLanguage;
-  }
-
-  private void setDiagnosticLanguage() {
-    diagnosticLanguageEn.setSelected(state.diagnosticLanguage == DiagnosticLanguage.EN);
-    diagnosticLanguageRu.setSelected(state.diagnosticLanguage == DiagnosticLanguage.RU);
+  public JRadioButton getDiagnosticLanguageRu() {
+    return diagnosticLanguageRu;
   }
 }

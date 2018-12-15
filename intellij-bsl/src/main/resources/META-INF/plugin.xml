@@ -51,6 +51,8 @@
     <fileTypeFactory implementation="org.github._1c_syntax.intellij.bsl.BSLFileTypeFactory"/>
     <lang.parserDefinition language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLParserDefinition"/>
     <lang.syntaxHighlighterFactory language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLSyntaxHighlighterFactory"/>
+    <applicationConfigurable groupId="language" displayName="1C (BSL)" id="BSLConfigurable" instance="org.github._1c_syntax.intellij.bsl.settings.BSLConfigurable"/>
+    <applicationService serviceImplementation="org.github._1c_syntax.intellij.bsl.settings.LanguageServerSettingsState"/>
   </extensions>
 
   <actions>

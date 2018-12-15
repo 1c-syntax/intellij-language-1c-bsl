@@ -35,7 +35,7 @@ public class BSLConfigurable implements Configurable {
   @Nls(capitalization = Nls.Capitalization.Title)
   @Override
   public String getDisplayName() {
-    return "Language 1C (BSL)";
+    return "1C (BSL)";
   }
 
   @Nullable

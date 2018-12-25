@@ -55,10 +55,19 @@ public class BSLParserDefinition implements ParserDefinition {
     psiElementTypeFactory.createTokenSet(BSLLexer.LINE_COMMENT);
 
   private static final TokenSet WHITESPACE =
-    psiElementTypeFactory.createTokenSet(BSLLexer.WHITE_SPACE);
+    psiElementTypeFactory.createTokenSet(
+      BSLLexer.WHITE_SPACE,
+      BSLLexer.PREPROC_WHITE_SPACE,
+      BSLLexer.PREPROC_NEWLINE
+    );
 
-  private static final TokenSet STRING =
-    psiElementTypeFactory.createTokenSet(BSLLexer.STRING);
+  private static final TokenSet STRINGS =
+    psiElementTypeFactory.createTokenSet(
+      BSLLexer.STRING,
+      BSLLexer.STRINGPART,
+      BSLLexer.STRINGSTART,
+      BSLLexer.STRINGTAIL
+    );
 
   @NotNull
   @Override
@@ -100,7 +109,7 @@ public class BSLParserDefinition implements ParserDefinition {
   @NotNull
   @Override
   public TokenSet getStringLiteralElements() {
-    return STRING;
+    return STRINGS;
   }
 
   @Override

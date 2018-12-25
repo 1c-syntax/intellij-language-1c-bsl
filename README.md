@@ -1,4 +1,4 @@
-# idea-language-1c-bsl
+# intellij-language-1c-bsl
 
 [![Build Status](https://travis-ci.org/1c-syntax/idea-language-1c-bsl.svg?branch=master)](https://travis-ci.org/1c-syntax/idea-language-1c-bsl)
 [![Maintainability](https://api.codeclimate.com/v1/badges/a5b9d528d8fd58686c0e/maintainability)](https://codeclimate.com/github/1c-syntax/idea-language-1c-bsl/maintainability)

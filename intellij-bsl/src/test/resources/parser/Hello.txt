@@ -16,4 +16,4 @@ BSL File
               AntlrPsiNode(const_value)
                 AntlrPsiNode(numeric)
                   PsiElement(DECIMAL)('0')
-      PsiElement(';')(';')
+        PsiElement(';')(';')

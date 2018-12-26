@@ -35,6 +35,7 @@ import org.jetbrains.annotations.Nullable;
 )
 public class LanguageServerSettingsState implements PersistentStateComponent<LanguageServerSettingsState> {
 
+  public Boolean enabled = Boolean.TRUE;
   public DiagnosticLanguage diagnosticLanguage = DiagnosticLanguage.EN;
 
   public static LanguageServerSettingsState getInstance() {

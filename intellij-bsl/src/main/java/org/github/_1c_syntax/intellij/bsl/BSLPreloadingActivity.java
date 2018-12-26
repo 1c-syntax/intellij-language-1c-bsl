@@ -23,6 +23,7 @@ package org.github._1c_syntax.intellij.bsl;
 
 import com.github.gtache.lsp.client.languageserver.serverdefinition.ExeLanguageServerDefinition;
 import com.github.gtache.lsp.client.languageserver.serverdefinition.LanguageServerDefinition;
+import com.github.gtache.lsp.client.languageserver.serverdefinition.LanguageServerDefinition$;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.application.PreloadingActivity;
 import com.intellij.openapi.components.ServiceManager;
@@ -40,6 +41,12 @@ public class BSLPreloadingActivity extends PreloadingActivity {
   @Override
   public void preload(@NotNull ProgressIndicator indicator) {
 
+    LanguageServerSettingsState languageServerSettings = ServiceManager.getService(LanguageServerSettingsState.class);
+
+    if (!languageServerSettings.enabled) {
+      return;
+    }
+
     String pluginsPath = PathManager.getPluginsPath();
     Path languageServer = Paths.get(pluginsPath, "Language 1C (BSL)", "lib", "languageserver-1.0.jar");
 
@@ -47,7 +54,6 @@ public class BSLPreloadingActivity extends PreloadingActivity {
     args.add("-jar");
     args.add(languageServer.toString());
 
-    LanguageServerSettingsState languageServerSettings = ServiceManager.getService(LanguageServerSettingsState.class);
     args.add("--diagnosticLanguage");
     args.add(languageServerSettings.diagnosticLanguage.getLanguageCode());
 

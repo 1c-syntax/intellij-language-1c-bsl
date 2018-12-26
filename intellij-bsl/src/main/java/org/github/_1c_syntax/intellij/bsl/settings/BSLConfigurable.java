@@ -51,16 +51,18 @@ public class BSLConfigurable implements Configurable {
 
   @Override
   public boolean isModified() {
-    return state.diagnosticLanguage != getDiagnosticLanguage();
+    return state.enabled != getEnabled() || state.diagnosticLanguage != getDiagnosticLanguage();
   }
 
   @Override
   public void apply() {
+    state.enabled = getEnabled();
     state.diagnosticLanguage = getDiagnosticLanguage();
   }
 
   @Override
   public void reset() {
+    setEnabled();
     setDiagnosticLanguage();
   }
 
@@ -82,9 +84,16 @@ public class BSLConfigurable implements Configurable {
     return diagnosticLanguage;
   }
 
+  private boolean getEnabled() {
+    return getForm().getEnabled().isSelected();
+  }
+
   private void setDiagnosticLanguage() {
     getForm().getDiagnosticLanguageEn().setSelected(state.diagnosticLanguage == DiagnosticLanguage.EN);
     getForm().getDiagnosticLanguageRu().setSelected(state.diagnosticLanguage == DiagnosticLanguage.RU);
   }
 
+  private void setEnabled() {
+    getForm().getEnabled().setSelected(state.enabled);
+  }
 }

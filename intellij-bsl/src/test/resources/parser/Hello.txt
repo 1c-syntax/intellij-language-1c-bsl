@@ -4,7 +4,7 @@ BSL File
   PsiWhiteSpace('\n')
   AntlrPsiNode(file)
     AntlrPsiNode(codeBlock)
-      AntlrPsiNode(command)
+      AntlrPsiNode(statement)
         AntlrPsiNode(assignment)
           AntlrPsiNode(complexIdentifier)
             PsiElement(IDENTIFIER)('А')

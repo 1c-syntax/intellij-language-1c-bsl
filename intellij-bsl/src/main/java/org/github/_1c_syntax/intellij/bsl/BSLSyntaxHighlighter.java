@@ -139,6 +139,14 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
       case BSLLexer.PREPROC_USE_KEYWORD:
       case BSLLexer.PREPROC_REGION:
       case BSLLexer.PREPROC_END_REGION:
+      case BSLLexer.PREPROC_AND_KEYWORD:
+      case BSLLexer.PREPROC_OR_KEYWORD:
+      case BSLLexer.PREPROC_NOT_KEYWORD:
+      case BSLLexer.PREPROC_IF_KEYWORD:
+      case BSLLexer.PREPROC_THEN_KEYWORD:
+      case BSLLexer.PREPROC_ELSIF_KEYWORD:
+      case BSLLexer.PREPROC_ELSE_KEYWORD:
+      case BSLLexer.PREPROC_ENDIF_KEYWORD:
         attrKey = PREPROCESSOR_DIRECTIVE;
         break;
       default:

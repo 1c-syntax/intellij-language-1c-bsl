@@ -91,7 +91,7 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
       case BSLLexer.ENDIF_KEYWORD:
       case BSLLexer.ENDDO_KEYWORD:
       case BSLLexer.IF_KEYWORD:
-      case BSLLexer.ELSEIF_KEYWORD:
+      case BSLLexer.ELSIF_KEYWORD:
       case BSLLexer.ELSE_KEYWORD:
       case BSLLexer.THEN_KEYWORD:
       case BSLLexer.WHILE_KEYWORD:

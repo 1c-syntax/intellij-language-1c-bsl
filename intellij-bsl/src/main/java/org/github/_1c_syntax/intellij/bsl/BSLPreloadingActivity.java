@@ -28,6 +28,9 @@ import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.application.PreloadingActivity;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
+import org.github._1c_syntax.intellij.bsl.files.BSLFileType;
+import org.github._1c_syntax.intellij.bsl.files.OSFileType;
+import org.github._1c_syntax.intellij.bsl.psi.BSLFile;
 import org.github._1c_syntax.intellij.bsl.settings.LanguageServerSettingsState;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,8 +60,9 @@ public class BSLPreloadingActivity extends PreloadingActivity {
     args.add("--diagnosticLanguage");
     args.add(languageServerSettings.diagnosticLanguage.getLanguageCode());
 
+    String extensions = BSLFileType.INSTANCE.getDefaultExtension() + ";" + OSFileType.INSTANCE.getDefaultExtension();
     LanguageServerDefinition.register(
-      new ExeLanguageServerDefinition("bsl", "java", args.toArray(new String[0]))
+      new ExeLanguageServerDefinition(extensions, "java", args.toArray(new String[0]))
     );
   }
 

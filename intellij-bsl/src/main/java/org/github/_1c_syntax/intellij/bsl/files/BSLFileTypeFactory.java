@@ -19,38 +19,16 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with IntelliJ Language 1C (BSL) Plugin.
  */
-package org.github._1c_syntax.intellij.bsl.psi;
+package org.github._1c_syntax.intellij.bsl.files;
 
-import com.intellij.extapi.psi.PsiFileBase;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.psi.FileViewProvider;
-import org.github._1c_syntax.intellij.bsl.files.BSLFileType;
-import org.github._1c_syntax.intellij.bsl.BSLLanguage;
+import com.intellij.openapi.fileTypes.FileTypeConsumer;
+import com.intellij.openapi.fileTypes.FileTypeFactory;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.swing.Icon;
-
-public class BSLFile extends PsiFileBase {
-
-  public BSLFile(@NotNull FileViewProvider viewProvider) {
-    super(viewProvider, BSLLanguage.INSTANCE);
-  }
-
-  @NotNull
+public class BSLFileTypeFactory extends FileTypeFactory {
   @Override
-  public FileType getFileType() {
-    return BSLFileType.INSTANCE;
-  }
-
-  @Override
-  public String toString() {
-    return "BSL File";
-  }
-
-  @Nullable
-  @Override
-  public Icon getIcon(int flags) {
-    return super.getIcon(flags);
+  public void createFileTypes(@NotNull FileTypeConsumer consumer) {
+    consumer.consume(BSLFileType.INSTANCE);
+    consumer.consume(OSFileType.INSTANCE);
   }
 }

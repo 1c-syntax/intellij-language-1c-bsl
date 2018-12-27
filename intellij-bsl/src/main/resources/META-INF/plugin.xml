@@ -48,7 +48,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <preloadingActivity implementation="org.github._1c_syntax.intellij.bsl.BSLPreloadingActivity"/>
-    <fileTypeFactory implementation="org.github._1c_syntax.intellij.bsl.BSLFileTypeFactory"/>
+    <fileTypeFactory implementation="org.github._1c_syntax.intellij.bsl.files.BSLFileTypeFactory"/>
     <lang.parserDefinition language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLParserDefinition"/>
     <lang.syntaxHighlighterFactory language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLSyntaxHighlighterFactory"/>
     <applicationConfigurable groupId="language" displayName="1C (BSL)" id="BSLConfigurable" instance="org.github._1c_syntax.intellij.bsl.settings.BSLConfigurable"/>

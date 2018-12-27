@@ -19,9 +19,11 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with IntelliJ Language 1C (BSL) Plugin.
  */
-package org.github._1c_syntax.intellij.bsl;
+package org.github._1c_syntax.intellij.bsl.files;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
+import org.github._1c_syntax.intellij.bsl.BSLIcons;
+import org.github._1c_syntax.intellij.bsl.BSLLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.Icon;
@@ -54,6 +56,6 @@ public final class BSLFileType extends LanguageFileType {
 
   @Override
   public Icon getIcon() {
-    return BSLIcons.FILE;
+    return BSLIcons.BSL_FILE;
   }
 }

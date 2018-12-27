@@ -1,7 +1,9 @@
 # intellij-language-1c-bsl
 
-[![Build Status](https://travis-ci.org/1c-syntax/idea-language-1c-bsl.svg?branch=master)](https://travis-ci.org/1c-syntax/idea-language-1c-bsl)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a5b9d528d8fd58686c0e/maintainability)](https://codeclimate.com/github/1c-syntax/idea-language-1c-bsl/maintainability)
+[![Build Status](https://travis-ci.org/1c-syntax/intellij-language-1c-bsl.svg?branch=master)](https://travis-ci.org/1c-syntax/intellij-language-1c-bsl)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=1c-syntax_intellij-language-1c-bsl&metric=alert_status)](https://sonarcloud.io/dashboard?id=1c-syntax_intellij-language-1c-bsl)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=1c-syntax_intellij-language-1c-bsl&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=1c-syntax_intellij-language-1c-bsl)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=1c-syntax_intellij-language-1c-bsl&metric=coverage)](https://sonarcloud.io/dashboard?id=1c-syntax_intellij-language-1c-bsl)
 
 Сводный проект, призванный достичь трех целей:
 

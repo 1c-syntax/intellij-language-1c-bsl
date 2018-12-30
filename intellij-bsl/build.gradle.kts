@@ -54,7 +54,7 @@ license {
     ext["name"] = "Alexey Sosnoviy <labotamy@yandex.ru>, Nikita Gryzlov <nixel2007@gmail.com>"
     ext["project"] = "IntelliJ Language 1C (BSL) Plugin"
     strictCheck = true
-    exclude("org/antlr/jetbrains/adaptor/**")
+    exclude("**/*.png")
     exclude("**/*.txt")
     exclude("**/*.xml")
     mapping("java", "SLASHSTAR_STYLE")

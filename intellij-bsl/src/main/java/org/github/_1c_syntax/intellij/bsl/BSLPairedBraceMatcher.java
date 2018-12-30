@@ -39,22 +39,20 @@ public class BSLPairedBraceMatcher implements PairedBraceMatcher {
   @Override
   public BracePair[] getPairs() {
     PsiElementTypeFactory psiElementTypeFactory = BSLSyntaxHighlighter.getPsiElementTypeFactory();
-    List<TokenIElementType> tokenIElementTypes = psiElementTypeFactory.getTokenIElementTypes();
-
-    TokenIElementType lParen = tokenIElementTypes.get(BSLLexer.LPAREN);
-    TokenIElementType rParen = tokenIElementTypes.get(BSLLexer.RPAREN);
-
-    TokenIElementType lBracket = tokenIElementTypes.get(BSLLexer.LBRACK);
-    TokenIElementType rBracket = tokenIElementTypes.get(BSLLexer.RBRACK);
+    List<TokenIElementType> tokenTypes = psiElementTypeFactory.getTokenIElementTypes();
 
     return new BracePair[]{
-      new BracePair(lParen, rParen, true),
-      new BracePair(lBracket, rBracket, false),
+      new BracePair(tokenTypes.get(BSLLexer.LPAREN), tokenTypes.get(BSLLexer.RPAREN), true),
+      new BracePair(tokenTypes.get(BSLLexer.LBRACK), tokenTypes.get(BSLLexer.RBRACK), false),
+      new BracePair(tokenTypes.get(BSLLexer.IF_KEYWORD), tokenTypes.get(BSLLexer.ENDIF_KEYWORD), true),
+      new BracePair(tokenTypes.get(BSLLexer.WHILE_KEYWORD), tokenTypes.get(BSLLexer.ENDDO_KEYWORD), true),
+      new BracePair(tokenTypes.get(BSLLexer.FOR_KEYWORD), tokenTypes.get(BSLLexer.ENDDO_KEYWORD), true),
+      new BracePair(tokenTypes.get(BSLLexer.TRY_KEYWORD), tokenTypes.get(BSLLexer.ENDTRY_KEYWORD), true),
     };
   }
 
   @Override
-  public boolean isPairedBracesAllowedBeforeType(@NotNull IElementType lbraceType, @Nullable IElementType contextType) {
+  public boolean isPairedBracesAllowedBeforeType(@NotNull IElementType lBraceType, @Nullable IElementType contextType) {
     return true;
   }
 

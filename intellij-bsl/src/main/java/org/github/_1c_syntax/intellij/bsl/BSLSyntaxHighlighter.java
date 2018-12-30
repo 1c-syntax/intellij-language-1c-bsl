@@ -208,4 +208,9 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
 //      return BAD_CHAR_KEYS;
 //    }
   }
+
+  public static PsiElementTypeFactory getPsiElementTypeFactory() {
+    return psiElementTypeFactory;
+  }
+
 }

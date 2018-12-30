@@ -52,6 +52,7 @@
     <lang.parserDefinition language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLParserDefinition"/>
     <lang.syntaxHighlighterFactory language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLSyntaxHighlighterFactory"/>
     <lang.commenter language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLCommenter"/>
+    <lang.braceMatcher language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLPairedBraceMatcher"/>
     <applicationConfigurable groupId="language" displayName="1C (BSL)" id="BSLConfigurable" instance="org.github._1c_syntax.intellij.bsl.settings.BSLConfigurable"/>
     <applicationService serviceImplementation="org.github._1c_syntax.intellij.bsl.settings.LanguageServerSettingsState"/>
   </extensions>

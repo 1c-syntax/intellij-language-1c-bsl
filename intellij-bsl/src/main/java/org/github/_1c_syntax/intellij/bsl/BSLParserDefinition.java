@@ -58,7 +58,8 @@ public class BSLParserDefinition implements ParserDefinition {
     psiElementTypeFactory.createTokenSet(
       BSLLexer.WHITE_SPACE,
       BSLLexer.PREPROC_WHITE_SPACE,
-      BSLLexer.PREPROC_NEWLINE
+      BSLLexer.PREPROC_NEWLINE,
+      BSLLexer.ANNOTATION_WHITE_SPACE
     );
 
   private static final TokenSet STRINGS =

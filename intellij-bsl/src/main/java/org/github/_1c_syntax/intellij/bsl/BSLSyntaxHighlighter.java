@@ -56,13 +56,15 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
     TextAttributesKey.createTextAttributesKey("BSL_LITERAL_CONSTANT", DefaultLanguageHighlighterColors.CONSTANT);
 
   private static final TextAttributesKey COMPILER_DIRECTIVE =
-    TextAttributesKey.createTextAttributesKey("BSL_COMPILER_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
+    TextAttributesKey.createTextAttributesKey("BSL_COMPILER_DIRECTIVE", DefaultLanguageHighlighterColors.METADATA);
 
-  private static final TextAttributesKey PREPROCESSOR_DIRECTIVE =
-    TextAttributesKey.createTextAttributesKey("BSL_PREPROCESSOR_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
+  private static final TextAttributesKey ANNOTATIONS =
+    TextAttributesKey.createTextAttributesKey("BSL_ANNOTATIONS", DefaultLanguageHighlighterColors.METADATA);
+
+  private static final TextAttributesKey PREPROCESSOR_INSTRUCTION =
+    TextAttributesKey.createTextAttributesKey("BSL_PREPROCESSOR_INSTRUCTION", DefaultLanguageHighlighterColors.METADATA);
 
   private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
-  private static final TextAttributesKey[] COMPILER_DIRECTIVE_KEYS = new TextAttributesKey[]{COMPILER_DIRECTIVE};
 
   @NotNull
   @Override
@@ -147,7 +149,16 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
       case BSLLexer.PREPROC_ELSIF_KEYWORD:
       case BSLLexer.PREPROC_ELSE_KEYWORD:
       case BSLLexer.PREPROC_ENDIF_KEYWORD:
-        attrKey = PREPROCESSOR_DIRECTIVE;
+        attrKey = PREPROCESSOR_INSTRUCTION;
+        break;
+      case BSLLexer.AMPERSAND:
+      case BSLLexer.ANNOTATION_ATCLIENT_SYMBOL:
+      case BSLLexer.ANNOTATION_ATCLIENTATSERVER_SYMBOL:
+      case BSLLexer.ANNOTATION_ATCLIENTATSERVERNOCONTEXT_SYMBOL:
+      case BSLLexer.ANNOTATION_ATSERVER_SYMBOL:
+      case BSLLexer.ANNOTATION_ATSERVERNOCONTEXT_SYMBOL:
+      case BSLLexer.ANNOTATION_CUSTOM_SYMBOL:
+        attrKey = ANNOTATIONS;
         break;
       default:
         return EMPTY_KEYS;
@@ -156,10 +167,6 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
 
 //    } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
 //      return BAD_CHAR_KEYS;
-//    } else if (tokenType.equals(BSLTypes.COMPILER_DIRECTIVE)) {
-//      return COMPILER_DIRECTIVE_KEYS;
-//    } else {
-//      return new TextAttributesKey[0];
 //    }
   }
 }

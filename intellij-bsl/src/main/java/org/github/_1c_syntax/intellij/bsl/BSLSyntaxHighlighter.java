@@ -52,6 +52,24 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
   private static final TextAttributesKey DATETIME =
     TextAttributesKey.createTextAttributesKey("BSL_DATETIME", DefaultLanguageHighlighterColors.STRING);
 
+  private static final TextAttributesKey NUMBER =
+    TextAttributesKey.createTextAttributesKey("BSL_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
+
+  private static final TextAttributesKey DOT =
+    TextAttributesKey.createTextAttributesKey("BSL_DOT", DefaultLanguageHighlighterColors.DOT);
+
+  private static final TextAttributesKey SEMICOLON =
+    TextAttributesKey.createTextAttributesKey("BSL_SEMICOLON", DefaultLanguageHighlighterColors.SEMICOLON);
+
+  private static final TextAttributesKey COMMA =
+    TextAttributesKey.createTextAttributesKey("BSL_COMMA", DefaultLanguageHighlighterColors.COMMA);
+
+  private static final TextAttributesKey PARENTHESES =
+    TextAttributesKey.createTextAttributesKey("BSL_PARENTHESES", DefaultLanguageHighlighterColors.PARENTHESES);
+
+  private static final TextAttributesKey BRACKETS =
+    TextAttributesKey.createTextAttributesKey("BSL_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS);
+
   private static final TextAttributesKey LITERAL_CONSTANT =
     TextAttributesKey.createTextAttributesKey("BSL_LITERAL_CONSTANT", DefaultLanguageHighlighterColors.CONSTANT);
 
@@ -124,6 +142,10 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
       case BSLLexer.NULL:
         attrKey = LITERAL_CONSTANT;
         break;
+      case BSLLexer.DECIMAL:
+      case BSLLexer.FLOAT:
+        attrKey = NUMBER;
+        break;
       case BSLLexer.STRING:
       case BSLLexer.STRINGSTART:
       case BSLLexer.STRINGPART:
@@ -159,6 +181,23 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
       case BSLLexer.ANNOTATION_ATSERVERNOCONTEXT_SYMBOL:
       case BSLLexer.ANNOTATION_CUSTOM_SYMBOL:
         attrKey = ANNOTATIONS;
+        break;
+      case BSLLexer.DOT:
+        attrKey = DOT;
+        break;
+      case BSLLexer.SEMICOLON:
+        attrKey = SEMICOLON;
+        break;
+      case BSLLexer.COMMA:
+        attrKey = COMMA;
+        break;
+      case BSLLexer.LPAREN:
+      case BSLLexer.RPAREN:
+        attrKey = PARENTHESES;
+        break;
+      case BSLLexer.LBRACK:
+      case BSLLexer.RBRACK:
+        attrKey = BRACKETS;
         break;
       default:
         return EMPTY_KEYS;

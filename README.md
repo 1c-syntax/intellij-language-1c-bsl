@@ -5,13 +5,10 @@
 [![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=1c-syntax_intellij-language-1c-bsl&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=1c-syntax_intellij-language-1c-bsl)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=1c-syntax_intellij-language-1c-bsl&metric=coverage)](https://sonarcloud.io/dashboard?id=1c-syntax_intellij-language-1c-bsl)
 
-Сводный проект, призванный достичь трех целей:
+Плагин для семейства редакторов JetBrains IntelliJ (IntelliJ IDEA, Rider, WebStorm, etc) для поддержики языка 1C (BSL) - языка 1С:Предприятие 8 и [OneScript](http://oscript.io).
 
-* разработка около-BNF грамматики для 1С/OneScript с возможностью генерации лексера/парсера, AST - проект [BSL Parser](./bslparser)
-* разработка Language Server для 1С/OneScript на базе [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) как единого движка для реализации функций автодополнения, перехода к определению, данных Синтакс-Помощника и прочего в различных редакторах - проект [BSL Language Server](./languageserver)
-* разработка плагина для семейства редакторов JetBrains IntelliJ (IntelliJ IDEA, Rider, WebStorm, etc) - проект [IntelliJ Language 1C (BSL) Plugin](./intellij-bsl)
-
-Для упрощения разработки все три задачи решаются в рамках одного репозитория. В будущем, вероятно, они будут разделены.
+Основные языковые функции заложены в [BSL Language Server](https://github.com/1c-syntax/bsl-language-server).
+Подсветка языка реализована с помощью [BSL Parser](https://github.com/1c-syntax/bsl-parser).
 
 ## License
 

@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="idea-language-1c-bsl.org.github._1c_syntax.intellij.bsl.intellij-bsl.main" target="1.8" />
+      <module name="idea-language-1c-bsl.org.github._1c_syntax.intellij.bsl.intellij-bsl.test" target="1.8" />
       <module name="org.github._1c_syntax.bslparser.main" target="1.8" />
       <module name="org.github._1c_syntax.bslparser.test" target="1.8" />
       <module name="org.github._1c_syntax.intellij.bsl.intellij-bsl.main" target="1.8" />

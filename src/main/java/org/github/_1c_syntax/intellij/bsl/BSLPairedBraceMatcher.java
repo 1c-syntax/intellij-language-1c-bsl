@@ -1,7 +1,7 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018
+ * Copyright © 2018-2019
  * Alexey Sosnoviy <labotamy@yandex.ru>, Nikita Gryzlov <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later

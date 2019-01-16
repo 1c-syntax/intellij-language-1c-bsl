@@ -48,7 +48,7 @@ tasks.jacocoTestReport {
 
 license {
     header = rootProject.file("license/HEADER.txt")
-    ext["year"] = Calendar.getInstance().get(Calendar.YEAR)
+    ext["year"] = "2018-" + Calendar.getInstance().get(Calendar.YEAR)
     ext["name"] = "Alexey Sosnoviy <labotamy@yandex.ru>, Nikita Gryzlov <nixel2007@gmail.com>"
     ext["project"] = "IntelliJ Language 1C (BSL) Plugin"
     strictCheck = true

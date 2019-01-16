@@ -23,17 +23,19 @@ package org.github._1c_syntax.intellij.bsl;
 
 import com.github.gtache.lsp.client.languageserver.serverdefinition.ExeLanguageServerDefinition;
 import com.github.gtache.lsp.client.languageserver.serverdefinition.LanguageServerDefinition;
-import com.github.gtache.lsp.client.languageserver.serverdefinition.LanguageServerDefinition$;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.application.PreloadingActivity;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import org.github._1c_syntax.intellij.bsl.files.BSLFileType;
 import org.github._1c_syntax.intellij.bsl.files.OSFileType;
-import org.github._1c_syntax.intellij.bsl.psi.BSLFile;
 import org.github._1c_syntax.intellij.bsl.settings.LanguageServerSettingsState;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -51,7 +53,23 @@ public class BSLPreloadingActivity extends PreloadingActivity {
     }
 
     String pluginsPath = PathManager.getPluginsPath();
-    Path languageServer = Paths.get(pluginsPath, "Language 1C (BSL)", "lib", "bsl-language-server-0.1.0.jar");
+
+    File libDir = Paths.get(pluginsPath, "Language 1C (BSL)", "lib").toFile();
+    File[] files = libDir.listFiles(
+      (File dir, String name) -> name.startsWith("bsl-language-server-") && name.endsWith(".jar")
+    );
+    if (files == null || files.length == 0) {
+      Notification notification = new Notification(
+        "Language 1C (BSL)",
+        "BSL Language server is not found",
+        String.format("Check %s dir. Is plugin installed correctly?", libDir.getAbsolutePath()),
+        NotificationType.ERROR
+      );
+      Notifications.Bus.notify(notification);
+      return;
+    }
+
+    Path languageServer = files[0].toPath().toAbsolutePath();
 
     List<String> args = new ArrayList<>();
     args.add("-jar");

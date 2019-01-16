@@ -27,8 +27,8 @@ group = "org.github._1c_syntax.intellij.bsl"
 version = "1.0" // Plugin version
 
 dependencies {
-    compile("com.github.1c-syntax", "bsl-parser", "0.1.0")
-    compile("com.github.1c-syntax", "bsl-language-server", "0.1.0")
+    compile("com.github.1c-syntax", "bsl-parser", "0.2.0")
+    compile("com.github.1c-syntax", "bsl-language-server", "98708f7ccc")
     compile("org.antlr:antlr4-jetbrains-adapter:3.0.alpha.2") {
         exclude(group = "com.jetbrains")
     }

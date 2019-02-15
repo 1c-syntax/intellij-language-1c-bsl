@@ -40,8 +40,8 @@ import org.antlr.jetbrains.adapter.psi.AntlrPsiNode;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.github._1c_syntax.intellij.bsl.psi.BSLFile;
-import org.github._1c_syntax.parser.BSLLexer;
-import org.github._1c_syntax.parser.BSLParser;
+import org.github._1c_syntax.bsl.parser.BSLLexer;
+import org.github._1c_syntax.bsl.parser.BSLParser;
 import org.jetbrains.annotations.NotNull;
 
 public class BSLParserDefinition implements ParserDefinition {

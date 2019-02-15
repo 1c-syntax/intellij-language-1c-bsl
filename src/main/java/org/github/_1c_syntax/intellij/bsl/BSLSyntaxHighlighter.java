@@ -30,8 +30,8 @@ import com.intellij.psi.tree.IElementType;
 import org.antlr.jetbrains.adapter.lexer.AntlrLexerAdapter;
 import org.antlr.jetbrains.adapter.lexer.PsiElementTypeFactory;
 import org.antlr.jetbrains.adapter.lexer.TokenIElementType;
-import org.github._1c_syntax.parser.BSLLexer;
-import org.github._1c_syntax.parser.BSLParser;
+import org.github._1c_syntax.bsl.parser.BSLLexer;
+import org.github._1c_syntax.bsl.parser.BSLParser;
 import org.jetbrains.annotations.NotNull;
 
 public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
@@ -119,7 +119,7 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
       case BSLLexer.FOR_KEYWORD:
       case BSLLexer.TO_KEYWORD:
       case BSLLexer.EACH_KEYWORD:
-      case BSLLexer.FROM_KEYWORD:
+      case BSLLexer.IN_KEYWORD:
       case BSLLexer.TRY_KEYWORD:
       case BSLLexer.EXCEPT_KEYWORD:
       case BSLLexer.ENDTRY_KEYWORD:

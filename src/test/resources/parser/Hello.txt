@@ -13,7 +13,7 @@ BSL File
           PsiWhiteSpace(' ')
           AntlrPsiNode(expression)
             AntlrPsiNode(member)
-              AntlrPsiNode(const_value)
+              AntlrPsiNode(constValue)
                 AntlrPsiNode(numeric)
                   PsiElement(DECIMAL)('0')
         PsiElement(';')(';')

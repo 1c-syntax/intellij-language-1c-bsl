@@ -44,7 +44,6 @@
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
   <depends>com.intellij.modules.lang</depends>
-  <depends>com.github.gtache.lsp</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <preloadingActivity implementation="org.github._1c_syntax.intellij.bsl.BSLPreloadingActivity"/>

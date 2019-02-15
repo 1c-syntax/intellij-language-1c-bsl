@@ -29,6 +29,7 @@ version = "0.2.0" // Plugin version
 dependencies {
     compile("com.github.1c-syntax", "bsl-parser", "0.4.0")
     compile("com.github.1c-syntax", "bsl-language-server", "0.3.0")
+    compile("com.github.NipunaRanasinghe", "lsp4intellij", "develop-SNAPSHOT")
 
     compile("org.antlr:antlr4-jetbrains-adapter:3.0.alpha.2") {
         exclude(group = "com.jetbrains")
@@ -38,7 +39,6 @@ dependencies {
 intellij {
     version = "IC-2018.3" //Corresponds to 183.4284.85 from plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
     pluginName = "Language 1C (BSL)"
-    setPlugins("com.github.gtache.lsp:1.4.0")
 }
 
 tasks.jacocoTestReport {

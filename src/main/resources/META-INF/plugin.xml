@@ -22,10 +22,10 @@
 
 -->
 <idea-plugin>
-  <id>org.1c-syntax.idea.language.1c.bsl</id>
+  <id>org.1c-syntax.intellij.language-1c-bsl</id>
   <name>Language 1C (BSL)</name>
-  <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <version>0.2.0</version>
+  <vendor email="support@yourcompany.com" url="https://github.com/1c-syntax">1c-syntax GitHub.com organization</vendor>
 
   <description><![CDATA[
       Enter short description for your plugin here.<br>

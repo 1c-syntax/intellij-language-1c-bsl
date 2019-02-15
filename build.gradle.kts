@@ -1,5 +1,5 @@
-import java.util.Calendar
 import java.net.URI
+import java.util.*
 
 plugins {
     jacoco
@@ -24,7 +24,7 @@ repositories {
 }
 
 group = "org.github._1c_syntax.intellij.bsl"
-version = "1.0" // Plugin version
+version = "0.2.0" // Plugin version
 
 dependencies {
     compile("com.github.1c-syntax", "bsl-parser", "0.4.0")

@@ -24,12 +24,14 @@ package org.github._1c_syntax.intellij.bsl.settings;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 public class BSLConfigurableGUI {
   private JRadioButton diagnosticLanguageEn;
   private JRadioButton diagnosticLanguageRu;
   private JPanel rootPanel;
   private JCheckBox enabled;
+  private JTextField path;
 
   public JPanel getRootPanel() {
     return rootPanel;
@@ -45,5 +47,9 @@ public class BSLConfigurableGUI {
 
   public JCheckBox getEnabled() {
     return enabled;
+  }
+
+  public JTextField getPath() {
+    return path;
   }
 }

@@ -37,6 +37,7 @@ public class LanguageServerSettingsState implements PersistentStateComponent<Lan
 
   public Boolean enabled = Boolean.TRUE;
   public DiagnosticLanguage diagnosticLanguage = DiagnosticLanguage.EN;
+  public String path = "";
 
   public static LanguageServerSettingsState getInstance() {
     return ServiceManager.getService(LanguageServerSettingsState.class);

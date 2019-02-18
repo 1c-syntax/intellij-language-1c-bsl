@@ -51,19 +51,23 @@ public class BSLConfigurable implements Configurable {
 
   @Override
   public boolean isModified() {
-    return state.enabled != getEnabled() || state.diagnosticLanguage != getDiagnosticLanguage();
+    return state.enabled != getEnabled()
+      || state.diagnosticLanguage != getDiagnosticLanguage()
+      || !state.path.equals(getPath());
   }
 
   @Override
   public void apply() {
     state.enabled = getEnabled();
     state.diagnosticLanguage = getDiagnosticLanguage();
+    state.path = getPath();
   }
 
   @Override
   public void reset() {
     setEnabled();
     setDiagnosticLanguage();
+    setPath();
   }
 
   private BSLConfigurableGUI getForm() {
@@ -88,6 +92,10 @@ public class BSLConfigurable implements Configurable {
     return getForm().getEnabled().isSelected();
   }
 
+  private String getPath() {
+    return getForm().getPath().getText();
+  }
+
   private void setDiagnosticLanguage() {
     getForm().getDiagnosticLanguageEn().setSelected(state.diagnosticLanguage == DiagnosticLanguage.EN);
     getForm().getDiagnosticLanguageRu().setSelected(state.diagnosticLanguage == DiagnosticLanguage.RU);
@@ -96,4 +104,9 @@ public class BSLConfigurable implements Configurable {
   private void setEnabled() {
     getForm().getEnabled().setSelected(state.enabled);
   }
+
+  private void setPath() {
+    getForm().getPath().setText(state.path);
+  }
+
 }

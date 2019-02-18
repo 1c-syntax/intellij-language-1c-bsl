@@ -52,24 +52,30 @@ public class BSLPreloadingActivity extends PreloadingActivity {
       return;
     }
 
-    String pluginsPath = PathManager.getPluginsPath();
+    Path languageServer;
 
-    File libDir = Paths.get(pluginsPath, "Language 1C (BSL)", "lib").toFile();
-    File[] files = libDir.listFiles(
-      (File dir, String name) -> name.startsWith("bsl-language-server-") && name.endsWith(".jar")
-    );
-    if (files == null || files.length == 0) {
-      Notification notification = new Notification(
-        "Language 1C (BSL)",
-        "BSL Language server is not found",
-        String.format("Check %s dir. Is plugin installed correctly?", libDir.getAbsolutePath()),
-        NotificationType.ERROR
+    if (!languageServerSettings.path.equals("")) {
+      languageServer = Paths.get(languageServerSettings.path).toAbsolutePath();
+    } else {
+      String pluginsPath = PathManager.getPluginsPath();
+
+      File libDir = Paths.get(pluginsPath, "Language 1C (BSL)", "lib").toFile();
+      File[] files = libDir.listFiles(
+        (File dir, String name) -> name.startsWith("bsl-language-server-") && name.endsWith(".jar")
       );
-      Notifications.Bus.notify(notification);
-      return;
-    }
+      if (files == null || files.length == 0) {
+        Notification notification = new Notification(
+          "Language 1C (BSL)",
+          "BSL Language server is not found",
+          String.format("Check %s dir. Is plugin installed correctly?", libDir.getAbsolutePath()),
+          NotificationType.ERROR
+        );
+        Notifications.Bus.notify(notification);
+        return;
+      }
 
-    Path languageServer = files[0].toPath().toAbsolutePath();
+      languageServer = files[0].toPath().toAbsolutePath();
+    }
 
     List<String> args = new ArrayList<>();
     args.add("-jar");

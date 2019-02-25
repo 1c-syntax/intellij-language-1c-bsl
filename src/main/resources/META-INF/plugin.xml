@@ -60,6 +60,12 @@
                             id="BSLLSPInspectionProvider"/>
   </extensions>
 
+  <application-components>
+    <component>
+      <implementation-class>com.github.lsp4intellij.IntellijLanguageClient</implementation-class>
+    </component>
+  </application-components>
+
   <actions>
     <!-- Add your actions here -->
   </actions>

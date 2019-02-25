@@ -54,6 +54,10 @@
     <lang.braceMatcher language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLPairedBraceMatcher"/>
     <applicationConfigurable groupId="language" displayName="1C (BSL)" id="BSLConfigurable" instance="org.github._1c_syntax.intellij.bsl.settings.BSLConfigurable"/>
     <applicationService serviceImplementation="org.github._1c_syntax.intellij.bsl.settings.LanguageServerSettingsState"/>
+
+    <!-- LSP services -->
+    <inspectionToolProvider implementation="com.github.lsp4intellij.contributors.inspection.LSPInspectionProvider"
+                            id="BSLLSPInspectionProvider"/>
   </extensions>
 
   <actions>

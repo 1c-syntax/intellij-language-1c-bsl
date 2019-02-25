@@ -21,8 +21,8 @@
  */
 package org.github._1c_syntax.intellij.bsl;
 
+import com.github.lsp4intellij.IntellijLanguageClient;
 import com.github.lsp4intellij.client.languageserver.serverdefinition.ExeLanguageServerDefinition;
-import com.github.lsp4intellij.client.languageserver.serverdefinition.LanguageServerDefinition;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -85,7 +85,7 @@ public class BSLPreloadingActivity extends PreloadingActivity {
     args.add(languageServerSettings.diagnosticLanguage.getLanguageCode());
 
     String extensions = BSLFileType.INSTANCE.getDefaultExtension() + ";" + OSFileType.INSTANCE.getDefaultExtension();
-    LanguageServerDefinition.getInstance().register(
+    IntellijLanguageClient.addServerDefinition(
       new ExeLanguageServerDefinition(extensions, "java", args.toArray(new String[0]))
     );
   }

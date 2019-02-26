@@ -29,7 +29,7 @@ version = "0.2.0" // Plugin version
 dependencies {
     compile("com.github.1c-syntax", "bsl-parser", "0.4.0")
     compile("com.github.1c-syntax", "bsl-language-server", "0.3.0")
-    compile("com.github.NipunaRanasinghe", "lsp4intellij", "f5b54cf20d")
+    compile("com.github.NipunaRanasinghe", "lsp4intellij", "4a1062ce3d")
 
     compile("org.antlr:antlr4-jetbrains-adapter:3.0.alpha.2") {
         exclude(group = "com.jetbrains")

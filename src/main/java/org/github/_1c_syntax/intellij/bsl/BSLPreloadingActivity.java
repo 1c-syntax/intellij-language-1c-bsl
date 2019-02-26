@@ -30,6 +30,7 @@ import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.application.PreloadingActivity;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
+import org.github._1c_syntax.intellij.bsl.files.BSLFileType;
 import org.github._1c_syntax.intellij.bsl.files.OSFileType;
 import org.github._1c_syntax.intellij.bsl.settings.LanguageServerSettingsState;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +40,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.github.lsp4intellij.client.languageserver.serverdefinition.LanguageServerDefinition.SPLIT_CHAR;
 
 public class BSLPreloadingActivity extends PreloadingActivity {
 
@@ -83,9 +86,7 @@ public class BSLPreloadingActivity extends PreloadingActivity {
     args.add("--diagnosticLanguage");
     args.add(languageServerSettings.diagnosticLanguage.getLanguageCode());
 
-    // https://github.com/NipunaRanasinghe/lsp4intellij/issues/8
-    // String extensions = BSLFileType.INSTANCE.getDefaultExtension() + ";" + OSFileType.INSTANCE.getDefaultExtension();
-    String extensions = OSFileType.INSTANCE.getDefaultExtension();
+    String extensions = BSLFileType.INSTANCE.getDefaultExtension() + SPLIT_CHAR + OSFileType.INSTANCE.getDefaultExtension();
     IntellijLanguageClient.addServerDefinition(
       new ExeLanguageServerDefinition(extensions, "java", args.toArray(new String[0]))
     );

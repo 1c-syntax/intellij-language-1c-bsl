@@ -21,8 +21,6 @@
  */
 package org.github._1c_syntax.intellij.bsl;
 
-import com.github.lsp4intellij.IntellijLanguageClient;
-import com.github.lsp4intellij.client.languageserver.serverdefinition.ExeLanguageServerDefinition;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -34,6 +32,8 @@ import org.github._1c_syntax.intellij.bsl.files.BSLFileType;
 import org.github._1c_syntax.intellij.bsl.files.OSFileType;
 import org.github._1c_syntax.intellij.bsl.settings.LanguageServerSettingsState;
 import org.jetbrains.annotations.NotNull;
+import org.wso2.lsp4intellij.IntellijLanguageClient;
+import org.wso2.lsp4intellij.client.languageserver.serverdefinition.ExeLanguageServerDefinition;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -41,7 +41,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.lsp4intellij.client.languageserver.serverdefinition.LanguageServerDefinition.SPLIT_CHAR;
+import static org.wso2.lsp4intellij.client.languageserver.serverdefinition.LanguageServerDefinition.SPLIT_CHAR;
 
 public class BSLPreloadingActivity extends PreloadingActivity {
 
@@ -82,9 +82,6 @@ public class BSLPreloadingActivity extends PreloadingActivity {
     List<String> args = new ArrayList<>();
     args.add("-jar");
     args.add(languageServer.toString());
-
-    args.add("--diagnosticLanguage");
-    args.add(languageServerSettings.diagnosticLanguage.getLanguageCode());
 
     String extensions = BSLFileType.INSTANCE.getDefaultExtension() + SPLIT_CHAR + OSFileType.INSTANCE.getDefaultExtension();
     IntellijLanguageClient.addServerDefinition(

@@ -8,6 +8,7 @@ plugins {
     id("org.jetbrains.intellij") version "0.3.12"
     id("com.github.hierynomus.license") version "0.14.0"
     id("org.sonarqube") version "2.6.2"
+    id("com.github.ben-manes.versions") version "0.20.0"
 }
 
 repositories {
@@ -27,9 +28,9 @@ group = "org.github._1c_syntax.intellij.bsl"
 version = "0.2.0" // Plugin version
 
 dependencies {
-    compile("com.github.1c-syntax", "bsl-parser", "0.4.0")
-    compile("com.github.1c-syntax", "bsl-language-server", "0.3.0")
-    compile("com.github.NipunaRanasinghe", "lsp4intellij", "4a1062ce3d")
+    compile("com.github.1c-syntax", "bsl-parser", "0.7.1")
+    compile("com.github.1c-syntax", "bsl-language-server", "b6606f9793f737fa96c14959ea45bac9724c454a")
+    compile("com.github.ballerina-platform", "lsp4intellij", "4bd29a78a8")
 
     compile("org.antlr:antlr4-jetbrains-adapter:3.0.alpha.2") {
         exclude(group = "com.jetbrains")

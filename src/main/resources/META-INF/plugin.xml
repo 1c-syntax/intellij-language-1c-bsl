@@ -56,8 +56,10 @@
     <applicationService serviceImplementation="org.github._1c_syntax.intellij.bsl.settings.LanguageServerSettingsState"/>
 
     <!-- LSP services -->
-    <inspectionToolProvider implementation="org.wso2.lsp4intellij.contributors.inspection.LSPInspectionProvider"
-                            id="BSLLSPInspectionProvider"/>
+    <localInspection displayName="LSP"
+                     shortName="LSP"
+                     enabledByDefault="true"
+                     implementationClass="org.wso2.lsp4intellij.contributors.inspection.DummyLSPInspection"/>
   </extensions>
 
   <application-components>

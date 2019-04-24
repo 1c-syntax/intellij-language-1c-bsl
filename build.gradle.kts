@@ -29,8 +29,8 @@ version = "0.2.0" // Plugin version
 
 dependencies {
     compile("com.github.1c-syntax", "bsl-parser", "0.7.1")
-    compile("com.github.1c-syntax", "bsl-language-server", "b6606f9793f737fa96c14959ea45bac9724c454a")
-    compile("com.github.ballerina-platform", "lsp4intellij", "4bd29a78a8")
+    compile("com.github.1c-syntax", "bsl-language-server", "0.5.0")
+    compile("com.github.NipunaRanasinghe", "lsp4intellij", "4dc8f7d35b")
 
     compile("org.antlr:antlr4-jetbrains-adapter:3.0.alpha.2") {
         exclude(group = "com.jetbrains")

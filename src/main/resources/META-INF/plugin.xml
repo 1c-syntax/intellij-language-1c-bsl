@@ -24,7 +24,7 @@
 <idea-plugin>
   <id>org.1c-syntax.intellij.language-1c-bsl</id>
   <name>Language 1C (BSL)</name>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <vendor email="support@yourcompany.com" url="https://github.com/1c-syntax">1c-syntax GitHub.com organization</vendor>
 
   <description><![CDATA[
@@ -39,7 +39,7 @@
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="183.4284.85"/>
+  <idea-version since-build="192.6262.58"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
@@ -47,7 +47,12 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <preloadingActivity implementation="org.github._1c_syntax.intellij.bsl.BSLPreloadingActivity"/>
-    <fileTypeFactory implementation="org.github._1c_syntax.intellij.bsl.files.BSLFileTypeFactory"/>
+    <fileType name="BSL File" implementationClass="org.github._1c_syntax.intellij.bsl.files.BSLFileType"
+              fieldName="INSTANCE"
+              language="BSL" extensions="bsl"/>
+    <fileType name="OneScript File" implementationClass="org.github._1c_syntax.intellij.bsl.files.OSFileType"
+              fieldName="INSTANCE"
+              language="BSL" extensions="os"/>
     <lang.parserDefinition language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLParserDefinition"/>
     <lang.syntaxHighlighterFactory language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLSyntaxHighlighterFactory"/>
     <lang.commenter language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLCommenter"/>
@@ -56,10 +61,10 @@
     <applicationService serviceImplementation="org.github._1c_syntax.intellij.bsl.settings.LanguageServerSettingsState"/>
 
     <!-- LSP services -->
-    <localInspection displayName="LSP"
-                     shortName="LSP"
-                     enabledByDefault="true"
-                     implementationClass="org.wso2.lsp4intellij.contributors.inspection.DummyLSPInspection"/>
+    <externalAnnotator id="LSPAnnotator" language="BSL"
+                       implementationClass="org.wso2.lsp4intellij.contributors.annotator.LSPAnnotator"/>
+    <gotoSymbolContributor implementation="org.wso2.lsp4intellij.contributors.symbol.LSPSymbolContributor"
+                           id="LSPSymbolContributor"/>
   </extensions>
 
   <application-components>
@@ -68,11 +73,11 @@
     </component>
   </application-components>
 
-    <actions>
-      <action class="org.wso2.lsp4intellij.actions.LSPReformatAction" id="ReformatCode" use-shortcut-of="ReformatCode"
-              overrides="true" text="Reformat Code"/>
-      <action class="org.wso2.lsp4intellij.actions.LSPShowReformatDialogAction" id="ShowReformatFileDialog"
-              use-shortcut-of="ShowReformatFileDialog" overrides="true" text="Show Reformat File Dialog"/>
+  <actions>
+    <action class="org.wso2.lsp4intellij.actions.LSPReformatAction" id="ReformatCode" use-shortcut-of="ReformatCode"
+            overrides="true" text="Reformat Code"/>
+    <action class="org.wso2.lsp4intellij.actions.LSPShowReformatDialogAction" id="ShowReformatFileDialog"
+            use-shortcut-of="ShowReformatFileDialog" overrides="true" text="Show Reformat File Dialog"/>
   </actions>
 
 </idea-plugin>

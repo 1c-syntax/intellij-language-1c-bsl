@@ -46,19 +46,19 @@
   <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <preloadingActivity implementation="org.github._1c_syntax.intellij.bsl.BSLPreloadingActivity"/>
-    <fileType name="BSL File" implementationClass="org.github._1c_syntax.intellij.bsl.files.BSLFileType"
+    <preloadingActivity implementation="com.github._1c_syntax.bsl.intellij.BSLPreloadingActivity"/>
+    <fileType name="BSL File" implementationClass="com.github._1c_syntax.bsl.intellij.files.BSLFileType"
               fieldName="INSTANCE"
               language="BSL" extensions="bsl"/>
-    <fileType name="OneScript File" implementationClass="org.github._1c_syntax.intellij.bsl.files.OSFileType"
+    <fileType name="OneScript File" implementationClass="com.github._1c_syntax.bsl.intellij.files.OSFileType"
               fieldName="INSTANCE"
               language="BSL" extensions="os"/>
-    <lang.parserDefinition language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLParserDefinition"/>
-    <lang.syntaxHighlighterFactory language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLSyntaxHighlighterFactory"/>
-    <lang.commenter language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLCommenter"/>
-    <lang.braceMatcher language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLPairedBraceMatcher"/>
-    <applicationConfigurable groupId="language" displayName="1C (BSL)" id="BSLConfigurable" instance="org.github._1c_syntax.intellij.bsl.settings.BSLConfigurable"/>
-    <applicationService serviceImplementation="org.github._1c_syntax.intellij.bsl.settings.LanguageServerSettingsState"/>
+    <lang.parserDefinition language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLParserDefinition"/>
+    <lang.syntaxHighlighterFactory language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLSyntaxHighlighterFactory"/>
+    <lang.commenter language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLCommenter"/>
+    <lang.braceMatcher language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLPairedBraceMatcher"/>
+    <applicationConfigurable groupId="language" displayName="1C (BSL)" id="BSLConfigurable" instance="com.github._1c_syntax.bsl.intellij.settings.BSLConfigurable"/>
+    <applicationService serviceImplementation="com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState"/>
 
     <!-- LSP services -->
     <externalAnnotator id="LSPAnnotator" language="BSL"

@@ -5,10 +5,10 @@ plugins {
     jacoco
     idea
     java
-    id("org.jetbrains.intellij") version "0.4.10"
+    id("org.jetbrains.intellij") version "0.4.12"
     id("com.github.hierynomus.license") version "0.15.0"
-    id("org.sonarqube") version "2.7.1"
-    id("com.github.ben-manes.versions") version "0.22.0"
+    id("org.sonarqube") version "2.8"
+    id("com.github.ben-manes.versions") version "0.27.0"
 }
 
 repositories {
@@ -24,13 +24,13 @@ repositories {
     }
 }
 
-group = "org.github._1c_syntax.intellij.bsl"
+group = "com.github.1c-syntax"
 version = "0.2.0" // Plugin version
 
 dependencies {
     //compile("com.github.1c-syntax", "bsl-parser", "0.7.1")
-    compile("com.github.1c-syntax", "bsl-language-server", "0.10.2")
-    compile("com.github.nixel2007", "lsp4intellij", "6e87ac8eba9ea2972d1d978aacc25e44bb290207")
+    compile("com.github.1c-syntax", "bsl-language-server", "cf5158c2f5ca716da5e14784248615e935908478")
+    compile("com.github.ballerina-platform", "lsp4intellij", "b6f75b89d4")
 
     compile("org.antlr:antlr4-jetbrains-adapter:3.0.alpha.2") {
         exclude(group = "com.jetbrains")

@@ -24,7 +24,7 @@
 <idea-plugin>
   <id>org.1c-syntax.intellij.language-1c-bsl</id>
   <name>Language 1C (BSL)</name>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <vendor email="support@yourcompany.com" url="https://github.com/1c-syntax">1c-syntax GitHub.com organization</vendor>
 
   <description><![CDATA[
@@ -39,26 +39,45 @@
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="183.4284.85"/>
+  <idea-version since-build="192.6262.58"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
   <depends>com.intellij.modules.lang</depends>
-  <depends>com.github.gtache.lsp</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <preloadingActivity implementation="org.github._1c_syntax.intellij.bsl.BSLPreloadingActivity"/>
-    <fileTypeFactory implementation="org.github._1c_syntax.intellij.bsl.files.BSLFileTypeFactory"/>
-    <lang.parserDefinition language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLParserDefinition"/>
-    <lang.syntaxHighlighterFactory language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLSyntaxHighlighterFactory"/>
-    <lang.commenter language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLCommenter"/>
-    <lang.braceMatcher language="BSL" implementationClass="org.github._1c_syntax.intellij.bsl.BSLPairedBraceMatcher"/>
-    <applicationConfigurable groupId="language" displayName="1C (BSL)" id="BSLConfigurable" instance="org.github._1c_syntax.intellij.bsl.settings.BSLConfigurable"/>
-    <applicationService serviceImplementation="org.github._1c_syntax.intellij.bsl.settings.LanguageServerSettingsState"/>
+    <preloadingActivity implementation="com.github._1c_syntax.bsl.intellij.BSLPreloadingActivity"/>
+    <fileType name="BSL File" implementationClass="com.github._1c_syntax.bsl.intellij.files.BSLFileType"
+              fieldName="INSTANCE"
+              language="BSL" extensions="bsl"/>
+    <fileType name="OneScript File" implementationClass="com.github._1c_syntax.bsl.intellij.files.OSFileType"
+              fieldName="INSTANCE"
+              language="BSL" extensions="os"/>
+    <lang.parserDefinition language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLParserDefinition"/>
+    <lang.syntaxHighlighterFactory language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLSyntaxHighlighterFactory"/>
+    <lang.commenter language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLCommenter"/>
+    <lang.braceMatcher language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLPairedBraceMatcher"/>
+    <applicationConfigurable groupId="language" displayName="1C (BSL)" id="BSLConfigurable" instance="com.github._1c_syntax.bsl.intellij.settings.BSLConfigurable"/>
+    <applicationService serviceImplementation="com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState"/>
+
+    <!-- LSP services -->
+    <externalAnnotator id="LSPAnnotator" language="BSL"
+                       implementationClass="org.wso2.lsp4intellij.contributors.annotator.LSPAnnotator"/>
+    <gotoSymbolContributor implementation="org.wso2.lsp4intellij.contributors.symbol.LSPSymbolContributor"
+                           id="LSPSymbolContributor"/>
   </extensions>
 
+  <application-components>
+    <component>
+      <implementation-class>org.wso2.lsp4intellij.IntellijLanguageClient</implementation-class>
+    </component>
+  </application-components>
+
   <actions>
-    <!-- Add your actions here -->
+    <action class="org.wso2.lsp4intellij.actions.LSPReformatAction" id="ReformatCode" use-shortcut-of="ReformatCode"
+            overrides="true" text="Reformat Code"/>
+    <action class="org.wso2.lsp4intellij.actions.LSPShowReformatDialogAction" id="ShowReformatFileDialog"
+            use-shortcut-of="ShowReformatFileDialog" overrides="true" text="Show Reformat File Dialog"/>
   </actions>
 
 </idea-plugin>

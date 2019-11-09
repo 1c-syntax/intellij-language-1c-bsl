@@ -23,6 +23,7 @@ package com.github._1c_syntax.bsl.intellij;
 
 import com.github._1c_syntax.bsl.parser.BSLLexer;
 import com.github._1c_syntax.bsl.parser.BSLParser;
+import com.github._1c_syntax.bsl.parser.CaseChangingCharStream;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
@@ -30,8 +31,10 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
 import org.antlr.jetbrains.adapter.lexer.AntlrLexerAdapter;
+import org.antlr.jetbrains.adapter.lexer.AntlrLexerState;
 import org.antlr.jetbrains.adapter.lexer.PsiElementTypeFactory;
 import org.antlr.jetbrains.adapter.lexer.TokenIElementType;
+import org.antlr.v4.runtime.CharStream;
 import org.jetbrains.annotations.NotNull;
 
 public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
@@ -88,7 +91,14 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
   @Override
   public Lexer getHighlightingLexer() {
     BSLLexer lexer = new BSLLexer(null);
-    return new AntlrLexerAdapter(BSLLanguage.INSTANCE, lexer, psiElementTypeFactory);
+    return new AntlrLexerAdapter(BSLLanguage.INSTANCE, lexer, psiElementTypeFactory) {
+      @Override
+      protected void applyLexerState(CharStream input, AntlrLexerState state) {
+        var inputStream = new CaseChangingCharStream(input, true);
+        lexer.setInputStream(inputStream);
+        state.apply(lexer);
+      }
+    };
   }
 
   @NotNull

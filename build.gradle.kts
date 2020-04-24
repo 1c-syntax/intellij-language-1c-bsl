@@ -5,10 +5,10 @@ plugins {
     jacoco
     idea
     java
-    id("org.jetbrains.intellij") version "0.4.12"
+    id("org.jetbrains.intellij") version "0.4.18"
     id("com.github.hierynomus.license") version "0.15.0"
     id("org.sonarqube") version "2.8"
-    id("com.github.ben-manes.versions") version "0.27.0"
+    id("com.github.ben-manes.versions") version "0.28.0"
 }
 
 repositories {
@@ -29,22 +29,22 @@ version = "0.2.0" // Plugin version
 
 dependencies {
     //compile("com.github.1c-syntax", "bsl-parser", "0.7.1")
-    compile("com.github.1c-syntax", "bsl-language-server", "127eb34db65c70ebcf6553785472b4723111d590")
-    compile("com.github.ballerina-platform", "lsp4intellij", "b6f75b89d4")
+    implementation("com.github.1c-syntax", "bsl-language-server", "127eb34db65c70ebcf6553785472b4723111d590")
+    implementation("com.github.ballerina-platform", "lsp4intellij", "0.94.2")
 
-    compile("org.antlr:antlr4-jetbrains-adapter:3.0.alpha.2") {
+    implementation("org.antlr:antlr4-jetbrains-adapter:3.0.alpha.2") {
         exclude(group = "com.jetbrains")
     }
 }
 
 intellij {
-    version = "IC-2019.2.1" //Corresponds to 192.6262.58 from plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
+    version = "IC-2020.1" //Corresponds to 201.6668.121 from plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
     pluginName = "Language 1C (BSL)"
     updateSinceUntilBuild = true
 }
 
 tasks.patchPluginXml {
-    setUntilBuild("2022.0")
+    setUntilBuild("2030.0")
 }
 
 tasks.jacocoTestReport {
@@ -67,8 +67,6 @@ license {
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
-//    options.incremental = true
-//    options.fork = true
 }
 
 java {

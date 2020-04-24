@@ -1,7 +1,7 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2019
+ * Copyright © 2018-2020
  * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Gryzlov <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -33,13 +33,14 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import org.jetbrains.annotations.NotNull;
 import org.wso2.lsp4intellij.IntellijLanguageClient;
-import org.wso2.lsp4intellij.client.languageserver.serverdefinition.ExeLanguageServerDefinition;
+import org.wso2.lsp4intellij.client.languageserver.serverdefinition.ProcessBuilderServerDefinition;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.wso2.lsp4intellij.client.languageserver.serverdefinition.LanguageServerDefinition.SPLIT_CHAR;
 
@@ -80,12 +81,14 @@ public class BSLPreloadingActivity extends PreloadingActivity {
     }
 
     List<String> args = new ArrayList<>();
+    args.add("java");
     args.add("-jar");
     args.add(languageServer.toString());
 
     String extensions = BSLFileType.INSTANCE.getDefaultExtension() + SPLIT_CHAR + OSFileType.INSTANCE.getDefaultExtension();
+    ProcessBuilder process = new ProcessBuilder(args);
     IntellijLanguageClient.addServerDefinition(
-      new ExeLanguageServerDefinition(extensions, "java", args.toArray(new String[0]))
+      new ProcessBuilderServerDefinition(extensions, Map.of("bsl", "bsl,os"), process)
     );
   }
 

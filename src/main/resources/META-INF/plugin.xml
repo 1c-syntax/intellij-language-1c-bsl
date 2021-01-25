@@ -24,22 +24,19 @@
 <idea-plugin>
   <id>org.1c-syntax.intellij.language-1c-bsl</id>
   <name>Language 1C (BSL)</name>
-  <version>0.3.0</version>
-  <vendor email="support@yourcompany.com" url="https://github.com/1c-syntax">1c-syntax GitHub.com organization</vendor>
+  <vendor email="nixel2007@gmail.com" url="https://github.com/1c-syntax">1c-syntax GitHub.com organization</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      The Language 1C (BSL) plugin provides support of 1C:Enterprise framework in IntelliJ Platform-based IDEs.
     ]]></description>
 
   <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+      Initial release.
     ]]>
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="201.6668.121"/>
+  <idea-version since-build="201.6668"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
@@ -78,6 +75,9 @@
             overrides="true" text="Reformat Code"/>
     <action class="org.wso2.lsp4intellij.actions.LSPShowReformatDialogAction" id="ShowReformatFileDialog"
             use-shortcut-of="ShowReformatFileDialog" overrides="true" text="Show Reformat File Dialog"/>
+    <action class="org.wso2.lsp4intellij.actions.LSPReferencesAction" id="LSPFindUsages">
+      <keyboard-shortcut first-keystroke="shift alt F7" keymap="$default"/>
+    </action>
   </actions>
 
 </idea-plugin>

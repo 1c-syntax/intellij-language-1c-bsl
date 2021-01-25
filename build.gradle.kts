@@ -5,10 +5,10 @@ plugins {
     jacoco
     idea
     java
-    id("org.jetbrains.intellij") version "0.4.18"
+    id("org.jetbrains.intellij") version "0.6.5"
     id("com.github.hierynomus.license") version "0.15.0"
-    id("org.sonarqube") version "2.8"
-    id("com.github.ben-manes.versions") version "0.28.0"
+    id("org.sonarqube") version "3.1.1"
+    id("com.github.ben-manes.versions") version "0.36.0"
 }
 
 repositories {
@@ -25,12 +25,12 @@ repositories {
 }
 
 group = "com.github.1c-syntax"
-version = "0.2.0" // Plugin version
+version = "0.3.0" // Plugin version
 
 dependencies {
     //compile("com.github.1c-syntax", "bsl-parser", "0.7.1")
     implementation("com.github.1c-syntax", "bsl-language-server", "127eb34db65c70ebcf6553785472b4723111d590")
-    implementation("com.github.ballerina-platform", "lsp4intellij", "0.94.2")
+    implementation("com.github.ballerina-platform", "lsp4intellij", "8ee2b55267da684fb55d2866ad3293e8a0a21977")
 
     implementation("org.antlr:antlr4-jetbrains-adapter:3.0.alpha.2") {
         exclude(group = "com.jetbrains")
@@ -44,7 +44,7 @@ intellij {
 }
 
 tasks.patchPluginXml {
-    setUntilBuild("2030.0")
+    setUntilBuild("300.*")
 }
 
 tasks.jacocoTestReport {

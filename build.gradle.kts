@@ -43,6 +43,10 @@ intellij {
     updateSinceUntilBuild = true
 }
 
+tasks.runPluginVerifier {
+    ideVersions(listOf("2020.1.4"))
+}
+
 tasks.patchPluginXml {
     setUntilBuild("300.*")
 }

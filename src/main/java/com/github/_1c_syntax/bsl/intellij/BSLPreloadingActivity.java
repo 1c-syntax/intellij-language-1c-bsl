@@ -1,8 +1,8 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2020
- * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Gryzlov <nixel2007@gmail.com>
+ * Copyright © 2018-2021
+ * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
  *
@@ -27,9 +27,9 @@ import com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.application.PreloadingActivity;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import org.jetbrains.annotations.NotNull;
 import org.wso2.lsp4intellij.IntellijLanguageClient;
@@ -49,7 +49,7 @@ public class BSLPreloadingActivity extends PreloadingActivity {
   @Override
   public void preload(@NotNull ProgressIndicator indicator) {
 
-    LanguageServerSettingsState languageServerSettings = ServiceManager.getService(LanguageServerSettingsState.class);
+    LanguageServerSettingsState languageServerSettings = ApplicationManager.getApplication().getService(LanguageServerSettingsState.class);
 
     if (!languageServerSettings.enabled) {
       return;
@@ -84,9 +84,13 @@ public class BSLPreloadingActivity extends PreloadingActivity {
     args.add("java");
     args.add("-jar");
     args.add(languageServer.toString());
+    args.add("-c");
+    args.add(".bsl-language-server.json");
 
     String extensions = BSLFileType.INSTANCE.getDefaultExtension() + SPLIT_CHAR + OSFileType.INSTANCE.getDefaultExtension();
     ProcessBuilder process = new ProcessBuilder(args);
+    process.directory(new File(".").getAbsoluteFile());
+
     IntellijLanguageClient.addServerDefinition(
       new ProcessBuilderServerDefinition(extensions, Map.of("bsl", "bsl,os"), process)
     );

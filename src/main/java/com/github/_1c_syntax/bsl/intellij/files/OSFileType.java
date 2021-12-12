@@ -1,8 +1,8 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2020
- * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Gryzlov <nixel2007@gmail.com>
+ * Copyright © 2018-2021
+ * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
  *
@@ -24,6 +24,7 @@ package com.github._1c_syntax.bsl.intellij.files;
 import com.github._1c_syntax.bsl.intellij.BSLIcons;
 import com.github._1c_syntax.bsl.intellij.BSLLanguage;
 import com.intellij.openapi.fileTypes.LanguageFileType;
+import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.Icon;
@@ -57,5 +58,10 @@ public final class OSFileType extends LanguageFileType {
   @Override
   public Icon getIcon() {
     return BSLIcons.OS_FILE;
+  }
+
+  @Override
+  public @Nls @NotNull String getDisplayName() {
+    return "os";
   }
 }

@@ -1,8 +1,8 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2020
- * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Gryzlov <nixel2007@gmail.com>
+ * Copyright © 2018-2021
+ * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
  *
@@ -37,11 +37,11 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import org.antlr.jetbrains.adapter.lexer.AntlrLexerAdapter;
-import org.antlr.jetbrains.adapter.lexer.AntlrLexerState;
-import org.antlr.jetbrains.adapter.lexer.PsiElementTypeFactory;
-import org.antlr.jetbrains.adapter.parser.AntlrParserAdapter;
-import org.antlr.jetbrains.adapter.psi.AntlrPsiNode;
+import org.antlr.intellij.adaptor.lexer.ANTLRLexerAdaptor;
+import org.antlr.intellij.adaptor.lexer.ANTLRLexerState;
+import org.antlr.intellij.adaptor.lexer.PSIElementTypeFactory;
+import org.antlr.intellij.adaptor.parser.ANTLRParserAdaptor;
+import org.antlr.intellij.adaptor.psi.ANTLRPsiNode;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -49,16 +49,21 @@ import org.jetbrains.annotations.NotNull;
 
 public class BSLParserDefinition implements ParserDefinition {
 
-  private static final PsiElementTypeFactory psiElementTypeFactory = PsiElementTypeFactory.create(BSLLanguage.INSTANCE, new BSLParser(null));
+  static {
+    PSIElementTypeFactory.defineLanguageIElementTypes(BSLLanguage.INSTANCE,
+      BSLParser.tokenNames,
+      BSLParser.ruleNames);
+  }
 
   private static final IFileElementType FILE =
     new IFileElementType(BSLLanguage.INSTANCE);
 
   private static final TokenSet COMMENTS =
-    psiElementTypeFactory.createTokenSet(BSLLexer.LINE_COMMENT);
+    PSIElementTypeFactory.createTokenSet(BSLLanguage.INSTANCE, BSLLexer.LINE_COMMENT);
 
   private static final TokenSet WHITESPACE =
-    psiElementTypeFactory.createTokenSet(
+    PSIElementTypeFactory.createTokenSet(
+      BSLLanguage.INSTANCE,
       BSLLexer.WHITE_SPACE,
       BSLLexer.PREPROC_WHITE_SPACE,
       BSLLexer.PREPROC_NEWLINE,
@@ -66,7 +71,8 @@ public class BSLParserDefinition implements ParserDefinition {
     );
 
   private static final TokenSet STRINGS =
-    psiElementTypeFactory.createTokenSet(
+    PSIElementTypeFactory.createTokenSet(
+      BSLLanguage.INSTANCE,
       BSLLexer.STRING,
       BSLLexer.STRINGPART,
       BSLLexer.STRINGSTART,
@@ -77,9 +83,9 @@ public class BSLParserDefinition implements ParserDefinition {
   @Override
   public Lexer createLexer(Project project) {
     BSLLexer lexer = new BSLLexer(null);
-    return new AntlrLexerAdapter(BSLLanguage.INSTANCE, lexer, psiElementTypeFactory) {
+    return new ANTLRLexerAdaptor(BSLLanguage.INSTANCE, lexer) {
       @Override
-      protected void applyLexerState(CharStream input, AntlrLexerState state) {
+      protected void applyLexerState(CharStream input, ANTLRLexerState state) {
         var inputStream = new CaseChangingCharStream(input, true);
         lexer.setInputStream(inputStream);
         state.apply(lexer);
@@ -91,7 +97,7 @@ public class BSLParserDefinition implements ParserDefinition {
   @Override
   public PsiParser createParser(final Project project) {
     final BSLParser parser = new BSLParser(null);
-    return new AntlrParserAdapter(BSLLanguage.INSTANCE, parser, psiElementTypeFactory) {
+    return new ANTLRParserAdaptor(BSLLanguage.INSTANCE, parser) {
       @Override
       protected ParseTree parse(Parser parser, IElementType root) {
         // start rule depends on root passed in; sometimes we want to create an ID node etc...
@@ -124,7 +130,7 @@ public class BSLParserDefinition implements ParserDefinition {
   }
 
   @Override
-  public SpaceRequirements spaceExistenceTypeBetweenTokens(ASTNode left, ASTNode right) {
+  public @NotNull SpaceRequirements spaceExistenceTypeBetweenTokens(ASTNode left, ASTNode right) {
     return SpaceRequirements.MAY;
   }
 
@@ -132,7 +138,7 @@ public class BSLParserDefinition implements ParserDefinition {
    *  is called from {@link #createFile(FileViewProvider)} at least.
    */
   @Override
-  public IFileElementType getFileNodeType() {
+  public @NotNull IFileElementType getFileNodeType() {
     return FILE;
   }
 
@@ -148,7 +154,7 @@ public class BSLParserDefinition implements ParserDefinition {
    *  it back via: {@link PsiFile#getNode}.
    */
   @Override
-  public PsiFile createFile(FileViewProvider viewProvider) {
+  public @NotNull PsiFile createFile(@NotNull FileViewProvider viewProvider) {
     return new BSLFile(viewProvider);
   }
 
@@ -165,16 +171,16 @@ public class BSLParserDefinition implements ParserDefinition {
    *  node returned from parsetree->PSI conversion.  But, it
    *  must be a CompositeElement! The adaptor calls
    *  rootMarker.done(root) to finish off the PSI conversion.
-   *  See {@link AntlrParserAdapter#parse(IElementType root,
+   *  See {@link ANTLRParserAdaptor#parse(IElementType root,
    *  PsiBuilder)}
    *
    *  If you don't care to distinguish PSI nodes by type, it is
-   *  sufficient to create a {@link AntlrPsiNode} around
+   *  sufficient to create a {@link ANTLRPsiNode} around
    *  the parse tree node
    */
   @NotNull
   @Override
   public PsiElement createElement(ASTNode node) {
-    return new AntlrPsiNode(node);
+    return new ANTLRPsiNode(node);
   }
 }

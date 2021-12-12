@@ -1,8 +1,8 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2020
- * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Gryzlov <nixel2007@gmail.com>
+ * Copyright © 2018-2021
+ * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
  *
@@ -26,8 +26,8 @@ import com.intellij.lang.BracePair;
 import com.intellij.lang.PairedBraceMatcher;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
-import org.antlr.jetbrains.adapter.lexer.PsiElementTypeFactory;
-import org.antlr.jetbrains.adapter.lexer.TokenIElementType;
+import org.antlr.intellij.adaptor.lexer.PSIElementTypeFactory;
+import org.antlr.intellij.adaptor.lexer.TokenIElementType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,8 +38,7 @@ public class BSLPairedBraceMatcher implements PairedBraceMatcher {
   @NotNull
   @Override
   public BracePair[] getPairs() {
-    PsiElementTypeFactory psiElementTypeFactory = BSLSyntaxHighlighter.getPsiElementTypeFactory();
-    List<TokenIElementType> tokenTypes = psiElementTypeFactory.getTokenIElementTypes();
+    List<TokenIElementType> tokenTypes = PSIElementTypeFactory.getTokenIElementTypes(BSLLanguage.INSTANCE);
 
     return new BracePair[]{
       new BracePair(tokenTypes.get(BSLLexer.LPAREN), tokenTypes.get(BSLLexer.RPAREN), true),

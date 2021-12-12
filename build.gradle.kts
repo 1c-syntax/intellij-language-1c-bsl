@@ -5,19 +5,16 @@ plugins {
     jacoco
     idea
     java
-    id("org.jetbrains.intellij") version "0.4.18"
-    id("com.github.hierynomus.license") version "0.15.0"
-    id("org.sonarqube") version "2.8"
-    id("com.github.ben-manes.versions") version "0.28.0"
+    id("org.jetbrains.intellij") version "1.3.0"
+    id("com.github.hierynomus.license") version "0.16.1"
+    id("org.sonarqube") version "3.3"
+    id("com.github.ben-manes.versions") version "0.39.0"
 }
 
 repositories {
     mavenCentral()
     maven {
-        url = URI("https://dl.bintray.com/jetbrains/intellij-plugin-service")
-    }
-    maven {
-        url = URI("https://dl.bintray.com/antlr/maven/")
+        url = URI("https://www.jetbrains.com/intellij-repository/releases")
     }
     maven {
         url = URI("https://jitpack.io")
@@ -25,26 +22,25 @@ repositories {
 }
 
 group = "com.github.1c-syntax"
-version = "0.2.0" // Plugin version
+version = "0.3.0" // Plugin version
 
 dependencies {
-    //compile("com.github.1c-syntax", "bsl-parser", "0.7.1")
     implementation("com.github.1c-syntax", "bsl-language-server", "127eb34db65c70ebcf6553785472b4723111d590")
-    implementation("com.github.ballerina-platform", "lsp4intellij", "0.94.2")
+    implementation("com.github.nixel2007", "lsp4intellij", "c9904de68eecd755cdf3690bad17199351418bfc")
 
-    implementation("org.antlr:antlr4-jetbrains-adapter:3.0.alpha.2") {
-        exclude(group = "com.jetbrains")
+    implementation("org.antlr:antlr4-intellij-adaptor:0.1") {
+        exclude("org.antlr", "antlr4-runtime")
     }
 }
 
 intellij {
-    version = "IC-2020.1" //Corresponds to 201.6668.121 from plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
-    pluginName = "Language 1C (BSL)"
-    updateSinceUntilBuild = true
+    version.set("212.5457.46") //Corresponds to plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
+    pluginName.set("Language 1C (BSL)")
+    updateSinceUntilBuild.set(true)
 }
 
 tasks.patchPluginXml {
-    setUntilBuild("2030.0")
+    untilBuild.set("2030.0")
 }
 
 tasks.jacocoTestReport {
@@ -56,7 +52,7 @@ tasks.jacocoTestReport {
 license {
     header = rootProject.file("license/HEADER.txt")
     ext["year"] = "2018-" + Calendar.getInstance().get(Calendar.YEAR)
-    ext["name"] = "Alexey Sosnoviy <labotamy@gmail.com>, Nikita Gryzlov <nixel2007@gmail.com>"
+    ext["name"] = "Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>"
     ext["project"] = "IntelliJ Language 1C (BSL) Plugin"
     strictCheck = true
     exclude("**/*.png")

@@ -1,8 +1,8 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2020
- * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Gryzlov <nixel2007@gmail.com>
+ * Copyright © 2018-2021
+ * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
  *
@@ -22,7 +22,6 @@
 package com.github._1c_syntax.bsl.intellij;
 
 import com.github._1c_syntax.bsl.parser.BSLLexer;
-import com.github._1c_syntax.bsl.parser.BSLParser;
 import com.github._1c_syntax.bsl.parser.CaseChangingCharStream;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
@@ -30,16 +29,14 @@ import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
-import org.antlr.jetbrains.adapter.lexer.AntlrLexerAdapter;
-import org.antlr.jetbrains.adapter.lexer.AntlrLexerState;
-import org.antlr.jetbrains.adapter.lexer.PsiElementTypeFactory;
-import org.antlr.jetbrains.adapter.lexer.TokenIElementType;
+import org.antlr.intellij.adaptor.lexer.ANTLRLexerAdaptor;
+import org.antlr.intellij.adaptor.lexer.ANTLRLexerState;
+import org.antlr.intellij.adaptor.lexer.TokenIElementType;
 import org.antlr.v4.runtime.CharStream;
 import org.jetbrains.annotations.NotNull;
 
 public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
 
-  private static final PsiElementTypeFactory psiElementTypeFactory = PsiElementTypeFactory.create(BSLLanguage.INSTANCE, new BSLParser(null));
   private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
   private static final TextAttributesKey COMMENT =
@@ -91,9 +88,9 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
   @Override
   public Lexer getHighlightingLexer() {
     BSLLexer lexer = new BSLLexer(null);
-    return new AntlrLexerAdapter(BSLLanguage.INSTANCE, lexer, psiElementTypeFactory) {
+    return new ANTLRLexerAdaptor(BSLLanguage.INSTANCE, lexer) {
       @Override
-      protected void applyLexerState(CharStream input, AntlrLexerState state) {
+      protected void applyLexerState(CharStream input, ANTLRLexerState state) {
         var inputStream = new CaseChangingCharStream(input, true);
         lexer.setInputStream(inputStream);
         state.apply(lexer);
@@ -108,7 +105,7 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
       return EMPTY_KEYS;
     }
     TokenIElementType myType = (TokenIElementType) tokenType;
-    int antlrTokenType = myType.getAntlrTokenType();
+    int antlrTokenType = myType.getANTLRTokenType();
     TextAttributesKey attrKey;
 
     switch (antlrTokenType) {
@@ -217,10 +214,6 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
 //    } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
 //      return BAD_CHAR_KEYS;
 //    }
-  }
-
-  public static PsiElementTypeFactory getPsiElementTypeFactory() {
-    return psiElementTypeFactory;
   }
 
 }

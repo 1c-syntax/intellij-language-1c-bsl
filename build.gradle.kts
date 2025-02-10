@@ -45,6 +45,10 @@ intellij {
 //    }
 }
 
+tasks.runPluginVerifier {
+    ideVersions(listOf("2020.1.4"))
+}
+
 tasks.patchPluginXml {
     untilBuild.set("")
     sinceBuild.set("")

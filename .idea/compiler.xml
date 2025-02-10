@@ -4,7 +4,7 @@
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
-    <bytecodeTargetLevel target="11">
+    <bytecodeTargetLevel target="17">
       <module name="idea-language-1c-bsl.org.github._1c_syntax.intellij.bsl.intellij-bsl.main" target="1.8" />
       <module name="idea-language-1c-bsl.org.github._1c_syntax.intellij.bsl.intellij-bsl.test" target="1.8" />
       <module name="org.github._1c_syntax.bslparser.main" target="1.8" />

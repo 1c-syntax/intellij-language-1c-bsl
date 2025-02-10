@@ -5,13 +5,15 @@ plugins {
     jacoco
     idea
     java
-    id("org.jetbrains.intellij") version "1.3.0"
-    id("com.github.hierynomus.license") version "0.16.1"
-    id("org.sonarqube") version "3.3"
-    id("com.github.ben-manes.versions") version "0.39.0"
+
+    id("org.jetbrains.intellij") version "1.17.4"
+    id("org.cadixdev.licenser") version "0.6.1"
+    id("org.sonarqube") version "6.0.1.5171"
+    id("com.github.ben-manes.versions") version "0.52.0"
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven {
         url = URI("https://www.jetbrains.com/intellij-repository/releases")
@@ -22,10 +24,10 @@ repositories {
 }
 
 group = "com.github.1c-syntax"
-version = "0.3.0" // Plugin version
+version = "0.3.1" // Plugin version
 
 dependencies {
-    implementation("com.github.1c-syntax", "bsl-language-server", "127eb34db65c70ebcf6553785472b4723111d590")
+    implementation("io.github.1c-syntax", "bsl-language-server", "feature-bumpantlr-b7a9fdd-DIRTY")
     implementation("com.github.nixel2007", "lsp4intellij", "c9904de68eecd755cdf3690bad17199351418bfc")
 
     implementation("org.antlr:antlr4-intellij-adaptor:0.1") {
@@ -34,31 +36,36 @@ dependencies {
 }
 
 intellij {
-    version.set("212.5457.46") //Corresponds to plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
+    version.set("IC-2022.3")//Corresponds to plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
     pluginName.set("Language 1C (BSL)")
     updateSinceUntilBuild.set(true)
+//    patchPluginXml {
+//        sinceBuild = sinceBuildVersion
+//        untilBuild = untilBuildVersion
+//    }
 }
 
 tasks.patchPluginXml {
-    untilBuild.set("2030.0")
+    untilBuild.set("")
+    sinceBuild.set("")
 }
 
 tasks.jacocoTestReport {
     reports {
-        xml.isEnabled = true
+        xml.required.set(true)
+        xml.outputLocation.set(File("${layout.buildDirectory.get()}/reports/jacoco/test/jacoco.xml"))
     }
 }
 
 license {
-    header = rootProject.file("license/HEADER.txt")
+    header(rootProject.file("license/HEADER.txt"))
+    newLine(false)
     ext["year"] = "2018-" + Calendar.getInstance().get(Calendar.YEAR)
     ext["name"] = "Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>"
     ext["project"] = "IntelliJ Language 1C (BSL) Plugin"
-    strictCheck = true
     exclude("**/*.png")
     exclude("**/*.txt")
     exclude("**/*.xml")
-    mapping("java", "SLASHSTAR_STYLE")
 }
 
 tasks.withType<JavaCompile> {
@@ -66,8 +73,8 @@ tasks.withType<JavaCompile> {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 tasks.runIde {

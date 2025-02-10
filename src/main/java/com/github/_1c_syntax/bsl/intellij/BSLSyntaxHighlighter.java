@@ -1,7 +1,7 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2021
+ * Copyright © 2018-2025
  * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -22,7 +22,6 @@
 package com.github._1c_syntax.bsl.intellij;
 
 import com.github._1c_syntax.bsl.parser.BSLLexer;
-import com.github._1c_syntax.bsl.parser.CaseChangingCharStream;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
@@ -33,6 +32,7 @@ import org.antlr.intellij.adaptor.lexer.ANTLRLexerAdaptor;
 import org.antlr.intellij.adaptor.lexer.ANTLRLexerState;
 import org.antlr.intellij.adaptor.lexer.TokenIElementType;
 import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.jetbrains.annotations.NotNull;
 
 public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
@@ -87,12 +87,11 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
   @NotNull
   @Override
   public Lexer getHighlightingLexer() {
-    BSLLexer lexer = new BSLLexer(null);
+    BSLLexer lexer = new BSLLexer(CharStreams.fromString(""));
     return new ANTLRLexerAdaptor(BSLLanguage.INSTANCE, lexer) {
       @Override
       protected void applyLexerState(CharStream input, ANTLRLexerState state) {
-        var inputStream = new CaseChangingCharStream(input, true);
-        lexer.setInputStream(inputStream);
+        lexer.setInputStream(input);
         state.apply(lexer);
       }
     };
@@ -101,119 +100,115 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
   @NotNull
   @Override
   public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
-    if (!(tokenType instanceof TokenIElementType)) {
+    if (!(tokenType instanceof TokenIElementType myType)) {
       return EMPTY_KEYS;
     }
-    TokenIElementType myType = (TokenIElementType) tokenType;
     int antlrTokenType = myType.getANTLRTokenType();
     TextAttributesKey attrKey;
 
     switch (antlrTokenType) {
-      case BSLLexer.PROCEDURE_KEYWORD:
-      case BSLLexer.FUNCTION_KEYWORD:
-      case BSLLexer.ENDPROCEDURE_KEYWORD:
-      case BSLLexer.ENDFUNCTION_KEYWORD:
-      case BSLLexer.EXPORT_KEYWORD:
-      case BSLLexer.VAL_KEYWORD:
-      case BSLLexer.ENDIF_KEYWORD:
-      case BSLLexer.ENDDO_KEYWORD:
-      case BSLLexer.IF_KEYWORD:
-      case BSLLexer.ELSIF_KEYWORD:
-      case BSLLexer.ELSE_KEYWORD:
-      case BSLLexer.THEN_KEYWORD:
-      case BSLLexer.WHILE_KEYWORD:
-      case BSLLexer.DO_KEYWORD:
-      case BSLLexer.FOR_KEYWORD:
-      case BSLLexer.TO_KEYWORD:
-      case BSLLexer.EACH_KEYWORD:
-      case BSLLexer.IN_KEYWORD:
-      case BSLLexer.TRY_KEYWORD:
-      case BSLLexer.EXCEPT_KEYWORD:
-      case BSLLexer.ENDTRY_KEYWORD:
-      case BSLLexer.RETURN_KEYWORD:
-      case BSLLexer.CONTINUE_KEYWORD:
-      case BSLLexer.RAISE_KEYWORD:
-      case BSLLexer.VAR_KEYWORD:
-      case BSLLexer.NOT_KEYWORD:
-      case BSLLexer.OR_KEYWORD:
-      case BSLLexer.AND_KEYWORD:
-      case BSLLexer.NEW_KEYWORD:
-      case BSLLexer.GOTO_KEYWORD:
-      case BSLLexer.BREAK_KEYWORD:
-      case BSLLexer.EXECUTE_KEYWORD:
-        attrKey = KEYWORDS;
-        break;
-      case BSLLexer.TRUE:
-      case BSLLexer.FALSE:
-      case BSLLexer.UNDEFINED:
-      case BSLLexer.NULL:
-        attrKey = LITERAL_CONSTANT;
-        break;
-      case BSLLexer.DECIMAL:
-      case BSLLexer.FLOAT:
-        attrKey = NUMBER;
-        break;
-      case BSLLexer.STRING:
-      case BSLLexer.STRINGSTART:
-      case BSLLexer.STRINGPART:
-      case BSLLexer.STRINGTAIL:
-      case BSLLexer.PREPROC_STRING:
+      case BSLLexer.PROCEDURE_KEYWORD,
+           BSLLexer.FUNCTION_KEYWORD,
+           BSLLexer.ENDPROCEDURE_KEYWORD,
+           BSLLexer.ENDFUNCTION_KEYWORD,
+           BSLLexer.EXPORT_KEYWORD,
+           BSLLexer.VAL_KEYWORD,
+           BSLLexer.ENDIF_KEYWORD,
+           BSLLexer.ENDDO_KEYWORD,
+           BSLLexer.IF_KEYWORD,
+           BSLLexer.ELSIF_KEYWORD,
+           BSLLexer.ELSE_KEYWORD,
+           BSLLexer.THEN_KEYWORD,
+           BSLLexer.WHILE_KEYWORD,
+           BSLLexer.DO_KEYWORD,
+           BSLLexer.FOR_KEYWORD,
+           BSLLexer.TO_KEYWORD,
+           BSLLexer.EACH_KEYWORD,
+           BSLLexer.IN_KEYWORD,
+           BSLLexer.TRY_KEYWORD,
+           BSLLexer.EXCEPT_KEYWORD,
+           BSLLexer.ENDTRY_KEYWORD,
+           BSLLexer.RETURN_KEYWORD,
+           BSLLexer.CONTINUE_KEYWORD,
+           BSLLexer.RAISE_KEYWORD,
+           BSLLexer.VAR_KEYWORD,
+           BSLLexer.NOT_KEYWORD,
+           BSLLexer.OR_KEYWORD,
+           BSLLexer.AND_KEYWORD,
+           BSLLexer.NEW_KEYWORD,
+           BSLLexer.GOTO_KEYWORD,
+           BSLLexer.BREAK_KEYWORD,
+           BSLLexer.EXECUTE_KEYWORD,
+           BSLLexer.ADDHANDLER_KEYWORD,
+           BSLLexer.REMOVEHANDLER_KEYWORD,
+           BSLLexer.ASYNC_KEYWORD,
+           BSLLexer.AWAIT_KEYWORD -> attrKey = KEYWORDS;
+      case BSLLexer.TRUE, BSLLexer.FALSE, BSLLexer.UNDEFINED, BSLLexer.NULL -> attrKey = LITERAL_CONSTANT;
+      case BSLLexer.DECIMAL, BSLLexer.FLOAT -> attrKey = NUMBER;
+      case BSLLexer.STRING, BSLLexer.STRINGSTART, BSLLexer.STRINGPART, BSLLexer.STRINGTAIL, BSLLexer.PREPROC_STRING ->
         attrKey = STRING;
-        break;
-      case BSLLexer.DATETIME:
-        attrKey = DATETIME;
-        break;
-      case BSLLexer.LINE_COMMENT:
-        attrKey = COMMENT;
-        break;
-      case BSLLexer.HASH:
-      case BSLLexer.PREPROC_USE_KEYWORD:
-      case BSLLexer.PREPROC_REGION:
-      case BSLLexer.PREPROC_END_REGION:
-      case BSLLexer.PREPROC_AND_KEYWORD:
-      case BSLLexer.PREPROC_OR_KEYWORD:
-      case BSLLexer.PREPROC_NOT_KEYWORD:
-      case BSLLexer.PREPROC_IF_KEYWORD:
-      case BSLLexer.PREPROC_THEN_KEYWORD:
-      case BSLLexer.PREPROC_ELSIF_KEYWORD:
-      case BSLLexer.PREPROC_ELSE_KEYWORD:
-      case BSLLexer.PREPROC_ENDIF_KEYWORD:
-        attrKey = PREPROCESSOR_INSTRUCTION;
-        break;
-      case BSLLexer.AMPERSAND:
-      case BSLLexer.ANNOTATION_ATCLIENT_SYMBOL:
-      case BSLLexer.ANNOTATION_ATCLIENTATSERVER_SYMBOL:
-      case BSLLexer.ANNOTATION_ATCLIENTATSERVERNOCONTEXT_SYMBOL:
-      case BSLLexer.ANNOTATION_ATSERVER_SYMBOL:
-      case BSLLexer.ANNOTATION_ATSERVERNOCONTEXT_SYMBOL:
-      case BSLLexer.ANNOTATION_CUSTOM_SYMBOL:
-        attrKey = ANNOTATIONS;
-        break;
-      case BSLLexer.DOT:
-        attrKey = DOT;
-        break;
-      case BSLLexer.SEMICOLON:
-        attrKey = SEMICOLON;
-        break;
-      case BSLLexer.COMMA:
-        attrKey = COMMA;
-        break;
-      case BSLLexer.LPAREN:
-      case BSLLexer.RPAREN:
-        attrKey = PARENTHESES;
-        break;
-      case BSLLexer.LBRACK:
-      case BSLLexer.RBRACK:
-        attrKey = BRACKETS;
-        break;
-      default:
+      case BSLLexer.DATETIME -> attrKey = DATETIME;
+      case BSLLexer.LINE_COMMENT -> attrKey = COMMENT;
+      case BSLLexer.HASH,
+           BSLLexer.PREPROC_USE_KEYWORD,
+           BSLLexer.PREPROC_REGION,
+           BSLLexer.PREPROC_END_REGION,
+           BSLLexer.PREPROC_AND_KEYWORD,
+           BSLLexer.PREPROC_OR_KEYWORD,
+           BSLLexer.PREPROC_NOT_KEYWORD,
+           BSLLexer.PREPROC_IF_KEYWORD,
+           BSLLexer.PREPROC_THEN_KEYWORD,
+           BSLLexer.PREPROC_ELSIF_KEYWORD,
+           BSLLexer.PREPROC_ELSE_KEYWORD,
+           BSLLexer.PREPROC_ENDIF_KEYWORD,
+           BSLLexer.PREPROC_EXCLAMATION_MARK,
+           BSLLexer.PREPROC_LPAREN,
+           BSLLexer.PREPROC_RPAREN,
+           BSLLexer.PREPROC_MOBILEAPPCLIENT_SYMBOL,
+           BSLLexer.PREPROC_MOBILEAPPSERVER_SYMBOL,
+           BSLLexer.PREPROC_MOBILECLIENT_SYMBOL,
+           BSLLexer.PREPROC_THICKCLIENTORDINARYAPPLICATION_SYMBOL,
+           BSLLexer.PREPROC_THICKCLIENTMANAGEDAPPLICATION_SYMBOL,
+           BSLLexer.PREPROC_EXTERNALCONNECTION_SYMBOL,
+           BSLLexer.PREPROC_THINCLIENT_SYMBOL,
+           BSLLexer.PREPROC_WEBCLIENT_SYMBOL,
+           BSLLexer.PREPROC_ATCLIENT_SYMBOL,
+           BSLLexer.PREPROC_CLIENT_SYMBOL,
+           BSLLexer.PREPROC_ATSERVER_SYMBOL,
+           BSLLexer.PREPROC_SERVER_SYMBOL,
+           BSLLexer.PREPROC_INSERT,
+           BSLLexer.PREPROC_ENDINSERT,
+           BSLLexer.PREPROC_DELETE,
+           BSLLexer.PREPROC_DELETE_ANY,
+           BSLLexer.PREPROC_ENDDELETE,
+           BSLLexer.PREPROC_IDENTIFIER,
+           BSLLexer.PREPROC_LINUX,
+           BSLLexer.PREPROC_WINDOWS,
+           BSLLexer.PREPROC_MACOS,
+           BSLLexer.PREPROC_ANY,
+           BSLLexer.PREPROC_MOBILE_STANDALONE_SERVER,
+           BSLLexer.PREPROC_NATIVE -> attrKey = PREPROCESSOR_INSTRUCTION;
+      case BSLLexer.AMPERSAND,
+           BSLLexer.ANNOTATION_AFTER_SYMBOL,
+           BSLLexer.ANNOTATION_AROUND_SYMBOL,
+           BSLLexer.ANNOTATION_ATCLIENT_SYMBOL,
+           BSLLexer.ANNOTATION_ATCLIENTATSERVER_SYMBOL,
+           BSLLexer.ANNOTATION_ATCLIENTATSERVERNOCONTEXT_SYMBOL,
+           BSLLexer.ANNOTATION_ATSERVER_SYMBOL,
+           BSLLexer.ANNOTATION_ATSERVERNOCONTEXT_SYMBOL,
+           BSLLexer.ANNOTATION_BEFORE_SYMBOL,
+           BSLLexer.ANNOTATION_CHANGEANDVALIDATE_SYMBOL,
+           BSLLexer.ANNOTATION_CUSTOM_SYMBOL,
+           BSLLexer.ANNOTATION_UNKNOWN -> attrKey = ANNOTATIONS;
+      case BSLLexer.DOT -> attrKey = DOT;
+      case BSLLexer.SEMICOLON -> attrKey = SEMICOLON;
+      case BSLLexer.COMMA -> attrKey = COMMA;
+      case BSLLexer.LPAREN, BSLLexer.RPAREN -> attrKey = PARENTHESES;
+      case BSLLexer.LBRACK, BSLLexer.RBRACK -> attrKey = BRACKETS;
+      default -> {
         return EMPTY_KEYS;
+      }
     }
     return new TextAttributesKey[]{attrKey};
-
-//    } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
-//      return BAD_CHAR_KEYS;
-//    }
   }
-
 }

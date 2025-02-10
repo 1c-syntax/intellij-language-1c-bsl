@@ -1,7 +1,7 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2021
+ * Copyright © 2018-2025
  * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -57,7 +57,7 @@ public class BSLPreloadingActivity extends PreloadingActivity {
 
     Path languageServer;
 
-    if (!languageServerSettings.path.equals("")) {
+    if (!languageServerSettings.path.isEmpty()) {
       languageServer = Paths.get(languageServerSettings.path).toAbsolutePath();
     } else {
       String pluginsPath = PathManager.getPluginsPath();

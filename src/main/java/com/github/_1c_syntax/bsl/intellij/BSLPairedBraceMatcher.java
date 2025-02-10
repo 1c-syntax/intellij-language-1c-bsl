@@ -1,7 +1,7 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2021
+ * Copyright © 2018-2025
  * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -47,6 +47,10 @@ public class BSLPairedBraceMatcher implements PairedBraceMatcher {
       new BracePair(tokenTypes.get(BSLLexer.WHILE_KEYWORD), tokenTypes.get(BSLLexer.ENDDO_KEYWORD), true),
       new BracePair(tokenTypes.get(BSLLexer.FOR_KEYWORD), tokenTypes.get(BSLLexer.ENDDO_KEYWORD), true),
       new BracePair(tokenTypes.get(BSLLexer.TRY_KEYWORD), tokenTypes.get(BSLLexer.ENDTRY_KEYWORD), true),
+      new BracePair(tokenTypes.get(BSLLexer.PROCEDURE_KEYWORD), tokenTypes.get(BSLLexer.ENDPROCEDURE_KEYWORD), true),
+      new BracePair(tokenTypes.get(BSLLexer.FUNCTION_KEYWORD), tokenTypes.get(BSLLexer.ENDFUNCTION_KEYWORD), true),
+      new BracePair(tokenTypes.get(BSLLexer.PREPROC_REGION), tokenTypes.get(BSLLexer.PREPROC_END_REGION), true),
+      new BracePair(tokenTypes.get(BSLLexer.PREPROC_IF_KEYWORD), tokenTypes.get(BSLLexer.PREPROC_ENDIF_KEYWORD), true),
     };
   }
 

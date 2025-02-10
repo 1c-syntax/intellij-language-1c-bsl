@@ -1,1 +1,2 @@
 rootProject.name = "intellij-bsl"
+

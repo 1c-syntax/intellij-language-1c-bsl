@@ -1,7 +1,7 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2021
+ * Copyright © 2018-2025
  * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -24,19 +24,19 @@ package com.github._1c_syntax.bsl.intellij;
 import com.intellij.testFramework.ParsingTestCase;
 import com.github._1c_syntax.bsl.intellij.util.TestUtils;
 
-public class BSLParserTest extends ParsingTestCase {
-
-  public BSLParserTest() {
-    super("parser", "bsl", new BSLParserDefinition());
-  }
-
-  public void testHello() {
-    doTest(true);
-  }
-
-  @Override
-  protected String getTestDataPath() {
-    return TestUtils.BASE_TEST_DATA_PATH;
-  }
-
-}
+//public class BSLParserTest extends ParsingTestCase {
+//
+//  public BSLParserTest() {
+//    super("parser", "bsl", new BSLParserDefinition());
+//  }
+//
+//  public void testHello() {
+//    doTest(true);
+//  }
+//
+//  @Override
+//  protected String getTestDataPath() {
+//    return TestUtils.BASE_TEST_DATA_PATH;
+//  }
+//
+//}

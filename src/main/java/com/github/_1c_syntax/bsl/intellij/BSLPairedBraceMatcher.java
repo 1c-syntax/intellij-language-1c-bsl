@@ -37,7 +37,7 @@ public class BSLPairedBraceMatcher implements PairedBraceMatcher {
 
   @NotNull
   @Override
-  public BracePair[] getPairs() {
+  public BracePair @NotNull [] getPairs() {
     List<TokenIElementType> tokenTypes = PSIElementTypeFactory.getTokenIElementTypes(BSLLanguage.INSTANCE);
 
     return new BracePair[]{

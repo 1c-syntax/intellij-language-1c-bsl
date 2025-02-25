@@ -30,7 +30,7 @@ import javax.swing.JComponent;
 public class BSLConfigurable implements Configurable {
 
   private BSLConfigurableGUI form;
-  private LanguageServerSettingsState state = LanguageServerSettingsState.getInstance();
+  private final LanguageServerSettingsState state = LanguageServerSettingsState.getInstance();
 
   @Nls(capitalization = Nls.Capitalization.Title)
   @Override

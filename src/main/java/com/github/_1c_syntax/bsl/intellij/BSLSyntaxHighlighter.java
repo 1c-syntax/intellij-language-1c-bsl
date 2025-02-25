@@ -99,7 +99,7 @@ public class BSLSyntaxHighlighter extends SyntaxHighlighterBase {
 
   @NotNull
   @Override
-  public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
+  public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
     if (!(tokenType instanceof TokenIElementType myType)) {
       return EMPTY_KEYS;
     }

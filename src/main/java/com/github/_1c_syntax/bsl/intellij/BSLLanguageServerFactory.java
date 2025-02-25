@@ -21,21 +21,14 @@
  */
 package com.github._1c_syntax.bsl.intellij;
 
-//import com.intellij.testFramework.ParsingTestCase;
+import com.intellij.openapi.project.Project;
+import com.redhat.devtools.lsp4ij.LanguageServerFactory;
+import com.redhat.devtools.lsp4ij.server.StreamConnectionProvider;
+import org.jetbrains.annotations.NotNull;
 
-//public class BSLParserTest extends ParsingTestCase {
-//
-//  public BSLParserTest() {
-//    super("parser", "bsl", new BSLParserDefinition());
-//  }
-//
-//  public void testHello() {
-//    doTest(true);
-//  }
-//
-//  @Override
-//  protected String getTestDataPath() {
-//    return TestUtils.BASE_TEST_DATA_PATH;
-//  }
-//
-//}
+public class BSLLanguageServerFactory implements LanguageServerFactory {
+  @Override
+  public @NotNull StreamConnectionProvider createConnectionProvider(@NotNull Project project) {
+        return new BSLLanguageServerStreamConnectionProvider();
+  }
+}

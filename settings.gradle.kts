@@ -1,2 +1,2 @@
-rootProject.name = "intellij-bsl"
+rootProject.name = "Language 1C (BSL)"
 

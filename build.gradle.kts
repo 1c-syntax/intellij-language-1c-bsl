@@ -6,7 +6,7 @@ plugins {
     idea
     java
 
-    id("org.jetbrains.intellij") version "1.17.4"
+    id("org.jetbrains.intellij.platform") version "2.2.1"
     id("org.cadixdev.licenser") version "0.6.1"
     id("org.sonarqube") version "6.0.1.5171"
     id("com.github.ben-manes.versions") version "0.52.0"
@@ -21,37 +21,54 @@ repositories {
     maven {
         url = URI("https://jitpack.io")
     }
+    intellijPlatform {
+        defaultRepositories()
+        releases()
+        marketplace()
+    }
 }
 
 group = "com.github.1c-syntax"
 version = "0.3.1" // Plugin version
 
 dependencies {
-    implementation("io.github.1c-syntax", "bsl-language-server", "feature-bumpantlr-b7a9fdd-DIRTY")
-    implementation("com.github.nixel2007", "lsp4intellij", "c9904de68eecd755cdf3690bad17199351418bfc")
+    intellijPlatform {
+        intellijIdeaCommunity("2023.3")
+
+        plugin("com.redhat.devtools.lsp4ij", "0.11.0")
+    }
+    implementation("io.github.1c-syntax:bsl-language-server:0.24.0:exec")
 
     implementation("org.antlr:antlr4-intellij-adaptor:0.1") {
         exclude("org.antlr", "antlr4-runtime")
     }
 }
 
-intellij {
-    version.set("IC-2022.3")//Corresponds to plugin.xml; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
-    pluginName.set("Language 1C (BSL)")
-    updateSinceUntilBuild.set(true)
-//    patchPluginXml {
-//        sinceBuild = sinceBuildVersion
-//        untilBuild = untilBuildVersion
-//    }
-}
+intellijPlatform{
+    pluginConfiguration {
+        id = "org.1c-syntax.language-1c-bsl"
+        name = "Language 1C (BSL)"
+        version = "0.3.1"
 
-tasks.runPluginVerifier {
-    ideVersions(listOf("2020.1.4"))
-}
+        vendor {
+            name = "1c-syntax"
+            email = "nixel2007@gmail.com"
+            url = "https://github.com/1c-syntax"
+        }
+        description = "The Language 1C (BSL) plugin provides support of 1C:Enterprise framework in IntelliJ Platform-based IDEs."
+        changeNotes = "Initial release"
 
-tasks.patchPluginXml {
-    untilBuild.set("")
-    sinceBuild.set("")
+        ideaVersion {
+            sinceBuild = "233"
+            untilBuild = "330.*"
+        }
+    }
+
+    pluginVerification {
+        ides {
+            ide("2023.3")
+        }
+    }
 }
 
 tasks.jacocoTestReport {

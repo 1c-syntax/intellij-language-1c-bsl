@@ -21,38 +21,32 @@
  */
 package com.github._1c_syntax.bsl.intellij;
 
-import com.github._1c_syntax.bsl.intellij.files.BSLFileType;
-import com.github._1c_syntax.bsl.intellij.files.OSFileType;
 import com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState;
+import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.PathManager;
-import com.intellij.openapi.application.PreloadingActivity;
-import com.intellij.openapi.progress.ProgressIndicator;
-import org.jetbrains.annotations.NotNull;
-import org.wso2.lsp4intellij.IntellijLanguageClient;
-import org.wso2.lsp4intellij.client.languageserver.serverdefinition.ProcessBuilderServerDefinition;
+import com.redhat.devtools.lsp4ij.server.OSProcessStreamConnectionProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import static org.wso2.lsp4intellij.client.languageserver.serverdefinition.LanguageServerDefinition.SPLIT_CHAR;
+public class BSLLanguageServerStreamConnectionProvider extends OSProcessStreamConnectionProvider {
+  private static final Logger LOG = LoggerFactory.getLogger(BSLLanguageServerStreamConnectionProvider.class);
 
-public class BSLPreloadingActivity extends PreloadingActivity {
-
-  @Override
-  public void preload(@NotNull ProgressIndicator indicator) {
-
+  public BSLLanguageServerStreamConnectionProvider() {
     LanguageServerSettingsState languageServerSettings = ApplicationManager.getApplication().getService(LanguageServerSettingsState.class);
 
     if (!languageServerSettings.enabled) {
-      return;
+      // TODO: Дропнуть это свойство, у lsp4ij есть свойство, которое делает то же самое.
+      LOG.info("Language server is disabled, but connection provider is created");
     }
 
     Path languageServer;
@@ -87,13 +81,7 @@ public class BSLPreloadingActivity extends PreloadingActivity {
     args.add("-c");
     args.add(".bsl-language-server.json");
 
-    String extensions = BSLFileType.INSTANCE.getDefaultExtension() + SPLIT_CHAR + OSFileType.INSTANCE.getDefaultExtension();
-    ProcessBuilder process = new ProcessBuilder(args);
-    process.directory(new File(".").getAbsoluteFile());
-
-    IntellijLanguageClient.addServerDefinition(
-      new ProcessBuilderServerDefinition(extensions, Map.of("bsl", "bsl,os"), process)
-    );
+    var commandLine = new GeneralCommandLine(args);
+    super.setCommandLine(commandLine);
   }
-
 }

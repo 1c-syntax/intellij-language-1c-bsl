@@ -22,62 +22,54 @@
 
 -->
 <idea-plugin>
-  <id>org.1c-syntax.intellij.language-1c-bsl</id>
-  <name>Language 1C (BSL)</name>
-  <vendor email="nixel2007@gmail.com" url="https://github.com/1c-syntax">1c-syntax GitHub.com organization</vendor>
-
-  <description><![CDATA[
-      The Language 1C (BSL) plugin provides support of 1C:Enterprise framework in IntelliJ Platform-based IDEs.
-    ]]></description>
-
-  <change-notes><![CDATA[
-      Initial release.
-    ]]>
-  </change-notes>
-
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="212.5457.46"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
-  <depends>com.intellij.modules.lang</depends>
+<!--  <depends>com.intellij.modules.lang</depends>-->
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.redhat.devtools.lsp4ij</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <preloadingActivity implementation="com.github._1c_syntax.bsl.intellij.BSLPreloadingActivity"/>
     <fileType name="BSL File" implementationClass="com.github._1c_syntax.bsl.intellij.files.BSLFileType"
               fieldName="INSTANCE"
               language="BSL" extensions="bsl"/>
     <fileType name="OneScript File" implementationClass="com.github._1c_syntax.bsl.intellij.files.OSFileType"
               fieldName="INSTANCE"
               language="BSL" extensions="os"/>
-    <lang.parserDefinition language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLParserDefinition"/>
-    <lang.syntaxHighlighterFactory language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLSyntaxHighlighterFactory"/>
+<!--    <lang.parserDefinition language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLParserDefinition"/>-->
+<!--    <lang.syntaxHighlighterFactory language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLSyntaxHighlighterFactory"/>-->
     <lang.commenter language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLCommenter"/>
     <lang.braceMatcher language="BSL" implementationClass="com.github._1c_syntax.bsl.intellij.BSLPairedBraceMatcher"/>
     <applicationConfigurable groupId="language" displayName="1C (BSL)" id="BSLConfigurable" instance="com.github._1c_syntax.bsl.intellij.settings.BSLConfigurable"/>
     <applicationService serviceImplementation="com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState"/>
 
-    <!-- LSP services -->
-    <externalAnnotator id="LSPAnnotator" language="BSL"
-                       implementationClass="org.wso2.lsp4intellij.contributors.annotator.LSPAnnotator"/>
-    <gotoSymbolContributor implementation="org.wso2.lsp4intellij.contributors.symbol.LSPSymbolContributor"
-                           id="LSPSymbolContributor"/>
+    <!-- LSP textDocument/folding -->
+    <lang.foldingBuilder language="BSL"
+                         implementationClass="com.redhat.devtools.lsp4ij.features.foldingRange.LSPFoldingRangeBuilder"
+                         order="first"/>
+    <!-- LSP textDocument/signatureHelp -->
+    <codeInsight.parameterInfo
+            language="BSL"
+            implementationClass="com.redhat.devtools.lsp4ij.features.signatureHelp.LSPParameterInfoHandler"/>
+    <!-- LSP textDocument/documentSymbol -->
+    <lang.psiStructureViewFactory
+            language="BSL"
+            implementationClass="com.redhat.devtools.lsp4ij.features.documentSymbol.LSPDocumentSymbolStructureViewFactory"/>
   </extensions>
 
-  <application-components>
-    <component>
-      <implementation-class>org.wso2.lsp4intellij.IntellijLanguageClient</implementation-class>
-    </component>
-  </application-components>
+  <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+    <server id="BSLLanguageServer"
+            name="BSL Language Server"
+            factoryClass="com.github._1c_syntax.bsl.intellij.BSLLanguageServerFactory">
+      <description><![CDATA[
+        BSL Language Server description.
+        ]]>
+      </description>
+    </server>
 
-  <actions>
-    <action class="org.wso2.lsp4intellij.actions.LSPReformatAction" id="ReformatCode" use-shortcut-of="ReformatCode"
-            overrides="true" text="Reformat Code"/>
-    <action class="org.wso2.lsp4intellij.actions.LSPShowReformatDialogAction" id="ShowReformatFileDialog"
-            use-shortcut-of="ShowReformatFileDialog" overrides="true" text="Show Reformat File Dialog"/>
-    <action class="org.wso2.lsp4intellij.actions.LSPReferencesAction" id="LSPFindUsages">
-      <keyboard-shortcut first-keystroke="shift alt F7" keymap="$default"/>
-    </action>
-  </actions>
+    <languageMapping language="BSL"
+                     serverId="BSLLanguageServer"/>
+  </extensions>
+
 
 </idea-plugin>

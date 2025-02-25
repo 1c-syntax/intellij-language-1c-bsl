@@ -55,6 +55,10 @@
     <lang.psiStructureViewFactory
             language="BSL"
             implementationClass="com.redhat.devtools.lsp4ij.features.documentSymbol.LSPDocumentSymbolStructureViewFactory"/>
+    <!-- LSP textDocument/prepareCallHierarchy and others -->
+    <callHierarchyProvider
+            language="BSL"
+            implementationClass="com.redhat.devtools.lsp4ij.features.callHierarchy.LSPCallHierarchyProvider" />
   </extensions>
 
   <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">

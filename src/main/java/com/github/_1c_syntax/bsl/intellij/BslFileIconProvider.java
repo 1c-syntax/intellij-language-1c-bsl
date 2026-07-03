@@ -1,7 +1,7 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2021
+ * Copyright © 2018-2026
  * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -21,17 +21,31 @@
  */
 package com.github._1c_syntax.bsl.intellij;
 
-import com.intellij.openapi.fileTypes.SyntaxHighlighter;
-import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
+import com.intellij.ide.FileIconProvider;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
-public class BSLSyntaxHighlighterFactory extends SyntaxHighlighterFactory {
-  @NotNull
+import javax.swing.Icon;
+
+/**
+ * Иконки для файлов {@code .bsl}/{@code .os}.
+ *
+ * <p>Иконки выдаются провайдером, а не через регистрацию {@code FileType}, — регистрация своего
+ * {@code FileType} перехватила бы файлы и отключила TextMate-подсветку, которую использует плагин.
+ */
+public class BslFileIconProvider implements FileIconProvider {
+
   @Override
-  public SyntaxHighlighter getSyntaxHighlighter(@Nullable Project project, @Nullable VirtualFile virtualFile) {
-    return new BSLSyntaxHighlighter();
+  public @Nullable Icon getIcon(VirtualFile file, int flags, @Nullable Project project) {
+    var extension = file.getExtension();
+    if (extension == null) {
+      return null;
+    }
+    return switch (extension.toLowerCase()) {
+      case "bsl" -> BSLIcons.BSL_FILE;
+      case "os" -> BSLIcons.OS_FILE;
+      default -> null;
+    };
   }
 }

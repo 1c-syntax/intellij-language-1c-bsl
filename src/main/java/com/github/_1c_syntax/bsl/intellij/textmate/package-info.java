@@ -1,7 +1,7 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2021
+ * Copyright © 2018-2026
  * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -19,38 +19,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with IntelliJ Language 1C (BSL) Plugin.
  */
-package com.github._1c_syntax.bsl.intellij.psi;
+@NullMarked
+package com.github._1c_syntax.bsl.intellij.textmate;
 
-import com.github._1c_syntax.bsl.intellij.BSLLanguage;
-import com.github._1c_syntax.bsl.intellij.files.BSLFileType;
-import com.intellij.extapi.psi.PsiFileBase;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.psi.FileViewProvider;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.Icon;
-
-public class BSLFile extends PsiFileBase {
-
-  public BSLFile(@NotNull FileViewProvider viewProvider) {
-    super(viewProvider, BSLLanguage.INSTANCE);
-  }
-
-  @NotNull
-  @Override
-  public FileType getFileType() {
-    return BSLFileType.INSTANCE;
-  }
-
-  @Override
-  public String toString() {
-    return "BSL File";
-  }
-
-  @Nullable
-  @Override
-  public Icon getIcon(int flags) {
-    return super.getIcon(flags);
-  }
-}
+import org.jspecify.annotations.NullMarked;

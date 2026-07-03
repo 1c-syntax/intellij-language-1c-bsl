@@ -1,7 +1,7 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2021
+ * Copyright © 2018-2026
  * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -26,8 +26,8 @@ import com.intellij.openapi.util.IconLoader;
 import javax.swing.Icon;
 
 public final class BSLIcons {
-  public static final Icon BSL_FILE = IconLoader.getIcon("/com/github/_1c_syntax/bsl/intellij/icons/bsl.png");
-  public static final Icon OS_FILE = IconLoader.getIcon("/com/github/_1c_syntax/bsl/intellij/icons/os.png");
+  public static final Icon BSL_FILE = IconLoader.getIcon("/com/github/_1c_syntax/bsl/intellij/icons/bsl.png", BSLIcons.class);
+  public static final Icon OS_FILE = IconLoader.getIcon("/com/github/_1c_syntax/bsl/intellij/icons/os.png", BSLIcons.class);
 
   private BSLIcons() {}
 }

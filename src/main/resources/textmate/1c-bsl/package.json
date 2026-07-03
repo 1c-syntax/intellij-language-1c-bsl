@@ -1,0 +1,44 @@
+{
+  "name": "language-1c-bsl",
+  "displayName": "1C (BSL)",
+  "description": "TextMate grammar for 1C:Enterprise (BSL) and OneScript, bundled with the Language 1C (BSL) plugin",
+  "contributes": {
+    "languages": [
+      {
+        "id": "bsl",
+        "extensions": [
+          ".bsl",
+          ".os"
+        ],
+        "aliases": [
+          "1C (BSL)",
+          "BSL"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "sdbl",
+        "extensions": [
+          ".sdbl",
+          ".query"
+        ],
+        "aliases": [
+          "1C (Query)",
+          "SDBL"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "bsl",
+        "scopeName": "source.bsl",
+        "path": "./syntaxes/1c.tmLanguage.json"
+      },
+      {
+        "language": "sdbl",
+        "scopeName": "source.sdbl",
+        "path": "./syntaxes/1c-query.tmLanguage.json"
+      }
+    ]
+  }
+}

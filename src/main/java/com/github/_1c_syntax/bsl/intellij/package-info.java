@@ -1,7 +1,7 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2021
+ * Copyright © 2018-2026
  * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -19,15 +19,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with IntelliJ Language 1C (BSL) Plugin.
  */
+@NullMarked
 package com.github._1c_syntax.bsl.intellij;
 
-import com.intellij.lang.Language;
-
-public final class BSLLanguage extends Language {
-
-  public static final BSLLanguage INSTANCE = new BSLLanguage();
-
-  private BSLLanguage() {
-    super("BSL");
-  }
-}
+import org.jspecify.annotations.NullMarked;

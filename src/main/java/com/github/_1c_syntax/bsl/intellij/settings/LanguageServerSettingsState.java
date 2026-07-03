@@ -1,7 +1,7 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2021
+ * Copyright © 2018-2026
  * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -21,8 +21,8 @@
  */
 package com.github._1c_syntax.bsl.intellij.settings;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
@@ -35,12 +35,60 @@ import org.jetbrains.annotations.Nullable;
 )
 public class LanguageServerSettingsState implements PersistentStateComponent<LanguageServerSettingsState> {
 
+  /**
+   * Запускать ли BSL Language Server.
+   */
   public Boolean enabled = Boolean.TRUE;
+
+  /**
+   * Язык сообщений диагностик (сохраняется как пользовательское предпочтение).
+   */
   public DiagnosticLanguage diagnosticLanguage = DiagnosticLanguage.EN;
+
+  /**
+   * Путь к внешнему {@code bsl-language-server.jar}. Если задан — используется он
+   * (запуск через {@link #javaPath}); иначе сервер скачивается с GitHub-релизов.
+   */
   public String path = "";
 
+  /**
+   * Скачивать сервер с GitHub-релизов, если внешний jar не задан.
+   */
+  public Boolean downloadServer = Boolean.TRUE;
+
+  /**
+   * Использовать канал pre-release при скачивании сервера.
+   */
+  public Boolean prerelease = Boolean.FALSE;
+
+  /**
+   * Каталог установки скачанного сервера. Пусто — служебный каталог плагина.
+   */
+  public String installDir = "";
+
+  /**
+   * GitHub OAuth-токен для обхода лимитов API при скачивании (необязателен).
+   */
+  public String githubToken = "";
+
+  /**
+   * Путь к исполняемому файлу Java для запуска внешнего jar.
+   */
+  public String javaPath = "java";
+
+  /**
+   * Дополнительные опции JVM, пробрасываются в {@code _JAVA_OPTIONS}
+   * (и для внешнего jar, и для native-image сборки).
+   */
+  public String javaOpts = "-Xmx4g";
+
+  /**
+   * Имя файла конфигурации BSL Language Server относительно корня проекта.
+   */
+  public String configurationFile = ".bsl-language-server.json";
+
   public static LanguageServerSettingsState getInstance() {
-    return ServiceManager.getService(LanguageServerSettingsState.class);
+    return ApplicationManager.getApplication().getService(LanguageServerSettingsState.class);
   }
 
   @Nullable

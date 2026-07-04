@@ -39,6 +39,9 @@ jobs:
             ./gradlew buildPlugin --stacktrace
           '
 
+      - name: Test
+        run: ./gradlew test --stacktrace
+
       - name: Verify plugin
         run: ./gradlew verifyPlugin --stacktrace
 

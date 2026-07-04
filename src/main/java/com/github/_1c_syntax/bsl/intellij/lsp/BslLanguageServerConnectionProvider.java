@@ -29,6 +29,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.redhat.devtools.lsp4ij.server.CannotStartProcessException;
 import com.redhat.devtools.lsp4ij.server.ProcessStreamConnectionProvider;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -74,7 +75,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
       setWorkingDirectory(basePath);
     }
 
-    var javaOptions = mergedJavaOptions(settings.javaOpts);
+    var javaOptions = mergedJavaOptions(System.getenv(JAVA_OPTIONS_ENV), settings.javaOpts);
     if (javaOptions != null) {
       setUserEnvironmentVariables(Map.of(JAVA_OPTIONS_ENV, javaOptions));
     }
@@ -145,12 +146,18 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
     return envToken == null || envToken.isBlank() ? null : envToken;
   }
 
-  private static String mergedJavaOptions(String javaOpts) {
+  /**
+   * Объединяет уже заданное значение {@code _JAVA_OPTIONS} с пользовательскими опциями.
+   *
+   * @param existing текущее значение {@code _JAVA_OPTIONS} (обычно из окружения), может быть {@code null}
+   * @param javaOpts пользовательские опции из настроек
+   * @return итоговое значение или {@code null}, если пользовательские опции пусты
+   */
+  static @Nullable String mergedJavaOptions(@Nullable String existing, @Nullable String javaOpts) {
     var options = javaOpts == null ? "" : javaOpts.strip();
     if (options.isEmpty()) {
       return null;
     }
-    var existing = System.getenv(JAVA_OPTIONS_ENV);
     return existing == null || existing.isBlank() ? options : existing + " " + options;
   }
 }

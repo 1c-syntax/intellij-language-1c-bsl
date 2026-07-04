@@ -44,11 +44,6 @@ public class LanguageServerSettingsState implements PersistentStateComponent<Lan
   public Boolean enabled = Boolean.TRUE;
 
   /**
-   * Язык сообщений диагностик (сохраняется как пользовательское предпочтение).
-   */
-  public DiagnosticLanguage diagnosticLanguage = DiagnosticLanguage.EN;
-
-  /**
    * Использовать внешний {@code bsl-language-server.jar} ({@link #path}) вместо скачивания сервера.
    */
   public Boolean externalJar = Boolean.FALSE;

@@ -53,7 +53,6 @@ public class BSLConfigurable implements Configurable {
   public boolean isModified() {
     return state.enabled != getEnabled()
       || !Boolean.valueOf(getUseExternalJar()).equals(state.externalJar)
-      || state.diagnosticLanguage != getDiagnosticLanguage()
       || !state.path.equals(getPath())
       || !state.javaOpts.equals(getJavaOpts());
   }
@@ -62,7 +61,6 @@ public class BSLConfigurable implements Configurable {
   public void apply() {
     state.enabled = getEnabled();
     state.externalJar = getUseExternalJar();
-    state.diagnosticLanguage = getDiagnosticLanguage();
     state.path = getPath();
     state.javaOpts = getJavaOpts();
   }
@@ -71,7 +69,6 @@ public class BSLConfigurable implements Configurable {
   public void reset() {
     setEnabled();
     setUseExternalJar();
-    setDiagnosticLanguage();
     setPath();
     setJavaOpts();
   }
@@ -81,17 +78,6 @@ public class BSLConfigurable implements Configurable {
       form = new BSLConfigurableGUI();
     }
     return form;
-  }
-
-  private DiagnosticLanguage getDiagnosticLanguage() {
-    DiagnosticLanguage diagnosticLanguage;
-    if (getForm().getDiagnosticLanguageRu().isSelected()) {
-      diagnosticLanguage = DiagnosticLanguage.RU;
-    } else {
-      diagnosticLanguage = DiagnosticLanguage.EN;
-    }
-
-    return diagnosticLanguage;
   }
 
   private boolean getEnabled() {
@@ -108,11 +94,6 @@ public class BSLConfigurable implements Configurable {
 
   private String getJavaOpts() {
     return getForm().getJavaOpts().getText();
-  }
-
-  private void setDiagnosticLanguage() {
-    getForm().getDiagnosticLanguageEn().setSelected(state.diagnosticLanguage == DiagnosticLanguage.EN);
-    getForm().getDiagnosticLanguageRu().setSelected(state.diagnosticLanguage == DiagnosticLanguage.RU);
   }
 
   private void setEnabled() {

@@ -88,11 +88,11 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            // Явно фиксируем IDE для верификации: recommended() при открытом until-build
-            // подтягивает ещё не опубликованные сборки и падает на их resolve.
-            // Нижняя граница (since-build) и последняя стабильная.
+            // Верифицируем против нижней границы (since-build 251). recommended() при открытом
+            // until-build подтягивает ещё не опубликованные сборки и падает на их resolve.
+            // Свежие сборки (2025.3+) не берём: с 253 IDEA Community больше не публикуется под
+            // координатами ideaIC (слита в единый дистрибутив, координата intellijIdea).
             create(IntelliJPlatformType.IntellijIdeaCommunity, "2025.1")
-            create(IntelliJPlatformType.IntellijIdeaCommunity, "2025.3")
         }
     }
 

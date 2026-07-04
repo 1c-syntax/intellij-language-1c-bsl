@@ -25,6 +25,7 @@ import com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerDownloader;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerReleaseChannel;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -122,7 +123,7 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
   private BslLanguageServerConnectionProvider newProvider(BslLanguageServerDownloader downloader) {
     return new BslLanguageServerConnectionProvider(getProject()) {
       @Override
-      BslLanguageServerDownloader createDownloader(Path installDir, String token) {
+      BslLanguageServerDownloader createDownloader(Path installDir, @Nullable String token) {
         return downloader;
       }
     };

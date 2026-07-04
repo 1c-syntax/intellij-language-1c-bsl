@@ -1,3 +1,4 @@
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
@@ -46,11 +47,59 @@ repositories {
     }
 }
 
-dependencies {
-    // Загрузчик BSL Language Server (скачивание/распаковка релиза с GitHub)
-    implementation("io.github.1c-syntax:utils:0.8.0")
+// --- github-api multi-release JAR workaround -------------------------------------------------
+// github-api поставляется как многорелизный JAR (Multi-Release: true). Classloader плагинов
+// IntelliJ игнорирует META-INF/versions/** (JBR/IDEA-220300), из-за чего в рантайме грузится
+// Java 8-заглушка org.kohsuke.github.extras.HttpClientGitHubConnector, чьи методы бросают
+// UnsupportedOperationException, а нужного конструктора (HttpClient) в ней нет — скачивание
+// BSL LS падает с NoSuchMethodError. «Расплющиваем» jar: поднимаем классы из META-INF/versions/11
+// в корень, чтобы classloader видел реальную реализацию для Java 11+. Оригинальный github-api
+// исключаем из utils и подключаем расплющенный + его транзитивные зависимости отдельно.
+val githubApiSource by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+}
 
-    compileOnly("org.jspecify:jspecify:1.0.0")
+dependencies {
+    add(githubApiSource.name, "org.kohsuke:github-api:1.327")
+}
+
+val githubApiArtifact = githubApiSource.incoming.artifactView {
+    componentFilter { it is ModuleComponentIdentifier && it.module == "github-api" }
+}.files.elements.map { it.single().asFile }
+
+val githubApiTransitives = githubApiSource.incoming.artifactView {
+    componentFilter { it is ModuleComponentIdentifier && it.module != "github-api" }
+}.files
+
+val flattenGithubApiJar by tasks.registering(Jar::class) {
+    archiveFileName = "github-api-flattened.jar"
+    destinationDirectory = layout.buildDirectory.dir("flattened-libs")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    // 1) версия для Java 11 — поднимаем в корень, она должна перекрыть базовые заглушки
+    from(zipTree(githubApiArtifact)) {
+        include("META-INF/versions/11/**")
+        eachFile { path = path.removePrefix("META-INF/versions/11/") }
+        includeEmptyDirs = false
+    }
+    // 2) остальные классы и ресурсы, кроме версий и исходного манифеста
+    from(zipTree(githubApiArtifact)) {
+        exclude("META-INF/versions/**", "META-INF/MANIFEST.MF")
+    }
+}
+
+dependencies {
+    // Загрузчик BSL Language Server (скачивание/распаковка релиза с GitHub). github-api тащим
+    // не транзитивно, а расплющенным (см. блок выше про Multi-Release/IDEA-220300).
+    implementation("io.github.1c-syntax:utils:0.8.0") {
+        exclude(group = "org.kohsuke", module = "github-api")
+    }
+    implementation(files(flattenGithubApiJar))
+    implementation(githubApiTransitives)
+
+    // JSpecify-аннотации нужны и в main, и в тестах (в т.ч. платформенных), поэтому implementation,
+    // а не compileOnly: джар крошечный, аннотации с CLASS-retention.
+    implementation("org.jspecify:jspecify:1.0.0")
 
     // JUnit 4 не поставляется IntelliJ Platform Gradle Plugin автоматически; нужен и для наших
     // тестов (org.junit), и для базовых классов платформы (junit.framework.TestCase).

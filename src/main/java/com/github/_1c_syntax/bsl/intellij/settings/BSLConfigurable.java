@@ -52,22 +52,28 @@ public class BSLConfigurable implements Configurable {
   @Override
   public boolean isModified() {
     return state.enabled != getEnabled()
+      || state.externalJar != getUseExternalJar()
       || state.diagnosticLanguage != getDiagnosticLanguage()
-      || !state.path.equals(getPath());
+      || !state.path.equals(getPath())
+      || !state.javaOpts.equals(getJavaOpts());
   }
 
   @Override
   public void apply() {
     state.enabled = getEnabled();
+    state.externalJar = getUseExternalJar();
     state.diagnosticLanguage = getDiagnosticLanguage();
     state.path = getPath();
+    state.javaOpts = getJavaOpts();
   }
 
   @Override
   public void reset() {
     setEnabled();
+    setUseExternalJar();
     setDiagnosticLanguage();
     setPath();
+    setJavaOpts();
   }
 
   private BSLConfigurableGUI getForm() {
@@ -92,8 +98,16 @@ public class BSLConfigurable implements Configurable {
     return getForm().getEnabled().isSelected();
   }
 
+  private boolean getUseExternalJar() {
+    return getForm().getUseExternalJar().isSelected();
+  }
+
   private String getPath() {
     return getForm().getPath().getText();
+  }
+
+  private String getJavaOpts() {
+    return getForm().getJavaOpts().getText();
   }
 
   private void setDiagnosticLanguage() {
@@ -105,8 +119,16 @@ public class BSLConfigurable implements Configurable {
     getForm().getEnabled().setSelected(state.enabled);
   }
 
+  private void setUseExternalJar() {
+    getForm().getUseExternalJar().setSelected(state.externalJar);
+  }
+
   private void setPath() {
     getForm().getPath().setText(state.path);
+  }
+
+  private void setJavaOpts() {
+    getForm().getJavaOpts().setText(state.javaOpts);
   }
 
 }

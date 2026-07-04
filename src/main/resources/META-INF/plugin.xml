@@ -22,7 +22,7 @@
 
 -->
 <idea-plugin>
-  <id>org.1c-syntax.intellij.language-1c-bsl</id>
+  <id>org.1c-syntax.language-1c-bsl</id>
   <name>Language 1C (BSL)</name>
   <vendor email="nixel2007@gmail.com" url="https://github.com/1c-syntax">1c-syntax GitHub.com organization</vendor>
 

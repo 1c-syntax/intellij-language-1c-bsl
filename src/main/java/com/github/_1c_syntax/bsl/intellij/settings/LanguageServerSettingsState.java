@@ -21,6 +21,9 @@
  */
 package com.github._1c_syntax.bsl.intellij.settings;
 
+import com.intellij.credentialStore.CredentialAttributes;
+import com.intellij.credentialStore.CredentialAttributesKt;
+import com.intellij.ide.passwordSafe.PasswordSafe;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
@@ -46,8 +49,13 @@ public class LanguageServerSettingsState implements PersistentStateComponent<Lan
   public DiagnosticLanguage diagnosticLanguage = DiagnosticLanguage.EN;
 
   /**
-   * Путь к внешнему {@code bsl-language-server.jar}. Если задан — используется он
-   * (запуск через {@link #javaPath}); иначе сервер скачивается с GitHub-релизов.
+   * Использовать внешний {@code bsl-language-server.jar} ({@link #path}) вместо скачивания сервера.
+   */
+  public Boolean externalJar = Boolean.FALSE;
+
+  /**
+   * Путь к внешнему {@code bsl-language-server.jar} (используется при {@link #externalJar}).
+   * Запуск через {@link #javaPath}.
    */
   public String path = "";
 
@@ -67,11 +75,6 @@ public class LanguageServerSettingsState implements PersistentStateComponent<Lan
   public String installDir = "";
 
   /**
-   * GitHub OAuth-токен для обхода лимитов API при скачивании (необязателен).
-   */
-  public String githubToken = "";
-
-  /**
    * Путь к исполняемому файлу Java для запуска внешнего jar.
    */
   public String javaPath = "java";
@@ -89,6 +92,24 @@ public class LanguageServerSettingsState implements PersistentStateComponent<Lan
 
   public static LanguageServerSettingsState getInstance() {
     return ApplicationManager.getApplication().getService(LanguageServerSettingsState.class);
+  }
+
+  /**
+   * GitHub OAuth-токен для обхода лимитов API при скачивании (необязателен).
+   * Хранится в {@link PasswordSafe}, а не в открытом виде в настройках.
+   */
+  @Nullable
+  public static String getGithubToken() {
+    return PasswordSafe.getInstance().getPassword(githubTokenCredentialAttributes());
+  }
+
+  public static void setGithubToken(@Nullable String token) {
+    PasswordSafe.getInstance().setPassword(githubTokenCredentialAttributes(), token);
+  }
+
+  private static CredentialAttributes githubTokenCredentialAttributes() {
+    return new CredentialAttributes(
+      CredentialAttributesKt.generateServiceName("BSL Language Server", "githubToken"));
   }
 
   @Nullable

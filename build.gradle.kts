@@ -7,6 +7,8 @@ plugins {
     idea
     id("org.jetbrains.intellij.platform") version "2.6.0"
     id("com.github.hierynomus.license") version "0.16.1"
+    id("org.sonarqube") version "7.3.1.8318"
+    id("com.github.ben-manes.versions") version "0.54.0"
 }
 
 group = "com.github.1c-syntax"
@@ -51,7 +53,9 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            recommended()
+            // Явно фиксируем IDE для верификации: recommended() при открытом until-build
+            // подтягивает ещё не опубликованные сборки и падает на их resolve.
+            ide("IC", "2024.2")
         }
     }
 
@@ -94,4 +98,19 @@ license {
     exclude("**/*.xml")
     exclude("**/*.json")
     mapping("java", "SLASHSTAR_STYLE")
+}
+
+sonarqube {
+    properties {
+        property("sonar.sourceEncoding", "UTF-8")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.organization", "1c-syntax")
+        property("sonar.projectKey", "1c-syntax_intellij-language-1c-bsl")
+        property("sonar.projectName", "IntelliJ Language 1C (BSL) Plugin")
+        property("sonar.exclusions", "**/vendor/**/*.*, **/gen/**/*.*")
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            "${layout.buildDirectory.get()}/reports/jacoco/test/jacoco.xml"
+        )
+    }
 }

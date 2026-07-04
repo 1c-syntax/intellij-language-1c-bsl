@@ -1,7 +1,7 @@
 # intellij-language-1c-bsl
 
 [![Build](https://github.com/1c-syntax/intellij-language-1c-bsl/actions/workflows/build.yml/badge.svg)](https://github.com/1c-syntax/intellij-language-1c-bsl/actions/workflows/build.yml)
-[![JetBrains Marketplace](https://img.shields.io/jetbrains/plugin/v/org.1c-syntax.intellij.language-1c-bsl.svg)](https://plugins.jetbrains.com/plugin/org.1c-syntax.intellij.language-1c-bsl)
+[![JetBrains Marketplace](https://img.shields.io/jetbrains/plugin/v/org.1c-syntax.language-1c-bsl.svg)](https://plugins.jetbrains.com/plugin/org.1c-syntax.language-1c-bsl)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=1c-syntax_intellij-language-1c-bsl&metric=alert_status)](https://sonarcloud.io/dashboard?id=1c-syntax_intellij-language-1c-bsl)
 
 Плагин для семейства IDE на платформе JetBrains IntelliJ (IntelliJ IDEA, PyCharm, WebStorm, Rider и т.д.)

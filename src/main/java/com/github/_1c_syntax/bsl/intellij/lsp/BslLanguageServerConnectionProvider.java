@@ -25,6 +25,7 @@ import com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerDownloader;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerReleaseChannel;
 import com.intellij.openapi.application.PathManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.redhat.devtools.lsp4ij.server.CannotStartProcessException;
 import com.redhat.devtools.lsp4ij.server.ProcessStreamConnectionProvider;
@@ -45,6 +46,8 @@ import java.util.Map;
  * опции JVM пробрасываются через переменную окружения {@code _JAVA_OPTIONS} в обоих случаях.
  */
 public class BslLanguageServerConnectionProvider extends ProcessStreamConnectionProvider {
+
+  private static final Logger LOG = Logger.getInstance(BslLanguageServerConnectionProvider.class);
 
   private static final String JAVA_OPTIONS_ENV = "_JAVA_OPTIONS";
   private static final String GITHUB_TOKEN_ENV = "LANGUAGE_1C_BSL_GITHUB_TOKEN";
@@ -82,7 +85,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
   private List<String> resolveCommands(LanguageServerSettingsState settings) throws IOException {
     var commands = new ArrayList<String>();
 
-    if (!settings.path.isBlank()) {
+    if (Boolean.TRUE.equals(settings.externalJar)) {
       var javaPath = settings.javaPath.isBlank() ? "java" : settings.javaPath;
       commands.add(javaPath);
       commands.add("-jar");
@@ -105,7 +108,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
       ? Path.of(PathManager.getSystemPath(), "bsl-language-server")
       : Path.of(settings.installDir);
 
-    var downloader = new BslLanguageServerDownloader(installDir, resolveToken(settings));
+    var downloader = new BslLanguageServerDownloader(installDir, resolveToken());
 
     if (Boolean.TRUE.equals(settings.downloadServer)) {
       var channel = Boolean.TRUE.equals(settings.prerelease)
@@ -126,12 +129,17 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
       return null;
     }
     var configurationFile = Path.of(basePath, settings.configurationFile);
-    return Files.exists(configurationFile) ? configurationFile.toString() : null;
+    if (Files.exists(configurationFile)) {
+      return configurationFile.toString();
+    }
+    LOG.warn("Configured BSL Language Server config file not found: " + configurationFile);
+    return null;
   }
 
-  private static String resolveToken(LanguageServerSettingsState settings) {
-    if (!settings.githubToken.isBlank()) {
-      return settings.githubToken;
+  private static String resolveToken() {
+    var token = LanguageServerSettingsState.getGithubToken();
+    if (token != null && !token.isBlank()) {
+      return token;
     }
     var envToken = System.getenv(GITHUB_TOKEN_ENV);
     return envToken == null || envToken.isBlank() ? null : envToken;

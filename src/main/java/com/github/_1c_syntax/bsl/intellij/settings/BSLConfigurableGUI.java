@@ -31,10 +31,20 @@ public class BSLConfigurableGUI {
   private JRadioButton diagnosticLanguageRu;
   private JPanel rootPanel;
   private JCheckBox enabled;
+  private JCheckBox useExternalJar;
   private JTextField path;
+  private JTextField javaOpts;
 
   public JPanel getRootPanel() {
     return rootPanel;
+  }
+
+  public JCheckBox getUseExternalJar() {
+    return useExternalJar;
+  }
+
+  public JTextField getJavaOpts() {
+    return javaOpts;
   }
 
   public JRadioButton getDiagnosticLanguageEn() {

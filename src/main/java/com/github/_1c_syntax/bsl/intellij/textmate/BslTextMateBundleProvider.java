@@ -21,8 +21,10 @@
  */
 package com.github._1c_syntax.bsl.intellij.textmate;
 
+import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.extensions.PluginId;
 import org.jetbrains.plugins.textmate.api.TextMateBundleProvider;
 
 import java.io.IOException;
@@ -45,6 +47,7 @@ public class BslTextMateBundleProvider implements TextMateBundleProvider {
   private static final Logger LOG = Logger.getInstance(BslTextMateBundleProvider.class);
 
   private static final String BUNDLE_NAME = "1C (BSL)";
+  private static final String PLUGIN_ID = "org.1c-syntax.language-1c-bsl";
   private static final String RESOURCE_ROOT = "/textmate/1c-bsl";
   private static final List<String> BUNDLE_FILES = List.of(
     "package.json",
@@ -65,9 +68,14 @@ public class BslTextMateBundleProvider implements TextMateBundleProvider {
   }
 
   private Path extractBundle() throws IOException {
-    var targetDir = Path.of(PathManager.getSystemPath(), "textmate-bundles", "1c-bsl");
+    // Каталог версионируется версией плагина: при обновлении плагина создаётся новый каталог,
+    // а уже распакованные файлы текущей версии повторно не копируются.
+    var targetDir = Path.of(PathManager.getSystemPath(), "textmate-bundles", "1c-bsl", pluginVersion());
     for (var relativePath : BUNDLE_FILES) {
       var target = targetDir.resolve(relativePath);
+      if (Files.exists(target)) {
+        continue;
+      }
       Files.createDirectories(target.getParent());
       try (InputStream input = BslTextMateBundleProvider.class.getResourceAsStream(RESOURCE_ROOT + "/" + relativePath)) {
         if (input == null) {
@@ -77,5 +85,13 @@ public class BslTextMateBundleProvider implements TextMateBundleProvider {
       }
     }
     return targetDir;
+  }
+
+  private static String pluginVersion() {
+    var descriptor = PluginManagerCore.getPlugin(PluginId.getId(PLUGIN_ID));
+    if (descriptor != null && descriptor.getVersion() != null) {
+      return descriptor.getVersion();
+    }
+    return "dev";
   }
 }

@@ -19,36 +19,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with IntelliJ Language 1C (BSL) Plugin.
  */
-package com.github._1c_syntax.bsl.intellij.settings;
+@NullMarked
+package com.github._1c_syntax.bsl.intellij.textmate;
 
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-public class BSLConfigurableGUI {
-  private JPanel rootPanel;
-  private JCheckBox enabled;
-  private JCheckBox useExternalJar;
-  private JTextField path;
-  private JTextField javaOpts;
-
-  public JPanel getRootPanel() {
-    return rootPanel;
-  }
-
-  public JCheckBox getUseExternalJar() {
-    return useExternalJar;
-  }
-
-  public JTextField getJavaOpts() {
-    return javaOpts;
-  }
-
-  public JCheckBox getEnabled() {
-    return enabled;
-  }
-
-  public JTextField getPath() {
-    return path;
-  }
-}
+import org.jspecify.annotations.NullMarked;

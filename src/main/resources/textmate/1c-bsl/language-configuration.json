@@ -1,0 +1,26 @@
+{
+  "comments": {
+    "lineComment": "//"
+  },
+  "brackets": [
+    ["(", ")"],
+    ["[", "]"]
+  ],
+  "autoClosingPairs": [
+    { "open": "(", "close": ")" },
+    { "open": "[", "close": "]" },
+    { "open": "\"", "close": "\"", "notIn": ["comment"] },
+    { "open": "|", "close": "|", "notIn": ["comment"] }
+  ],
+  "surroundingPairs": [
+    ["(", ")"],
+    ["[", "]"],
+    ["\"", "\""]
+  ],
+  "folding": {
+    "markers": {
+      "start": "^\\s*#(Область|Вставка|Удаление)|^\\s*//\\{",
+      "end": "^\\s*#Конец(Области|Вставки|Удаления)|^\\s*//\\}"
+    }
+  }
+}

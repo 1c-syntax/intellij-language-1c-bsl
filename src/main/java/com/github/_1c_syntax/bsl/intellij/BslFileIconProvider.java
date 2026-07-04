@@ -21,13 +21,31 @@
  */
 package com.github._1c_syntax.bsl.intellij;
 
-import com.intellij.openapi.util.IconLoader;
+import com.intellij.ide.FileIconProvider;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import org.jspecify.annotations.Nullable;
 
 import javax.swing.Icon;
 
-public final class BSLIcons {
-  public static final Icon BSL_FILE = IconLoader.getIcon("/com/github/_1c_syntax/bsl/intellij/icons/bsl.png", BSLIcons.class);
-  public static final Icon OS_FILE = IconLoader.getIcon("/com/github/_1c_syntax/bsl/intellij/icons/os.png", BSLIcons.class);
+/**
+ * Иконки для файлов {@code .bsl}/{@code .os}.
+ *
+ * <p>Иконки выдаются провайдером, а не через регистрацию {@code FileType}, — регистрация своего
+ * {@code FileType} перехватила бы файлы и отключила TextMate-подсветку, которую использует плагин.
+ */
+public class BslFileIconProvider implements FileIconProvider {
 
-  private BSLIcons() {}
+  @Override
+  public @Nullable Icon getIcon(VirtualFile file, int flags, @Nullable Project project) {
+    var extension = file.getExtension();
+    if (extension == null) {
+      return null;
+    }
+    return switch (extension.toLowerCase()) {
+      case "bsl" -> BSLIcons.BSL_FILE;
+      case "os" -> BSLIcons.OS_FILE;
+      default -> null;
+    };
+  }
 }

@@ -1,8 +1,8 @@
 /*
  * This file is a part of IntelliJ Language 1C (BSL) Plugin.
  *
- * Copyright © 2018-2021
- * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Gryzlov <nixel2007@gmail.com>
+ * Copyright © 2018-2026
+ * Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
  *
@@ -52,22 +52,25 @@ public class BSLConfigurable implements Configurable {
   @Override
   public boolean isModified() {
     return state.enabled != getEnabled()
-      || state.diagnosticLanguage != getDiagnosticLanguage()
-      || !state.path.equals(getPath());
+      || !Boolean.valueOf(getUseExternalJar()).equals(state.externalJar)
+      || !state.path.equals(getPath())
+      || !state.javaOpts.equals(getJavaOpts());
   }
 
   @Override
   public void apply() {
     state.enabled = getEnabled();
-    state.diagnosticLanguage = getDiagnosticLanguage();
+    state.externalJar = getUseExternalJar();
     state.path = getPath();
+    state.javaOpts = getJavaOpts();
   }
 
   @Override
   public void reset() {
     setEnabled();
-    setDiagnosticLanguage();
+    setUseExternalJar();
     setPath();
+    setJavaOpts();
   }
 
   private BSLConfigurableGUI getForm() {
@@ -77,36 +80,36 @@ public class BSLConfigurable implements Configurable {
     return form;
   }
 
-  private DiagnosticLanguage getDiagnosticLanguage() {
-    DiagnosticLanguage diagnosticLanguage;
-    if (getForm().getDiagnosticLanguageRu().isSelected()) {
-      diagnosticLanguage = DiagnosticLanguage.RU;
-    } else {
-      diagnosticLanguage = DiagnosticLanguage.EN;
-    }
-
-    return diagnosticLanguage;
-  }
-
   private boolean getEnabled() {
     return getForm().getEnabled().isSelected();
+  }
+
+  private boolean getUseExternalJar() {
+    return getForm().getUseExternalJar().isSelected();
   }
 
   private String getPath() {
     return getForm().getPath().getText();
   }
 
-  private void setDiagnosticLanguage() {
-    getForm().getDiagnosticLanguageEn().setSelected(state.diagnosticLanguage == DiagnosticLanguage.EN);
-    getForm().getDiagnosticLanguageRu().setSelected(state.diagnosticLanguage == DiagnosticLanguage.RU);
+  private String getJavaOpts() {
+    return getForm().getJavaOpts().getText();
   }
 
   private void setEnabled() {
     getForm().getEnabled().setSelected(state.enabled);
   }
 
+  private void setUseExternalJar() {
+    getForm().getUseExternalJar().setSelected(Boolean.TRUE.equals(state.externalJar));
+  }
+
   private void setPath() {
     getForm().getPath().setText(state.path);
+  }
+
+  private void setJavaOpts() {
+    getForm().getJavaOpts().setText(state.javaOpts);
   }
 
 }

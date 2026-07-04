@@ -1,14 +1,13 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
-import java.util.Calendar
 
 plugins {
     java
     jacoco
     idea
-    id("org.jetbrains.intellij.platform") version "2.6.0"
-    id("org.jetbrains.changelog") version "2.2.1"
-    id("com.github.hierynomus.license") version "0.16.1"
+    id("org.jetbrains.intellij.platform") version "2.17.0"
+    id("org.jetbrains.changelog") version "2.5.0"
+    id("com.diffplug.spotless") version "7.0.4"
     id("org.sonarqube") version "7.3.1.8318"
     id("com.github.ben-manes.versions") version "0.54.0"
     id("me.qoomon.git-versioning") version "6.4.4"
@@ -127,17 +126,10 @@ tasks.jacocoTestReport {
     }
 }
 
-license {
-    header = rootProject.file("license/HEADER.txt")
-    ext["year"] = "2018-" + Calendar.getInstance().get(Calendar.YEAR)
-    ext["name"] = "Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>"
-    ext["project"] = "IntelliJ Language 1C (BSL) Plugin"
-    strictCheck = true
-    exclude("**/*.png")
-    exclude("**/*.txt")
-    exclude("**/*.xml")
-    exclude("**/*.json")
-    mapping("java", "SLASHSTAR_STYLE")
+spotless {
+    java {
+        licenseHeaderFile(rootProject.file("license/HEADER.txt"), "package ").updateYearWithLatest(true)
+    }
 }
 
 sonarqube {

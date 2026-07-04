@@ -29,6 +29,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.redhat.devtools.lsp4ij.server.CannotStartProcessException;
 import com.redhat.devtools.lsp4ij.server.ProcessStreamConnectionProvider;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -74,7 +75,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
       setWorkingDirectory(basePath);
     }
 
-    var javaOptions = mergedJavaOptions(settings.javaOpts);
+    var javaOptions = mergedJavaOptions(System.getenv(JAVA_OPTIONS_ENV), settings.javaOpts);
     if (javaOptions != null) {
       setUserEnvironmentVariables(Map.of(JAVA_OPTIONS_ENV, javaOptions));
     }
@@ -82,7 +83,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
     super.start();
   }
 
-  private List<String> resolveCommands(LanguageServerSettingsState settings) throws IOException {
+  List<String> resolveCommands(LanguageServerSettingsState settings) throws IOException {
     var commands = new ArrayList<String>();
 
     if (Boolean.TRUE.equals(settings.externalJar)) {
@@ -108,7 +109,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
       ? Path.of(PathManager.getSystemPath(), "bsl-language-server")
       : Path.of(settings.installDir);
 
-    var downloader = new BslLanguageServerDownloader(installDir, resolveToken());
+    var downloader = createDownloader(installDir, resolveToken());
 
     if (Boolean.TRUE.equals(settings.downloadServer)) {
       var channel = Boolean.TRUE.equals(settings.prerelease)
@@ -123,21 +124,36 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
           + "Set the external jar path or enable downloading in the settings."));
   }
 
-  private String resolveConfigurationFile(LanguageServerSettingsState settings) {
-    var basePath = project.getBasePath();
-    if (basePath == null || settings.configurationFile.isBlank()) {
+  /**
+   * Точка расширения для тестов: создаёт загрузчик сервера. Переопределяется в тестах,
+   * чтобы подменить обращение к GitHub на заглушку.
+   */
+  BslLanguageServerDownloader createDownloader(Path installDir, @Nullable String token) {
+    return new BslLanguageServerDownloader(installDir, token);
+  }
+
+  private @Nullable String resolveConfigurationFile(LanguageServerSettingsState settings) {
+    return resolveConfigurationFile(project.getBasePath(), settings.configurationFile);
+  }
+
+  /**
+   * Возвращает абсолютный путь к файлу конфигурации сервера относительно корня проекта,
+   * либо {@code null}, если корень неизвестен, имя не задано или файл отсутствует.
+   */
+  static @Nullable String resolveConfigurationFile(@Nullable String basePath, String configurationFile) {
+    if (basePath == null || configurationFile.isBlank()) {
       return null;
     }
-    var configurationFile = Path.of(basePath, settings.configurationFile);
-    if (Files.exists(configurationFile)) {
-      return configurationFile.toString();
+    var path = Path.of(basePath, configurationFile);
+    if (Files.exists(path)) {
+      return path.toString();
     }
-    LOG.warn("Configured BSL Language Server config file not found: " + configurationFile);
+    LOG.warn("Configured BSL Language Server config file not found: " + path);
     return null;
   }
 
   private static String resolveToken() {
-    var token = LanguageServerSettingsState.getGithubToken();
+    var token = LanguageServerSettingsState.githubToken();
     if (token != null && !token.isBlank()) {
       return token;
     }
@@ -145,12 +161,18 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
     return envToken == null || envToken.isBlank() ? null : envToken;
   }
 
-  private static String mergedJavaOptions(String javaOpts) {
+  /**
+   * Объединяет уже заданное значение {@code _JAVA_OPTIONS} с пользовательскими опциями.
+   *
+   * @param existing текущее значение {@code _JAVA_OPTIONS} (обычно из окружения), может быть {@code null}
+   * @param javaOpts пользовательские опции из настроек
+   * @return итоговое значение или {@code null}, если пользовательские опции пусты
+   */
+  static @Nullable String mergedJavaOptions(@Nullable String existing, @Nullable String javaOpts) {
     var options = javaOpts == null ? "" : javaOpts.strip();
     if (options.isEmpty()) {
       return null;
     }
-    var existing = System.getenv(JAVA_OPTIONS_ENV);
     return existing == null || existing.isBlank() ? options : existing + " " + options;
   }
 }

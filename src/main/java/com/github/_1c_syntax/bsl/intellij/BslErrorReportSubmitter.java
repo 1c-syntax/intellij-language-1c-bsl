@@ -91,11 +91,11 @@ public class BslErrorReportSubmitter extends ErrorReportSubmitter {
       + "```\n" + truncate(throwableText, MAX_STACKTRACE_LENGTH) + "\n```\n";
   }
 
-  private static String truncate(String value, int maxLength) {
+  static String truncate(String value, int maxLength) {
     return value.length() <= maxLength ? value : value.substring(0, maxLength) + "\n… (truncated)";
   }
 
-  private static String encode(String value) {
+  static String encode(String value) {
     return URLEncoder.encode(value, StandardCharsets.UTF_8);
   }
 }

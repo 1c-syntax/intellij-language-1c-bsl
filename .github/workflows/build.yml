@@ -26,8 +26,18 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      # buildSearchableOptions поднимает headless-IDE, которая при старте ходит в системное
+      # хранилище паролей (PasswordSafe → Secret Service). Ставим keyring-стек и гоняем сборку
+      # под сессией D-Bus с разблокированным gnome-keyring, иначе сыплются D-Bus/libsecret WARN.
+      - name: Install headless keyring
+        run: sudo apt-get update && sudo apt-get install -y libsecret-1-0 gnome-keyring dbus-x11
+
       - name: Build plugin
-        run: ./gradlew buildPlugin --stacktrace
+        run: |
+          dbus-run-session -- bash -c '
+            gnome-keyring-daemon --components=secrets --daemonize --unlock <<< ""
+            ./gradlew buildPlugin --stacktrace
+          '
 
       - name: Verify plugin
         run: ./gradlew verifyPlugin --stacktrace

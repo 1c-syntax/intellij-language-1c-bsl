@@ -1,14 +1,15 @@
 import org.jetbrains.changelog.Changelog
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
-import java.util.Calendar
+import org.jetbrains.intellij.platform.gradle.models.ProductRelease
 
 plugins {
     java
     jacoco
     idea
-    id("org.jetbrains.intellij.platform") version "2.6.0"
-    id("org.jetbrains.changelog") version "2.2.1"
-    id("com.github.hierynomus.license") version "0.16.1"
+    id("org.jetbrains.intellij.platform") version "2.17.0"
+    id("org.jetbrains.changelog") version "2.5.0"
+    id("com.diffplug.spotless") version "7.0.4"
     id("org.sonarqube") version "7.3.1.8318"
     id("com.github.ben-manes.versions") version "0.54.0"
     id("me.qoomon.git-versioning") version "6.4.4"
@@ -52,7 +53,8 @@ dependencies {
     compileOnly("org.jspecify:jspecify:1.0.0")
 
     intellijPlatform {
-        intellijIdeaCommunity("2024.2")
+        // С 2025.3 (253) IDEA Community слита в единый дистрибутив — координата intellijIdea.
+        intellijIdea("2025.3")
 
         // TextMate-подсветка для .bsl/.os
         bundledPlugin("org.jetbrains.plugins.textmate")
@@ -70,7 +72,7 @@ intellijPlatform {
         name = "Language 1C (BSL)"
         version = project.version.toString()
         ideaVersion {
-            sinceBuild = "242"
+            sinceBuild = "253"
             untilBuild = provider { null }
         }
         // «What's new» на Marketplace берётся из CHANGELOG.md через плагин changelog.
@@ -88,9 +90,15 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            // Явно фиксируем IDE для верификации: recommended() при открытом until-build
-            // подтягивает ещё не опубликованные сборки и падает на их resolve.
-            ide("IC", "2024.2")
+            // IDE для верификации подбираем динамически из фида JetBrains, чтобы не хардкодить
+            // версии (ломаются при смене координат) и автоматически покрывать новые релизы
+            // (2026.1, 2026.2, …). С 253 IDEA — единый дистрибутив (тип intellijIdea). Начинаем
+            // с нижней границы (since-build 253), только стабильный канал.
+            select {
+                types = listOf(IntelliJPlatformType.IntellijIdea)
+                channels = listOf(ProductRelease.Channel.RELEASE)
+                sinceBuild = "253"
+            }
         }
     }
 
@@ -127,17 +135,10 @@ tasks.jacocoTestReport {
     }
 }
 
-license {
-    header = rootProject.file("license/HEADER.txt")
-    ext["year"] = "2018-" + Calendar.getInstance().get(Calendar.YEAR)
-    ext["name"] = "Alexey Sosnoviy <labotamy@gmail.com>, Nikita Fedkin <nixel2007@gmail.com>"
-    ext["project"] = "IntelliJ Language 1C (BSL) Plugin"
-    strictCheck = true
-    exclude("**/*.png")
-    exclude("**/*.txt")
-    exclude("**/*.xml")
-    exclude("**/*.json")
-    mapping("java", "SLASHSTAR_STYLE")
+spotless {
+    java {
+        licenseHeaderFile(rootProject.file("license/HEADER.txt"), "package ").updateYearWithLatest(true)
+    }
 }
 
 sonarqube {

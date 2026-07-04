@@ -52,6 +52,10 @@ dependencies {
 
     compileOnly("org.jspecify:jspecify:1.0.0")
 
+    // JUnit 4 не поставляется IntelliJ Platform Gradle Plugin автоматически; нужен и для наших
+    // тестов (org.junit), и для базовых классов платформы (junit.framework.TestCase).
+    testImplementation("junit:junit:4.13.2")
+
     intellijPlatform {
         // С 2025.3 (253) IDEA Community слита в единый дистрибутив — координата intellijIdea.
         intellijIdea("2025.3")

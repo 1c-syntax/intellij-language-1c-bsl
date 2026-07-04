@@ -32,8 +32,11 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+// name должен быть уникальным в пределах приложения. Обобщённое "LanguageServerSettingsState"
+// уже занято lsp4ij (com.redhat.devtools.lsp4ij.settings.GlobalLanguageServerSettings) —
+// совпадение приводит к «Conflicting component name». Поэтому имя плагин-специфичное.
 @State(
-  name = "LanguageServerSettingsState",
+  name = "Language1CBSLSettings",
   storages = @Storage("intellij-bsl.xml")
 )
 public class LanguageServerSettingsState implements PersistentStateComponent<LanguageServerSettingsState> {

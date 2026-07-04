@@ -53,7 +53,8 @@ dependencies {
     compileOnly("org.jspecify:jspecify:1.0.0")
 
     intellijPlatform {
-        intellijIdeaCommunity("2025.1")
+        // С 2025.3 (253) IDEA Community слита в единый дистрибутив — координата intellijIdea.
+        intellijIdea("2025.3")
 
         // TextMate-подсветка для .bsl/.os
         bundledPlugin("org.jetbrains.plugins.textmate")
@@ -71,7 +72,7 @@ intellijPlatform {
         name = "Language 1C (BSL)"
         version = project.version.toString()
         ideaVersion {
-            sinceBuild = "251"
+            sinceBuild = "253"
             untilBuild = provider { null }
         }
         // «What's new» на Marketplace берётся из CHANGELOG.md через плагин changelog.
@@ -89,13 +90,10 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            // Нижняя граница (since-build 251) — точечно, против Community 2025.1.
-            create(IntelliJPlatformType.IntellijIdeaCommunity, "2025.1")
-
-            // Свежие релизы подбираем динамически, чтобы не хардкодить версии (которые ломаются
-            // при смене координат) и автоматически покрывать новые сборки (2026.1, 2026.2, …).
-            // Тип IntellijIdea сам разруливает переход: с 253 IDEA Community слита в единый
-            // дистрибутив (координата idea), поэтому берём его начиная с 253, только стабильный канал.
+            // IDE для верификации подбираем динамически из фида JetBrains, чтобы не хардкодить
+            // версии (ломаются при смене координат) и автоматически покрывать новые релизы
+            // (2026.1, 2026.2, …). С 253 IDEA — единый дистрибутив (тип intellijIdea). Начинаем
+            // с нижней границы (since-build 253), только стабильный канал.
             select {
                 types = listOf(IntelliJPlatformType.IntellijIdea)
                 channels = listOf(ProductRelease.Channel.RELEASE)

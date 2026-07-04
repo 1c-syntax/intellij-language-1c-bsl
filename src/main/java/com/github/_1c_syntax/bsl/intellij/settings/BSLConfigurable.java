@@ -52,7 +52,7 @@ public class BSLConfigurable implements Configurable {
   @Override
   public boolean isModified() {
     return state.enabled != getEnabled()
-      || state.externalJar != getUseExternalJar()
+      || !Boolean.valueOf(getUseExternalJar()).equals(state.externalJar)
       || state.diagnosticLanguage != getDiagnosticLanguage()
       || !state.path.equals(getPath())
       || !state.javaOpts.equals(getJavaOpts());
@@ -120,7 +120,7 @@ public class BSLConfigurable implements Configurable {
   }
 
   private void setUseExternalJar() {
-    getForm().getUseExternalJar().setSelected(state.externalJar);
+    getForm().getUseExternalJar().setSelected(Boolean.TRUE.equals(state.externalJar));
   }
 
   private void setPath() {

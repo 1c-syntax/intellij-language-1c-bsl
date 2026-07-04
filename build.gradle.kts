@@ -1,6 +1,7 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.models.ProductRelease
 
 plugins {
     java
@@ -88,11 +89,18 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            // Верифицируем против нижней границы (since-build 251). recommended() при открытом
-            // until-build подтягивает ещё не опубликованные сборки и падает на их resolve.
-            // Свежие сборки (2025.3+) не берём: с 253 IDEA Community больше не публикуется под
-            // координатами ideaIC (слита в единый дистрибутив, координата intellijIdea).
+            // Нижняя граница (since-build 251) — точечно, против Community 2025.1.
             create(IntelliJPlatformType.IntellijIdeaCommunity, "2025.1")
+
+            // Свежие релизы подбираем динамически, чтобы не хардкодить версии (которые ломаются
+            // при смене координат) и автоматически покрывать новые сборки (2026.1, 2026.2, …).
+            // Тип IntellijIdea сам разруливает переход: с 253 IDEA Community слита в единый
+            // дистрибутив (координата idea), поэтому берём его начиная с 253, только стабильный канал.
+            select {
+                types = listOf(IntelliJPlatformType.IntellijIdea)
+                channels = listOf(ProductRelease.Channel.RELEASE)
+                sinceBuild = "253"
+            }
         }
     }
 

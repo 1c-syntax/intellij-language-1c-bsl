@@ -13,7 +13,6 @@ group = "com.github.1c-syntax"
 version = "0.3.0" // Plugin version
 
 repositories {
-    mavenLocal()
     mavenCentral()
     intellijPlatform {
         defaultRepositories()

@@ -11,7 +11,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.54.0"
 }
 
-group = "com.github.1c-syntax"
+group = "io.github.1c-syntax"
 version = "0.3.0" // Plugin version
 
 repositories {

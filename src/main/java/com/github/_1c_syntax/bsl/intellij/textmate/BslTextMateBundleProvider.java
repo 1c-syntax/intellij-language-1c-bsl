@@ -47,7 +47,7 @@ public class BslTextMateBundleProvider implements TextMateBundleProvider {
   private static final Logger LOG = Logger.getInstance(BslTextMateBundleProvider.class);
 
   private static final String BUNDLE_NAME = "1C (BSL)";
-  private static final String PLUGIN_ID = "org.1c-syntax.language-1c-bsl";
+  private static final String PLUGIN_ID = "io.github.1c-syntax.language-1c-bsl";
   private static final String RESOURCE_ROOT = "/textmate/1c-bsl";
   private static final List<String> BUNDLE_FILES = List.of(
     "package.json",

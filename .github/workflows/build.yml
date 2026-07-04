@@ -11,8 +11,12 @@ jobs:
   build:
     name: Build & verify plugin
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -28,6 +32,12 @@ jobs:
 
       - name: Verify plugin
         run: ./gradlew verifyPlugin --stacktrace
+
+      - name: SonarCloud analysis
+        if: ${{ env.SONAR_TOKEN != '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew test jacocoTestReport sonar --stacktrace
 
       - name: Upload plugin artifact
         uses: actions/upload-artifact@v4

@@ -57,6 +57,9 @@
 
     <!-- Встроенный TextMate-бандл с грамматикой BSL/SDBL -->
     <textmate.bundleProvider implementation="com.github._1c_syntax.bsl.intellij.textmate.BslTextMateBundleProvider"/>
+
+    <!-- Отправка отчётов об ошибках в GitHub issue tracker -->
+    <errorHandler implementation="com.github._1c_syntax.bsl.intellij.BslErrorReportSubmitter"/>
   </extensions>
 
   <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">

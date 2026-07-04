@@ -92,13 +92,20 @@ public class LanguageServerSettingsState implements PersistentStateComponent<Lan
   /**
    * GitHub OAuth-токен для обхода лимитов API при скачивании (необязателен).
    * Хранится в {@link PasswordSafe}, а не в открытом виде в настройках.
+   *
+   * <p><b>Важно:</b> методы намеренно НЕ следуют JavaBean-именованию
+   * ({@code getGithubToken}/{@code setGithubToken}). Иначе {@link XmlSerializerUtil} принимает
+   * {@code githubToken} за сериализуемое свойство состояния и обращается к {@link PasswordSafe}
+   * прямо в {@link #loadState} — это медленная операция внутри non-cancelable read action, что
+   * запрещено платформой (issue #30), — а заодно рискует записать токен в {@code intellij-bsl.xml}
+   * открытым текстом. Не переименовывай их обратно в {@code get}/{@code set}.
    */
   @Nullable
-  public static String getGithubToken() {
+  public static String githubToken() {
     return PasswordSafe.getInstance().getPassword(githubTokenCredentialAttributes());
   }
 
-  public static void setGithubToken(@Nullable String token) {
+  public static void storeGithubToken(@Nullable String token) {
     PasswordSafe.getInstance().setPassword(githubTokenCredentialAttributes(), token);
   }
 

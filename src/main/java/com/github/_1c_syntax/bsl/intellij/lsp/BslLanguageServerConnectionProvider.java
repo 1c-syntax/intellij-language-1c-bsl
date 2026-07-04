@@ -153,7 +153,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
   }
 
   private static String resolveToken() {
-    var token = LanguageServerSettingsState.getGithubToken();
+    var token = LanguageServerSettingsState.githubToken();
     if (token != null && !token.isBlank()) {
       return token;
     }

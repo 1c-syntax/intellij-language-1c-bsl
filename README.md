@@ -1,7 +1,7 @@
 # intellij-language-1c-bsl
 
 [![Build](https://github.com/1c-syntax/intellij-language-1c-bsl/actions/workflows/build.yml/badge.svg)](https://github.com/1c-syntax/intellij-language-1c-bsl/actions/workflows/build.yml)
-[![JetBrains Marketplace](https://img.shields.io/jetbrains/plugin/v/org.1c-syntax.language-1c-bsl.svg)](https://plugins.jetbrains.com/plugin/org.1c-syntax.language-1c-bsl)
+[![JetBrains Marketplace](https://img.shields.io/jetbrains/plugin/v/io.github.1c-syntax.language-1c-bsl.svg)](https://plugins.jetbrains.com/plugin/io.github.1c-syntax.language-1c-bsl)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=1c-syntax_intellij-language-1c-bsl&metric=alert_status)](https://sonarcloud.io/dashboard?id=1c-syntax_intellij-language-1c-bsl)
 
 Плагин для семейства IDE на платформе JetBrains IntelliJ (IntelliJ IDEA, PyCharm, WebStorm, Rider и т.д.)
@@ -28,11 +28,13 @@
 
 `Settings/Preferences → Languages & Frameworks → 1C (BSL)`:
 
-- **Enabled** — запускать ли BSL Language Server.
-- **Path** — путь к внешнему `bsl-language-server.jar`; если пусто, сервер скачивается автоматически.
+- **Language server / enabled** — запускать ли BSL Language Server.
+- **Use external jar** — использовать внешний `bsl-language-server.jar` вместо автоматической загрузки.
+- **Path to language server** — путь к внешнему jar (используется при включённом «Use external jar»).
+- **Language server Java opts** — дополнительные JVM-опции сервера (пробрасываются через `_JAVA_OPTIONS`).
 
-Дополнительные параметры (канал релизов, JVM-опции через `_JAVA_OPTIONS`, GitHub-токен, каталог установки)
-хранятся в настройках плагина со значениями по умолчанию.
+Остальные параметры (канал релизов, GitHub-токен, каталог установки) пока хранятся в настройках плагина
+со значениями по умолчанию и в UI не выведены.
 
 ## Сборка
 

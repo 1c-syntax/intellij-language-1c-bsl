@@ -1,4 +1,5 @@
 import org.jetbrains.changelog.Changelog
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 plugins {
@@ -89,7 +90,7 @@ intellijPlatform {
         ides {
             // Явно фиксируем IDE для верификации: recommended() при открытом until-build
             // подтягивает ещё не опубликованные сборки и падает на их resolve.
-            ide("IC", "2024.2")
+            create(IntelliJPlatformType.IntellijIdeaCommunity, "2024.2")
         }
     }
 

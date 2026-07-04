@@ -52,7 +52,7 @@ dependencies {
     compileOnly("org.jspecify:jspecify:1.0.0")
 
     intellijPlatform {
-        intellijIdeaCommunity("2024.2")
+        intellijIdeaCommunity("2025.1")
 
         // TextMate-подсветка для .bsl/.os
         bundledPlugin("org.jetbrains.plugins.textmate")
@@ -70,7 +70,7 @@ intellijPlatform {
         name = "Language 1C (BSL)"
         version = project.version.toString()
         ideaVersion {
-            sinceBuild = "242"
+            sinceBuild = "251"
             untilBuild = provider { null }
         }
         // «What's new» на Marketplace берётся из CHANGELOG.md через плагин changelog.
@@ -90,7 +90,9 @@ intellijPlatform {
         ides {
             // Явно фиксируем IDE для верификации: recommended() при открытом until-build
             // подтягивает ещё не опубликованные сборки и падает на их resolve.
-            create(IntelliJPlatformType.IntellijIdeaCommunity, "2024.2")
+            // Нижняя граница (since-build) и последняя стабильная.
+            create(IntelliJPlatformType.IntellijIdeaCommunity, "2025.1")
+            create(IntelliJPlatformType.IntellijIdeaCommunity, "2025.3")
         }
     }
 

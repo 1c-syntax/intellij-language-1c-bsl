@@ -20,7 +20,7 @@
 
 ## Требования
 
-- IntelliJ Platform **2024.2+** (since-build `242`).
+- IntelliJ Platform **2025.1+** (since-build `251`).
 - Установленный плагин [LSP4IJ](https://plugins.jetbrains.com/plugin/23257-lsp4ij) (ставится автоматически как зависимость).
 - Для native-image сборки сервера — поддерживаемая ОС (Windows / Linux / macOS); для внешнего jar — установленная Java.
 

@@ -14,7 +14,7 @@
 ### Changed
 
 - Language features (diagnostics, completion, hover, go to definition, find usages, formatting, folding, structure view) are now provided by the [BSL Language Server](https://github.com/1c-syntax/bsl-language-server) through [LSP4IJ](https://github.com/redhat-developer/lsp4ij).
-- Build migrated to the IntelliJ Platform Gradle Plugin 2.x, targeting IntelliJ Platform 2024.2+ and Java 21.
+- Build migrated to the IntelliJ Platform Gradle Plugin 2.x, targeting IntelliJ Platform 2025.1+ and Java 21.
 
 ### Removed
 

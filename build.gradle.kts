@@ -1,3 +1,4 @@
+import org.jetbrains.changelog.Changelog
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import java.util.Calendar
 
@@ -6,6 +7,7 @@ plugins {
     jacoco
     idea
     id("org.jetbrains.intellij.platform") version "2.6.0"
+    id("org.jetbrains.changelog") version "2.2.1"
     id("com.github.hierynomus.license") version "0.16.1"
     id("org.sonarqube") version "7.3.1.8318"
     id("com.github.ben-manes.versions") version "0.54.0"
@@ -71,6 +73,17 @@ intellijPlatform {
             sinceBuild = "242"
             untilBuild = provider { null }
         }
+        // «What's new» на Marketplace берётся из CHANGELOG.md через плагин changelog.
+        changeNotes = provider {
+            with(changelog) {
+                renderItem(
+                    (getOrNull(project.version.toString()) ?: getUnreleased())
+                        .withHeader(false)
+                        .withEmptySections(false),
+                    Changelog.OutputType.HTML,
+                )
+            }
+        }
     }
 
     pluginVerification {
@@ -92,6 +105,11 @@ intellijPlatform {
     publishing {
         token = providers.environmentVariable("PUBLISH_TOKEN")
     }
+}
+
+changelog {
+    repositoryUrl = "https://github.com/1c-syntax/intellij-language-1c-bsl"
+    groups.empty()
 }
 
 java {

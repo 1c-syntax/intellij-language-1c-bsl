@@ -83,7 +83,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
     super.start();
   }
 
-  private List<String> resolveCommands(LanguageServerSettingsState settings) throws IOException {
+  List<String> resolveCommands(LanguageServerSettingsState settings) throws IOException {
     var commands = new ArrayList<String>();
 
     if (Boolean.TRUE.equals(settings.externalJar)) {
@@ -109,7 +109,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
       ? Path.of(PathManager.getSystemPath(), "bsl-language-server")
       : Path.of(settings.installDir);
 
-    var downloader = new BslLanguageServerDownloader(installDir, resolveToken());
+    var downloader = createDownloader(installDir, resolveToken());
 
     if (Boolean.TRUE.equals(settings.downloadServer)) {
       var channel = Boolean.TRUE.equals(settings.prerelease)
@@ -124,16 +124,31 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
           + "Set the external jar path or enable downloading in the settings."));
   }
 
-  private String resolveConfigurationFile(LanguageServerSettingsState settings) {
-    var basePath = project.getBasePath();
-    if (basePath == null || settings.configurationFile.isBlank()) {
+  /**
+   * Точка расширения для тестов: создаёт загрузчик сервера. Переопределяется в тестах,
+   * чтобы подменить обращение к GitHub на заглушку.
+   */
+  BslLanguageServerDownloader createDownloader(Path installDir, @Nullable String token) {
+    return new BslLanguageServerDownloader(installDir, token);
+  }
+
+  private @Nullable String resolveConfigurationFile(LanguageServerSettingsState settings) {
+    return resolveConfigurationFile(project.getBasePath(), settings.configurationFile);
+  }
+
+  /**
+   * Возвращает абсолютный путь к файлу конфигурации сервера относительно корня проекта,
+   * либо {@code null}, если корень неизвестен, имя не задано или файл отсутствует.
+   */
+  static @Nullable String resolveConfigurationFile(@Nullable String basePath, String configurationFile) {
+    if (basePath == null || configurationFile.isBlank()) {
       return null;
     }
-    var configurationFile = Path.of(basePath, settings.configurationFile);
-    if (Files.exists(configurationFile)) {
-      return configurationFile.toString();
+    var path = Path.of(basePath, configurationFile);
+    if (Files.exists(path)) {
+      return path.toString();
     }
-    LOG.warn("Configured BSL Language Server config file not found: " + configurationFile);
+    LOG.warn("Configured BSL Language Server config file not found: " + path);
     return null;
   }
 

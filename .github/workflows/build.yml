@@ -39,8 +39,14 @@ jobs:
             ./gradlew buildPlugin --stacktrace
           '
 
+      # Платформенные тесты (BasePlatformTestCase) поднимают headless-IDE — как и buildPlugin,
+      # гоним их под сессией D-Bus с разблокированным gnome-keyring.
       - name: Test
-        run: ./gradlew test --stacktrace
+        run: |
+          dbus-run-session -- bash -c '
+            gnome-keyring-daemon --components=secrets --daemonize --unlock <<< ""
+            ./gradlew test --stacktrace
+          '
 
       - name: Verify plugin
         run: ./gradlew verifyPlugin --stacktrace

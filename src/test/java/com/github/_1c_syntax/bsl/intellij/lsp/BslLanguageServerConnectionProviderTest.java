@@ -23,6 +23,10 @@ package com.github._1c_syntax.bsl.intellij.lsp;
 
 import org.junit.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -46,5 +50,37 @@ public class BslLanguageServerConnectionProviderTest {
   public void mergedJavaOptionsAppendsUserOptionsToExisting() {
     assertEquals("-Xss2m -Xmx4g",
       BslLanguageServerConnectionProvider.mergedJavaOptions("-Xss2m", "-Xmx4g"));
+  }
+
+  @Test
+  public void resolveConfigurationFileIsNullForBlankBaseOrName() {
+    assertNull(BslLanguageServerConnectionProvider.resolveConfigurationFile(null, ".bsl-language-server.json"));
+    assertNull(BslLanguageServerConnectionProvider.resolveConfigurationFile("/whatever", ""));
+    assertNull(BslLanguageServerConnectionProvider.resolveConfigurationFile("/whatever", "   "));
+  }
+
+  @Test
+  public void resolveConfigurationFileIsNullWhenFileMissing() throws IOException {
+    var dir = Files.createTempDirectory("bsl-cfg-missing");
+    try {
+      assertNull(BslLanguageServerConnectionProvider.resolveConfigurationFile(
+        dir.toString(), ".bsl-language-server.json"));
+    } finally {
+      Files.deleteIfExists(dir);
+    }
+  }
+
+  @Test
+  public void resolveConfigurationFileReturnsAbsolutePathWhenPresent() throws IOException {
+    var dir = Files.createTempDirectory("bsl-cfg-present");
+    var configFile = dir.resolve(".bsl-language-server.json");
+    Files.writeString(configFile, "{}");
+    try {
+      assertEquals(configFile.toString(), BslLanguageServerConnectionProvider.resolveConfigurationFile(
+        dir.toString(), ".bsl-language-server.json"));
+    } finally {
+      Files.deleteIfExists(configFile);
+      Files.deleteIfExists(dir);
+    }
   }
 }

@@ -107,7 +107,7 @@ sonarqube {
         property("sonar.organization", "1c-syntax")
         property("sonar.projectKey", "1c-syntax_intellij-language-1c-bsl")
         property("sonar.projectName", "IntelliJ Language 1C (BSL) Plugin")
-        property("sonar.exclusions", "**/vendor/**/*.*, **/gen/**/*.*")
+        property("sonar.exclusions", "**/vendor/**/*.*, **/gen/**/*.*, **/textmate/**/*.*")
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
             "${layout.buildDirectory.get()}/reports/jacoco/test/jacoco.xml"

@@ -27,11 +27,20 @@
   <vendor email="nixel2007@gmail.com" url="https://github.com/1c-syntax">1c-syntax GitHub.com organization</vendor>
 
   <description><![CDATA[
-      The Language 1C (BSL) plugin provides support of 1C:Enterprise (BSL) and OneScript in IntelliJ
-      Platform-based IDEs. Language features are powered by
-      <a href="https://github.com/1c-syntax/bsl-language-server">BSL Language Server</a> via
-      <a href="https://github.com/redhat-developer/lsp4ij">LSP4IJ</a>, syntax highlighting is provided
-      by a bundled TextMate grammar.
+      Support for the 1C:Enterprise (BSL) and OneScript languages in IntelliJ Platform-based IDEs.
+
+      <ul>
+        <li>Code intelligence — diagnostics, code completion, hover, go to definition, find usages,
+            formatting, folding and structure view — provided by the
+            <a href="https://github.com/1c-syntax/bsl-language-server">BSL Language Server</a>
+            through <a href="https://github.com/redhat-developer/lsp4ij">LSP4IJ</a>.</li>
+        <li>Syntax highlighting via a bundled TextMate grammar for BSL and its query language (SDBL).</li>
+        <li>The language server is downloaded automatically on first use; an external
+            <code>bsl-language-server.jar</code> can be configured instead.</li>
+      </ul>
+
+      Source code and issue tracker:
+      <a href="https://github.com/1c-syntax/intellij-language-1c-bsl">github.com/1c-syntax/intellij-language-1c-bsl</a>.
     ]]></description>
 
   <depends>com.intellij.modules.platform</depends>

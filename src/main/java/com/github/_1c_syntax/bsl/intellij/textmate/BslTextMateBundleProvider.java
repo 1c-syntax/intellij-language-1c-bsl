@@ -48,6 +48,7 @@ public class BslTextMateBundleProvider implements TextMateBundleProvider {
 
   private static final String BUNDLE_NAME = "1C (BSL)";
   private static final String PLUGIN_ID = "io.github.1c-syntax.language-1c-bsl";
+  private static final String DEV_VERSION = "dev";
   private static final String RESOURCE_ROOT = "/textmate/1c-bsl";
   private static final List<String> BUNDLE_FILES = List.of(
     "package.json",
@@ -70,10 +71,14 @@ public class BslTextMateBundleProvider implements TextMateBundleProvider {
   private Path extractBundle() throws IOException {
     // Каталог версионируется версией плагина: при обновлении плагина создаётся новый каталог,
     // а уже распакованные файлы текущей версии повторно не копируются.
-    var targetDir = Path.of(PathManager.getSystemPath(), "textmate-bundles", "1c-bsl", pluginVersion());
+    var version = pluginVersion();
+    // В dev-сборках (sandbox/runIde) версия недоступна и каталог всегда один и тот же,
+    // поэтому файлы перераспаковываются каждый раз, чтобы правки грамматики подхватывались.
+    var reuseCached = !DEV_VERSION.equals(version);
+    var targetDir = Path.of(PathManager.getSystemPath(), "textmate-bundles", "1c-bsl", version);
     for (var relativePath : BUNDLE_FILES) {
       var target = targetDir.resolve(relativePath);
-      if (Files.exists(target)) {
+      if (reuseCached && Files.exists(target)) {
         continue;
       }
       Files.createDirectories(target.getParent());
@@ -92,6 +97,6 @@ public class BslTextMateBundleProvider implements TextMateBundleProvider {
     if (descriptor != null && descriptor.getVersion() != null) {
       return descriptor.getVersion();
     }
-    return "dev";
+    return DEV_VERSION;
   }
 }

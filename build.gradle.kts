@@ -9,10 +9,32 @@ plugins {
     id("com.github.hierynomus.license") version "0.16.1"
     id("org.sonarqube") version "7.3.1.8318"
     id("com.github.ben-manes.versions") version "0.54.0"
+    id("me.qoomon.git-versioning") version "6.4.4"
 }
 
 group = "io.github.1c-syntax"
-version = "0.3.0" // Plugin version
+
+// Версия вычисляется git-versioning по тегу/ветке/коммиту (как в других проектах 1c-syntax).
+// Экранируем '$', чтобы плейсхолдеры интерпретировал git-versioning, а не Kotlin.
+// ${ref.slug} используется вместо ${ref}: имена веток могут содержать '/', недопустимые в версии.
+version = "0.0.0-SNAPSHOT"
+gitVersioning.apply {
+    refs {
+        describeTagFirstParent = false
+        tag("v(?<tagVersion>[0-9].*)") {
+            version = "\${ref.tagVersion}\${dirty}"
+        }
+        branch("master") {
+            version = "\${describe.tag.version}.\${describe.distance}-SNAPSHOT\${dirty}"
+        }
+        branch(".+") {
+            version = "\${ref.slug}-\${commit.short}\${dirty}"
+        }
+    }
+    rev {
+        version = "\${commit.short}\${dirty}"
+    }
+}
 
 repositories {
     mavenCentral()
@@ -107,7 +129,7 @@ sonarqube {
         property("sonar.organization", "1c-syntax")
         property("sonar.projectKey", "1c-syntax_intellij-language-1c-bsl")
         property("sonar.projectName", "IntelliJ Language 1C (BSL) Plugin")
-        property("sonar.exclusions", "**/vendor/**/*.*, **/gen/**/*.*, **/textmate/**/*.*")
+        property("sonar.exclusions", "**/vendor/**, **/gen/**, **/textmate/**")
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
             "${layout.buildDirectory.get()}/reports/jacoco/test/jacoco.xml"

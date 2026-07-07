@@ -24,8 +24,12 @@ package com.github._1c_syntax.bsl.intellij.lsp;
 import com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerDownloader;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerReleaseChannel;
+import com.github._1c_syntax.utils.downloader.DownloadProgressListener;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.redhat.devtools.lsp4ij.server.CannotStartProcessException;
 import com.redhat.devtools.lsp4ij.server.ProcessStreamConnectionProvider;
@@ -36,7 +40,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Запускает процесс BSL Language Server для LSP4IJ.
@@ -52,6 +59,8 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
 
   private static final String JAVA_OPTIONS_ENV = "_JAVA_OPTIONS";
   private static final String GITHUB_TOKEN_ENV = "LANGUAGE_1C_BSL_GITHUB_TOKEN";
+  private static final String PROGRESS_TITLE = "Preparing BSL Language Server";
+  private static final String PROGRESS_DOWNLOADING = "Downloading BSL Language Server";
 
   private final Project project;
 
@@ -63,7 +72,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
   public void start() throws CannotStartProcessException {
     var settings = LanguageServerSettingsState.getInstance();
     try {
-      setCommands(resolveCommands(settings));
+      setCommands(resolveCommandsWithProgress(settings));
     } catch (IOException e) {
       var failure = new CannotStartProcessException("Failed to prepare BSL Language Server: " + e.getMessage());
       failure.initCause(e);
@@ -84,6 +93,11 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
   }
 
   List<String> resolveCommands(LanguageServerSettingsState settings) throws IOException {
+    return resolveCommands(settings, DownloadProgressListener.NONE);
+  }
+
+  private List<String> resolveCommands(LanguageServerSettingsState settings,
+                                       DownloadProgressListener progressListener) throws IOException {
     var commands = new ArrayList<String>();
 
     if (Boolean.TRUE.equals(settings.externalJar)) {
@@ -92,7 +106,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
       commands.add("-jar");
       commands.add(Path.of(settings.path).toAbsolutePath().toString());
     } else {
-      commands.add(resolveDownloadedBinary(settings).toString());
+      commands.add(resolveDownloadedBinary(settings, progressListener).toString());
     }
 
     var configurationFile = resolveConfigurationFile(settings);
@@ -104,7 +118,76 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
     return commands;
   }
 
-  private Path resolveDownloadedBinary(LanguageServerSettingsState settings) throws IOException {
+  /**
+   * Готовит команду запуска под индикатором прогресса, чтобы скачивание сервера отображалось
+   * прогресс-баром, а не бесконечным «крутящимся» индикатором. Если вызов уже выполняется под
+   * индикатором прогресса, используется он; иначе запускается фоновая задача. Метод блокирует
+   * поток до готовности команды — как и раньше, старт сервера ждёт скачивания.
+   */
+  private List<String> resolveCommandsWithProgress(LanguageServerSettingsState settings) throws IOException {
+    var progressManager = ProgressManager.getInstance();
+    var currentIndicator = progressManager.getProgressIndicator();
+    if (currentIndicator != null) {
+      return resolveCommands(settings, progressListener(currentIndicator));
+    }
+
+    var result = new CompletableFuture<List<String>>();
+    progressManager.run(new Task.Backgroundable(project, PROGRESS_TITLE, true) {
+      @Override
+      public void run(ProgressIndicator indicator) {
+        try {
+          result.complete(resolveCommands(settings, progressListener(indicator)));
+        } catch (Throwable t) {
+          result.completeExceptionally(t);
+        }
+      }
+    });
+
+    return awaitCommands(result);
+  }
+
+  private static List<String> awaitCommands(CompletableFuture<List<String>> result) throws IOException {
+    try {
+      return result.get();
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new IOException("BSL Language Server preparation was interrupted", e);
+    } catch (ExecutionException e) {
+      var cause = e.getCause();
+      if (cause instanceof IOException io) {
+        throw io;
+      }
+      if (cause instanceof RuntimeException runtime) {
+        throw runtime;
+      }
+      if (cause instanceof Error error) {
+        throw error;
+      }
+      throw new IOException("Failed to prepare BSL Language Server", cause);
+    }
+  }
+
+  private static DownloadProgressListener progressListener(ProgressIndicator indicator) {
+    return (bytesRead, totalBytes) -> {
+      indicator.checkCanceled();
+      indicator.setText(PROGRESS_DOWNLOADING);
+      if (totalBytes > 0) {
+        indicator.setIndeterminate(false);
+        indicator.setFraction((double) bytesRead / (double) totalBytes);
+        indicator.setText2(formatMegabytes(bytesRead) + " / " + formatMegabytes(totalBytes));
+      } else {
+        indicator.setIndeterminate(true);
+        indicator.setText2(formatMegabytes(bytesRead));
+      }
+    };
+  }
+
+  private static String formatMegabytes(long bytes) {
+    return String.format(Locale.ROOT, "%.1f MB", bytes / (1024.0 * 1024.0));
+  }
+
+  private Path resolveDownloadedBinary(LanguageServerSettingsState settings,
+                                       DownloadProgressListener progressListener) throws IOException {
     var installDir = settings.installDir.isBlank()
       ? Path.of(PathManager.getSystemPath(), "bsl-language-server")
       : Path.of(settings.installDir);
@@ -115,7 +198,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
       var channel = Boolean.TRUE.equals(settings.prerelease)
         ? BslLanguageServerReleaseChannel.PRERELEASE
         : BslLanguageServerReleaseChannel.STABLE;
-      return downloader.downloadIfNeeded(channel);
+      return downloader.downloadIfNeeded(channel, progressListener);
     }
 
     return downloader.installedBinary()

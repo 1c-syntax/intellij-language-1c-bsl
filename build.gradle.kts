@@ -91,7 +91,7 @@ val flattenGithubApiJar by tasks.registering(Jar::class) {
 dependencies {
     // Загрузчик BSL Language Server (скачивание/распаковка релиза с GitHub). github-api тащим
     // не транзитивно, а расплющенным (см. блок выше про Multi-Release/IDEA-220300).
-    implementation("io.github.1c-syntax:utils:0.8.0") {
+    implementation("io.github.1c-syntax:utils:0.9.0") {
         exclude(group = "org.kohsuke", module = "github-api")
     }
     implementation(files(flattenGithubApiJar))

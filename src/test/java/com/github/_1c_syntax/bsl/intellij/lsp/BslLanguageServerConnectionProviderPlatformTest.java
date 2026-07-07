@@ -24,6 +24,7 @@ package com.github._1c_syntax.bsl.intellij.lsp;
 import com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerDownloader;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerReleaseChannel;
+import com.github._1c_syntax.utils.downloader.DownloadProgressListener;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import org.jspecify.annotations.Nullable;
 
@@ -146,7 +147,8 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
     }
 
     @Override
-    public Path downloadIfNeeded(BslLanguageServerReleaseChannel channel) {
+    public Path downloadIfNeeded(BslLanguageServerReleaseChannel channel,
+                                 DownloadProgressListener progressListener) {
       requestedChannel = channel;
       return binary;
     }

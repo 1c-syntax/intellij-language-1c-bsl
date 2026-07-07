@@ -25,6 +25,7 @@ import com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerDownloader;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerReleaseChannel;
 import com.github._1c_syntax.utils.downloader.DownloadProgressListener;
+import com.github._1c_syntax.utils.downloader.GitHubReleaseClient;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -236,7 +237,8 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
       .followRedirects(HttpClient.Redirect.NORMAL)
       .connectTimeout(Duration.ofSeconds(30))
       .build();
-    return new BslLanguageServerDownloader(installDir, httpClient, token);
+    var releaseClient = new GitHubReleaseClient(httpClient, token);
+    return new BslLanguageServerDownloader(installDir, releaseClient, httpClient);
   }
 
   private @Nullable String resolveConfigurationFile(LanguageServerSettingsState settings) {

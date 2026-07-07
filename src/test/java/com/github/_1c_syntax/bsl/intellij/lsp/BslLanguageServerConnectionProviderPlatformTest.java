@@ -141,7 +141,10 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
     private BslLanguageServerReleaseChannel requestedChannel;
 
     StubDownloader(Path binary, Optional<Path> installed) {
-      super(Path.of("."), java.net.http.HttpClient.newHttpClient(), null);
+      super(Path.of("."),
+        new com.github._1c_syntax.utils.downloader.GitHubReleaseClient(
+          java.net.http.HttpClient.newHttpClient(), null),
+        java.net.http.HttpClient.newHttpClient());
       this.binary = binary;
       this.installed = installed;
     }

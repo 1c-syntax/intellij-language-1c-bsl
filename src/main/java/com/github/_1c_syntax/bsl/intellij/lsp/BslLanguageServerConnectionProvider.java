@@ -168,8 +168,17 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
   }
 
   private static DownloadProgressListener progressListener(ProgressIndicator indicator) {
+    // Загрузчик уведомляет о каждом прочитанном блоке (16 КБ) — для архива в десятки МБ это
+    // тысячи вызовов. Отмену проверяем на каждом (дёшево и отзывчиво), но индикатор перерисовываем
+    // не чаще, чем меняется целый процент (или, при неизвестном размере, целый мегабайт).
+    var lastReported = new long[]{-1};
     return (bytesRead, totalBytes) -> {
       indicator.checkCanceled();
+      var tick = totalBytes > 0 ? bytesRead * 100 / totalBytes : bytesRead / (1024 * 1024);
+      if (tick == lastReported[0]) {
+        return;
+      }
+      lastReported[0] = tick;
       indicator.setText(PROGRESS_DOWNLOADING);
       if (totalBytes > 0) {
         indicator.setIndeterminate(false);

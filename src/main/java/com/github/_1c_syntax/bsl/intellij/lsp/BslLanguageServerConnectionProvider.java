@@ -135,11 +135,19 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
     progressManager.run(new Task.Backgroundable(project, PROGRESS_TITLE, true) {
       @Override
       public void run(ProgressIndicator indicator) {
+        // resolveCommands бросает IOException (проверяемое), а прогресс-слушатель —
+        // ProcessCanceledException и прочие RuntimeException; всё это уходит в future.
         try {
           result.complete(resolveCommands(settings, progressListener(indicator)));
-        } catch (Throwable t) {
-          result.completeExceptionally(t);
+        } catch (IOException | RuntimeException e) {
+          result.completeExceptionally(e);
         }
+      }
+
+      @Override
+      public void onThrowable(Throwable error) {
+        // Error пробрасывается платформой мимо run(); завершаем future, чтобы не подвесить старт.
+        result.completeExceptionally(error);
       }
     });
 

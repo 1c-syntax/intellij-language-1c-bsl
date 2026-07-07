@@ -36,8 +36,10 @@ import com.redhat.devtools.lsp4ij.server.ProcessStreamConnectionProvider;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
+import java.net.http.HttpClient;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -229,7 +231,12 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
    * чтобы подменить обращение к GitHub на заглушку.
    */
   BslLanguageServerDownloader createDownloader(Path installDir, @Nullable String token) {
-    return new BslLanguageServerDownloader(installDir, token);
+    // Клиент должен следовать редиректам: ассеты GitHub-релизов отдаются редиректом на CDN.
+    var httpClient = HttpClient.newBuilder()
+      .followRedirects(HttpClient.Redirect.NORMAL)
+      .connectTimeout(Duration.ofSeconds(30))
+      .build();
+    return new BslLanguageServerDownloader(installDir, httpClient, token);
   }
 
   private @Nullable String resolveConfigurationFile(LanguageServerSettingsState settings) {

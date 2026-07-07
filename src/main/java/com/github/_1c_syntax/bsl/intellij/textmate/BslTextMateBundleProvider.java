@@ -21,10 +21,8 @@
  */
 package com.github._1c_syntax.bsl.intellij.textmate;
 
-import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.extensions.PluginId;
 import org.jetbrains.plugins.textmate.api.TextMateBundleProvider;
 
 import java.io.IOException;
@@ -40,15 +38,13 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  * файлов {@code .bsl}/{@code .os} без регистрации собственного {@code FileType}.
  *
  * <p>TextMate требует бандл в виде каталога на файловой системе, а ресурсы плагина лежат в jar,
- * поэтому бандл распаковывается в служебный каталог IDE при инициализации.
+ * поэтому бандл распаковывается в служебный каталог IDE при каждом вызове {@code getBundles()}.
  */
 public class BslTextMateBundleProvider implements TextMateBundleProvider {
 
   private static final Logger LOG = Logger.getInstance(BslTextMateBundleProvider.class);
 
   private static final String BUNDLE_NAME = "1C (BSL)";
-  private static final String PLUGIN_ID = "io.github.1c-syntax.language-1c-bsl";
-  private static final String DEV_VERSION = "dev";
   private static final String RESOURCE_ROOT = "/textmate/1c-bsl";
   private static final List<String> BUNDLE_FILES = List.of(
     "package.json",
@@ -69,18 +65,14 @@ public class BslTextMateBundleProvider implements TextMateBundleProvider {
   }
 
   private Path extractBundle() throws IOException {
-    // Каталог версионируется версией плагина: при обновлении плагина создаётся новый каталог,
-    // а уже распакованные файлы текущей версии повторно не копируются.
-    var version = pluginVersion();
-    // В dev-сборках (sandbox/runIde) версия недоступна и каталог всегда один и тот же,
-    // поэтому файлы перераспаковываются каждый раз, чтобы правки грамматики подхватывались.
-    var reuseCached = !DEV_VERSION.equals(version);
-    var targetDir = Path.of(PathManager.getSystemPath(), "textmate-bundles", "1c-bsl", version);
+    // Файлы каждый раз перезаписываются в один и тот же каталог: набор мелкий, а точка
+    // расширения бандлов динамическая (dynamic="true") — getBundles() вызывается заново при
+    // (пере)загрузке плагина, поэтому обновлённая грамматика подхватывается без версионирования
+    // каталога. Каталог живёт под systemPath, что удовлетворяет требованию SPI «lifetime of
+    // those bundles matches the lifetime of a plugin».
+    var targetDir = Path.of(PathManager.getSystemPath(), "textmate-bundles", "1c-bsl");
     for (var relativePath : BUNDLE_FILES) {
       var target = targetDir.resolve(relativePath);
-      if (reuseCached && Files.exists(target)) {
-        continue;
-      }
       Files.createDirectories(target.getParent());
       try (InputStream input = BslTextMateBundleProvider.class.getResourceAsStream(RESOURCE_ROOT + "/" + relativePath)) {
         if (input == null) {
@@ -90,13 +82,5 @@ public class BslTextMateBundleProvider implements TextMateBundleProvider {
       }
     }
     return targetDir;
-  }
-
-  private static String pluginVersion() {
-    var descriptor = PluginManagerCore.getPlugin(PluginId.getId(PLUGIN_ID));
-    if (descriptor != null && descriptor.getVersion() != null) {
-      return descriptor.getVersion();
-    }
-    return DEV_VERSION;
   }
 }

@@ -12,7 +12,7 @@ jobs:
     name: Build & verify plugin
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # git-versioning резолвит версию по тегам/истории; shallow-клон ломает describe.
           fetch-depth: 0

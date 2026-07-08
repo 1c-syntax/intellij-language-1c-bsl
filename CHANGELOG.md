@@ -8,6 +8,7 @@
 
 - Syntax highlighting via a bundled TextMate grammar for BSL and its query language (SDBL).
 - Automatic download of the BSL Language Server on first use, with a fallback to a configured external `bsl-language-server.jar`.
+- Progress bar while the BSL Language Server release is downloaded, instead of an indefinite "starting" indicator.
 - Settings for enabling the server, using an external jar and passing additional JVM options.
 - Reporting of plugin errors to the GitHub issue tracker from the IDE error dialog.
 

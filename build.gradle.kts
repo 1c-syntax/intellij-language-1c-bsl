@@ -91,7 +91,7 @@ val flattenGithubApiJar by tasks.registering(Jar::class) {
 dependencies {
     // Загрузчик BSL Language Server (скачивание/распаковка релиза с GitHub). github-api тащим
     // не транзитивно, а расплющенным (см. блок выше про Multi-Release/IDEA-220300).
-    implementation("io.github.1c-syntax:utils:0.8.0") {
+    implementation("io.github.1c-syntax:utils:0.9.0") {
         exclude(group = "org.kohsuke", module = "github-api")
     }
     implementation(files(flattenGithubApiJar))
@@ -104,6 +104,8 @@ dependencies {
     // JUnit 4 не поставляется IntelliJ Platform Gradle Plugin автоматически; нужен и для наших
     // тестов (org.junit), и для базовых классов платформы (junit.framework.TestCase).
     testImplementation("junit:junit:4.13.2")
+    // Мок загрузчика в платформенном тесте провайдера.
+    testImplementation("org.mockito:mockito-core:5.14.2")
 
     intellijPlatform {
         // С 2025.3 (253) IDEA Community слита в единый дистрибутив — координата intellijIdea.

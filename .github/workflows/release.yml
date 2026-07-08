@@ -6,6 +6,11 @@ on:
       - prereleased
       - released
 
+# Нужно, чтобы шаг закрытия changelog'а мог запушить ветку и открыть PR в master.
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   publish:
     name: Publish to JetBrains Marketplace
@@ -42,3 +47,30 @@ jobs:
             gnome-keyring-daemon --components=secrets --daemonize --unlock <<< ""
             ./gradlew publishPlugin --stacktrace
           '
+
+      # После полноценного релиза «закрываем» changelog: patchChangelog переносит [Unreleased] в
+      # секцию [X.Y.Z] с датой и заводит пустой [Unreleased]. Изменение уезжает отдельным PR в
+      # master (прямой push в защищённую ветку из CI недоступен). Для pre-release'ов не трогаем
+      # changelog — версия ещё «в работе», финализируем его только на стабильном релизе.
+      - name: Close changelog for released version
+        if: github.event.action == 'released'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          ./gradlew patchChangelog -PchangelogVersion="$version" --stacktrace
+          if git diff --quiet -- CHANGELOG.md; then
+            echo "CHANGELOG.md already closed for $version — nothing to do."
+            exit 0
+          fi
+          branch="changelog/$version"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add CHANGELOG.md
+          git commit -m "docs(changelog): close $version"
+          git push -u origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "docs(changelog): close $version" \
+            --body "Автоперенос \`[Unreleased]\` → \`[$version]\` после релиза ${GITHUB_REF_NAME}."

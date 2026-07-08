@@ -167,12 +167,23 @@ intellijPlatform {
     // Публикация в JetBrains Marketplace
     publishing {
         token = providers.environmentVariable("PUBLISH_TOKEN")
+        // Канал берём из суффикса версии (её задаёт git-versioning по тегу релиза): тег `vX.Y.Z`
+        // → версия без суффикса → стабильный канал `default`; тег `vX.Y.Z-rc.1` / `-eap.2` →
+        // версия `X.Y.Z-rc.1` → канал `rc` / `eap`. Так pre-release'ы не попадают в стабильный поток.
+        channels = listOf(
+            project.version.toString().substringAfter('-', "").substringBefore('.').ifEmpty { "default" }
+        )
     }
 }
 
 changelog {
     repositoryUrl = "https://github.com/1c-syntax/intellij-language-1c-bsl"
     groups.empty()
+    // По умолчанию версия changelog'а = версия проекта (её git-versioning считает по ref'у). На
+    // master это SNAPSHOT, поэтому для `patchChangelog` в релизном workflow версию задаём явно
+    // через -PchangelogVersion=X.Y.Z (из тега релиза), не завися от текущего git-ref.
+    version = providers.gradleProperty("changelogVersion")
+        .orElse(provider { project.version.toString() })
 }
 
 java {

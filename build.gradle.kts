@@ -105,7 +105,7 @@ dependencies {
     // тестов (org.junit), и для базовых классов платформы (junit.framework.TestCase).
     testImplementation("junit:junit:4.13.2")
     // Мок загрузчика в платформенном тесте провайдера.
-    testImplementation("org.mockito:mockito-core:5.14.2")
+    testImplementation("org.mockito:mockito-core:5.23.0")
 
     intellijPlatform {
         // С 2025.3 (253) IDEA Community слита в единый дистрибутив — координата intellijIdea.

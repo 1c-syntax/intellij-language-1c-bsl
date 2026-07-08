@@ -167,11 +167,10 @@ intellijPlatform {
     // Публикация в JetBrains Marketplace
     publishing {
         token = providers.environmentVariable("PUBLISH_TOKEN")
-        // Канал берём из суффикса версии (её задаёт git-versioning по тегу релиза): тег `vX.Y.Z`
-        // → версия без суффикса → стабильный канал `default`; тег `vX.Y.Z-rc.1` / `-eap.2` →
-        // версия `X.Y.Z-rc.1` → канал `rc` / `eap`. Так pre-release'ы не попадают в стабильный поток.
+        // Два канала: стабильные релизы (тег `vX.Y.Z`) → `default`, пре-релизы (тег с суффиксом,
+        // напр. `vX.Y.Z-rc.1`) → `eap`. Версию задаёт git-versioning по тегу, суффикс = наличие `-`.
         channels = listOf(
-            project.version.toString().substringAfter('-', "").substringBefore('.').ifEmpty { "default" }
+            if (project.version.toString().contains('-')) "eap" else "default"
         )
     }
 }

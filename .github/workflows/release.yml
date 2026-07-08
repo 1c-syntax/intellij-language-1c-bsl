@@ -64,9 +64,9 @@ jobs:
               ;;
           esac
 
-          # Патчим changelog поверх актуального master и пушим коммит прямо туда. Версию задаём
-          # явно (-PchangelogVersion), поэтому не важно, что git-versioning на этой ветке считает
-          # SNAPSHOT-версию.
+          # Патчим changelog поверх актуального master и пушим коммит прямо туда. Уйдя с тега
+          # релиза на эту ветку, git-versioning считает уже не X.Y.Z, а версию ветки, — поэтому
+          # версию для patchChangelog передаём явно через -PchangelogVersion.
           git fetch origin master
           git switch -C changelog-release origin/master
           ./gradlew patchChangelog -PchangelogVersion="$version" --stacktrace

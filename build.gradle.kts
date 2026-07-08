@@ -178,9 +178,10 @@ intellijPlatform {
 changelog {
     repositoryUrl = "https://github.com/1c-syntax/intellij-language-1c-bsl"
     groups.empty()
-    // По умолчанию версия changelog'а = версия проекта (её git-versioning считает по ref'у). На
-    // master это SNAPSHOT, поэтому для `patchChangelog` в релизном workflow версию задаём явно
-    // через -PchangelogVersion=X.Y.Z (из тега релиза), не завися от текущего git-ref.
+    // По умолчанию версия changelog'а = версия проекта (её git-versioning считает по git-ref).
+    // В релизном workflow patchChangelog запускается не на теге релиза, а на рабочей ветке,
+    // снятой с master (чтобы закоммитить закрытый changelog туда) — там git-ref уже не тег, и
+    // версия проекта не равна X.Y.Z. Поэтому версию задаём явно через -PchangelogVersion=X.Y.Z.
     version = providers.gradleProperty("changelogVersion")
         .orElse(provider { project.version.toString() })
 }

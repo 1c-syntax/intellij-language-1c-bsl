@@ -24,19 +24,23 @@ package com.github._1c_syntax.bsl.intellij.lsp;
 import com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerDownloader;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerReleaseChannel;
-import com.github._1c_syntax.utils.downloader.DownloadProgressListener;
-import com.github._1c_syntax.utils.downloader.GitHubReleaseClient;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
-import java.net.http.HttpClient;
 import java.nio.file.Path;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 /**
- * Платформенные тесты сборки команды запуска BSL Language Server. Обращение к GitHub за
- * скачиванием сервера подменяется заглушкой {@link StubDownloader}, поэтому тесты не ходят в сеть.
+ * Платформенные тесты сборки команды запуска BSL Language Server. Проверяется только обвязка
+ * провайдера; сам загрузчик — замоканная зависимость (его собственные тесты живут в модуле utils),
+ * поэтому тесты не ходят в сеть.
  */
 public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatformTestCase {
 
@@ -47,8 +51,7 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
     settings.path = "server.jar";
     settings.configurationFile = "";
 
-    var commands = newProvider(new StubDownloader(Path.of("/stub/bsl"), Optional.empty()))
-      .resolveCommands(settings);
+    var commands = newProvider(mock(BslLanguageServerDownloader.class)).resolveCommands(settings);
 
     assertEquals(3, commands.size());
     assertEquals("java", commands.get(0));
@@ -63,8 +66,7 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
     settings.path = "server.jar";
     settings.configurationFile = "";
 
-    var commands = newProvider(new StubDownloader(Path.of("/stub/bsl"), Optional.empty()))
-      .resolveCommands(settings);
+    var commands = newProvider(mock(BslLanguageServerDownloader.class)).resolveCommands(settings);
 
     assertEquals("/opt/jdk/bin/java", commands.get(0));
   }
@@ -76,11 +78,12 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
     settings.prerelease = Boolean.TRUE;
     settings.configurationFile = "";
 
-    var stub = new StubDownloader(Path.of("/stub/bsl-language-server"), Optional.empty());
-    var commands = newProvider(stub).resolveCommands(settings);
+    var downloader = mock(BslLanguageServerDownloader.class);
+    when(downloader.downloadIfNeeded(any(), any())).thenReturn(Path.of("/stub/bsl-language-server"));
+    var commands = newProvider(downloader).resolveCommands(settings);
 
     assertEquals(Path.of("/stub/bsl-language-server").toString(), commands.get(0));
-    assertEquals(BslLanguageServerReleaseChannel.PRERELEASE, stub.requestedChannel);
+    verify(downloader).downloadIfNeeded(eq(BslLanguageServerReleaseChannel.PRERELEASE), any());
   }
 
   public void testStableChannelWhenPrereleaseDisabled() throws IOException {
@@ -90,10 +93,11 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
     settings.prerelease = Boolean.FALSE;
     settings.configurationFile = "";
 
-    var stub = new StubDownloader(Path.of("/stub/bsl"), Optional.empty());
-    newProvider(stub).resolveCommands(settings);
+    var downloader = mock(BslLanguageServerDownloader.class);
+    when(downloader.downloadIfNeeded(any(), any())).thenReturn(Path.of("/stub/bsl"));
+    newProvider(downloader).resolveCommands(settings);
 
-    assertEquals(BslLanguageServerReleaseChannel.STABLE, stub.requestedChannel);
+    verify(downloader).downloadIfNeeded(eq(BslLanguageServerReleaseChannel.STABLE), any());
   }
 
   public void testInstalledBinaryUsedWhenDownloadDisabled() throws IOException {
@@ -103,8 +107,9 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
     settings.configurationFile = "";
 
     var installed = Path.of("/installed/bsl-language-server");
-    var commands = newProvider(new StubDownloader(Path.of("/unused"), Optional.of(installed)))
-      .resolveCommands(settings);
+    var downloader = mock(BslLanguageServerDownloader.class);
+    when(downloader.installedBinary()).thenReturn(Optional.of(installed));
+    var commands = newProvider(downloader).resolveCommands(settings);
 
     assertEquals(installed.toString(), commands.get(0));
   }
@@ -115,8 +120,10 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
     settings.downloadServer = Boolean.FALSE;
     settings.configurationFile = "";
 
+    var downloader = mock(BslLanguageServerDownloader.class);
+    when(downloader.installedBinary()).thenReturn(Optional.empty());
     try {
-      newProvider(new StubDownloader(Path.of("/unused"), Optional.empty())).resolveCommands(settings);
+      newProvider(downloader).resolveCommands(settings);
       fail("Expected IOException when nothing is installed and downloading is disabled");
     } catch (IOException expected) {
       // ожидаемо
@@ -130,34 +137,5 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
         return downloader;
       }
     };
-  }
-
-  /**
-   * Заглушка загрузчика: не обращается к GitHub, возвращает заранее заданный бинарь и запоминает
-   * запрошенный канал релизов.
-   */
-  private static final class StubDownloader extends BslLanguageServerDownloader {
-
-    private final Path binary;
-    private final Optional<Path> installed;
-    private BslLanguageServerReleaseChannel requestedChannel;
-
-    StubDownloader(Path binary, Optional<Path> installed) {
-      super(Path.of("."), new GitHubReleaseClient(null), HttpClient.newHttpClient());
-      this.binary = binary;
-      this.installed = installed;
-    }
-
-    @Override
-    public Path downloadIfNeeded(BslLanguageServerReleaseChannel channel,
-                                 DownloadProgressListener progressListener) {
-      requestedChannel = channel;
-      return binary;
-    }
-
-    @Override
-    public Optional<Path> installedBinary() {
-      return installed;
-    }
   }
 }

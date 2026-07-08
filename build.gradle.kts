@@ -61,7 +61,7 @@ val githubApiSource by configurations.creating {
 }
 
 dependencies {
-    add(githubApiSource.name, "org.kohsuke:github-api:1.327")
+    add(githubApiSource.name, "org.kohsuke:github-api:1.330")
 }
 
 val githubApiArtifact = githubApiSource.incoming.artifactView {

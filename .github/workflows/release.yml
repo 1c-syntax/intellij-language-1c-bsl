@@ -6,6 +6,10 @@ on:
       - prereleased
       - released
 
+# Нужно, чтобы шаг закрытия changelog'а мог запушить коммит прямо в master.
+permissions:
+  contents: write
+
 jobs:
   publish:
     name: Publish to JetBrains Marketplace
@@ -42,3 +46,36 @@ jobs:
             gnome-keyring-daemon --components=secrets --daemonize --unlock <<< ""
             ./gradlew publishPlugin --stacktrace
           '
+
+      # Обновление changelog различается для релизов и пре-релизов (различаем по суффиксу версии —
+      # как и канал публикации):
+      #   * стабильный релиз (тег `vX.Y.Z`) — «закрываем» changelog: patchChangelog переносит
+      #     [Unreleased] в датированную секцию [X.Y.Z] и коммитит это прямо в master;
+      #   * пре-релиз (тег с суффиксом, напр. `vX.Y.Z-rc.1`) — changelog не трогаем, содержимое
+      #     остаётся в [Unreleased] до стабильного релиза.
+      - name: Update changelog
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          case "$version" in
+            *-*)
+              echo "Pre-release $version: changelog stays in [Unreleased], nothing to close."
+              exit 0
+              ;;
+          esac
+
+          # Патчим changelog поверх актуального master и пушим коммит прямо туда. Уйдя с тега
+          # релиза на эту ветку, git-versioning считает уже не X.Y.Z, а версию ветки, — поэтому
+          # версию для patchChangelog передаём явно через -PchangelogVersion.
+          git fetch origin master
+          git switch -C changelog-release origin/master
+          ./gradlew patchChangelog -PchangelogVersion="$version" --stacktrace
+          if git diff --quiet -- CHANGELOG.md; then
+            echo "CHANGELOG.md already closed for $version — nothing to do."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit -m "docs(changelog): close $version"
+          git push origin HEAD:master

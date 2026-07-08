@@ -167,12 +167,23 @@ intellijPlatform {
     // Публикация в JetBrains Marketplace
     publishing {
         token = providers.environmentVariable("PUBLISH_TOKEN")
+        // Два канала: стабильные релизы (тег `vX.Y.Z`) → `default`, пре-релизы (тег с суффиксом,
+        // напр. `vX.Y.Z-rc.1`) → `eap`. Версию задаёт git-versioning по тегу, суффикс = наличие `-`.
+        channels = listOf(
+            if (project.version.toString().contains('-')) "eap" else "default"
+        )
     }
 }
 
 changelog {
     repositoryUrl = "https://github.com/1c-syntax/intellij-language-1c-bsl"
     groups.empty()
+    // По умолчанию версия changelog'а = версия проекта (её git-versioning считает по git-ref).
+    // В релизном workflow patchChangelog запускается не на теге релиза, а на рабочей ветке,
+    // снятой с master (чтобы закоммитить закрытый changelog туда) — там git-ref уже не тег, и
+    // версия проекта не равна X.Y.Z. Поэтому версию задаём явно через -PchangelogVersion=X.Y.Z.
+    version = providers.gradleProperty("changelogVersion")
+        .orElse(provider { project.version.toString() })
 }
 
 java {

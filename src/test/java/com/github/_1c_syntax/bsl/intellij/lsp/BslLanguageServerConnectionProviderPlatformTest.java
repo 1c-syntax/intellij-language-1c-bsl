@@ -25,10 +25,12 @@ import com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerDownloader;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerReleaseChannel;
 import com.github._1c_syntax.utils.downloader.DownloadProgressListener;
+import com.github._1c_syntax.utils.downloader.GitHubReleaseClient;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
+import java.net.http.HttpClient;
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -141,9 +143,7 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
     private BslLanguageServerReleaseChannel requestedChannel;
 
     StubDownloader(Path binary, Optional<Path> installed) {
-      super(Path.of("."),
-        new com.github._1c_syntax.utils.downloader.GitHubReleaseClient(null),
-        java.net.http.HttpClient.newHttpClient());
+      super(Path.of("."), new GitHubReleaseClient(null), HttpClient.newHttpClient());
       this.binary = binary;
       this.installed = installed;
     }

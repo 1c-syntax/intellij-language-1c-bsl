@@ -43,7 +43,6 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -63,7 +62,6 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
   private static final String JAVA_OPTIONS_ENV = "_JAVA_OPTIONS";
   private static final String GITHUB_TOKEN_ENV = "LANGUAGE_1C_BSL_GITHUB_TOKEN";
   private static final String PROGRESS_TITLE = "Preparing BSL Language Server";
-  private static final String PROGRESS_DOWNLOADING = "Downloading BSL Language Server";
 
   private final Project project;
 
@@ -131,7 +129,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
     var progressManager = ProgressManager.getInstance();
     var currentIndicator = progressManager.getProgressIndicator();
     if (currentIndicator != null) {
-      return resolveCommands(settings, progressListener(currentIndicator));
+      return resolveCommands(settings, new ProgressIndicatorDownloadListener(currentIndicator));
     }
 
     var result = new CompletableFuture<List<String>>();
@@ -141,7 +139,7 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
         // resolveCommands бросает IOException (проверяемое), а прогресс-слушатель —
         // ProcessCanceledException и прочие RuntimeException; всё это уходит в future.
         try {
-          result.complete(resolveCommands(settings, progressListener(indicator)));
+          result.complete(resolveCommands(settings, new ProgressIndicatorDownloadListener(indicator)));
         } catch (IOException | RuntimeException e) {
           result.completeExceptionally(e);
         }
@@ -176,42 +174,6 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
       }
       throw new IOException("Failed to prepare BSL Language Server", cause);
     }
-  }
-
-  /**
-   * Строит слушатель прогресса, который отображает загрузку на индикаторе IntelliJ: долю/текст при
-   * известном размере, неопределённый индикатор — при неизвестном, проверяя отмену на каждом блоке.
-   * Пакетная видимость — точка входа для тестов поведения индикатора.
-   *
-   * @param indicator индикатор прогресса фоновой задачи
-   * @return слушатель, троттлящий перерисовку до целого процента (или мегабайта)
-   */
-  static DownloadProgressListener progressListener(ProgressIndicator indicator) {
-    // Загрузчик уведомляет о каждом прочитанном блоке (256 КБ) — для архива в десятки МБ это
-    // сотни вызовов. Отмену проверяем на каждом (дёшево и отзывчиво), но индикатор перерисовываем
-    // не чаще, чем меняется целый процент (или, при неизвестном размере, целый мегабайт).
-    var lastReported = new long[]{-1};
-    return (bytesRead, totalBytes) -> {
-      indicator.checkCanceled();
-      var tick = totalBytes > 0 ? bytesRead * 100 / totalBytes : bytesRead / (1024 * 1024);
-      if (tick == lastReported[0]) {
-        return;
-      }
-      lastReported[0] = tick;
-      indicator.setText(PROGRESS_DOWNLOADING);
-      if (totalBytes > 0) {
-        indicator.setIndeterminate(false);
-        indicator.setFraction((double) bytesRead / (double) totalBytes);
-        indicator.setText2(formatMegabytes(bytesRead) + " / " + formatMegabytes(totalBytes));
-      } else {
-        indicator.setIndeterminate(true);
-        indicator.setText2(formatMegabytes(bytesRead));
-      }
-    };
-  }
-
-  private static String formatMegabytes(long bytes) {
-    return String.format(Locale.ROOT, "%.1f MB", bytes / (1024.0 * 1024.0));
   }
 
   private Path resolveDownloadedBinary(LanguageServerSettingsState settings,

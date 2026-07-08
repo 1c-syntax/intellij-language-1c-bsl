@@ -24,7 +24,7 @@ jobs:
           java-version: 21
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
 
       # buildSearchableOptions поднимает headless-IDE, которая при старте ходит в системное
       # хранилище паролей (PasswordSafe → Secret Service). Ставим keyring-стек и гоняем сборку

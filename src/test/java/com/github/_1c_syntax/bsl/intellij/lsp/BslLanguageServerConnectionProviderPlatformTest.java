@@ -148,7 +148,8 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
     // Три уведомления, но индикатор перерисован только на смене процента — дважды.
     verify(indicator, times(2)).setFraction(anyDouble());
     verify(indicator).setFraction(0.0);
-    verify(indicator).setIndeterminate(false);
+    // setIndeterminate(false) выставляется на каждой перерисовке — их две.
+    verify(indicator, times(2)).setIndeterminate(false);
     verify(indicator).setText2("0.0 MB / 200.0 MB");
     verify(indicator).setText2("2.0 MB / 200.0 MB");
     // Отмену проверяем на каждом блоке, даже на пропущенном троттлингом.

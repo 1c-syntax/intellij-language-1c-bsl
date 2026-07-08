@@ -24,6 +24,8 @@ package com.github._1c_syntax.bsl.intellij.lsp;
 import com.github._1c_syntax.bsl.intellij.settings.LanguageServerSettingsState;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerDownloader;
 import com.github._1c_syntax.utils.downloader.BslLanguageServerReleaseChannel;
+import com.intellij.openapi.progress.ProcessCanceledException;
+import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import org.jspecify.annotations.Nullable;
 
@@ -32,8 +34,12 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -128,6 +134,55 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
     } catch (IOException expected) {
       // ожидаемо
     }
+  }
+
+  public void testProgressListenerReportsFractionAndThrottlesWithinPercent() {
+    var total = 200L * 1024 * 1024; // 200 МБ, 1% == 2 МБ
+    var indicator = mock(ProgressIndicator.class);
+    var listener = BslLanguageServerConnectionProvider.progressListener(indicator);
+
+    listener.onProgress(0, total);                 // 0% — первая перерисовка
+    listener.onProgress(1024L * 1024, total);      // всё ещё 0% — троттлится
+    listener.onProgress(2L * 1024 * 1024, total);  // 1% — новая перерисовка
+
+    // Три уведомления, но индикатор перерисован только на смене процента — дважды.
+    verify(indicator, times(2)).setFraction(anyDouble());
+    verify(indicator).setFraction(0.0);
+    verify(indicator).setIndeterminate(false);
+    verify(indicator).setText2("0.0 MB / 200.0 MB");
+    verify(indicator).setText2("2.0 MB / 200.0 MB");
+    // Отмену проверяем на каждом блоке, даже на пропущенном троттлингом.
+    verify(indicator, times(3)).checkCanceled();
+  }
+
+  public void testProgressListenerIsIndeterminateWhenTotalUnknown() {
+    var indicator = mock(ProgressIndicator.class);
+    var listener = BslLanguageServerConnectionProvider.progressListener(indicator);
+
+    listener.onProgress(512L * 1024, -1);   // 0 МБ — первая перерисовка
+    listener.onProgress(768L * 1024, -1);   // всё ещё 0 МБ — троттлится
+    listener.onProgress(1024L * 1024, -1);  // 1 МБ — новая перерисовка
+
+    // Размер неизвестен: доля не выставляется, индикатор — неопределённый.
+    verify(indicator, never()).setFraction(anyDouble());
+    verify(indicator, times(2)).setIndeterminate(true);
+    verify(indicator).setText2("0.5 MB");
+    verify(indicator).setText2("1.0 MB");
+    verify(indicator, times(3)).checkCanceled();
+  }
+
+  public void testProgressListenerPropagatesCancellation() {
+    var indicator = mock(ProgressIndicator.class);
+    doThrow(new ProcessCanceledException()).when(indicator).checkCanceled();
+    var listener = BslLanguageServerConnectionProvider.progressListener(indicator);
+
+    try {
+      listener.onProgress(1024, 4096);
+      fail("Expected ProcessCanceledException to abort the download");
+    } catch (ProcessCanceledException expected) {
+      // отмена индикатора должна прерывать загрузку
+    }
+    verify(indicator, never()).setFraction(anyDouble());
   }
 
   private BslLanguageServerConnectionProvider newProvider(BslLanguageServerDownloader downloader) {

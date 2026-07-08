@@ -142,8 +142,7 @@ public class BslLanguageServerConnectionProviderPlatformTest extends BasePlatfor
 
     StubDownloader(Path binary, Optional<Path> installed) {
       super(Path.of("."),
-        new com.github._1c_syntax.utils.downloader.GitHubReleaseClient(
-          java.net.http.HttpClient.newHttpClient(), null),
+        new com.github._1c_syntax.utils.downloader.GitHubReleaseClient(null),
         java.net.http.HttpClient.newHttpClient());
       this.binary = binary;
       this.installed = installed;

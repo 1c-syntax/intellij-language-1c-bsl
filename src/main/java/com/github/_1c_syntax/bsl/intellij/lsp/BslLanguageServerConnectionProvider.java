@@ -232,12 +232,13 @@ public class BslLanguageServerConnectionProvider extends ProcessStreamConnection
    * чтобы подменить обращение к GitHub на заглушку.
    */
   BslLanguageServerDownloader createDownloader(Path installDir, @Nullable String token) {
-    // Клиент должен следовать редиректам: ассеты GitHub-релизов отдаются редиректом на CDN.
+    // Клиент нужен только для скачивания ассета (github-api эту загрузку не умеет) и должен
+    // следовать редиректам: ассеты GitHub-релизов отдаются редиректом на CDN.
     var httpClient = HttpClient.newBuilder()
       .followRedirects(HttpClient.Redirect.NORMAL)
       .connectTimeout(Duration.ofSeconds(30))
       .build();
-    var releaseClient = new GitHubReleaseClient(httpClient, token);
+    var releaseClient = new GitHubReleaseClient(token);
     return new BslLanguageServerDownloader(installDir, releaseClient, httpClient);
   }
 

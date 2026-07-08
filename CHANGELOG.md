@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-07-08
+
 ### Added
 
 - Syntax highlighting via a bundled TextMate grammar for BSL and its query language (SDBL).
@@ -21,4 +23,5 @@
 
 - Legacy ANTLR-based parser, PSI, file types, syntax highlighter, commenter and brace matcher, replaced by the language server and TextMate grammar.
 
-[Unreleased]: https://github.com/1c-syntax/intellij-language-1c-bsl/commits/master
+[Unreleased]: https://github.com/1c-syntax/intellij-language-1c-bsl/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/1c-syntax/intellij-language-1c-bsl/commits/v0.3.0

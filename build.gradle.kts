@@ -12,7 +12,7 @@ plugins {
     id("org.jetbrains.changelog") version "2.5.0"
     id("com.diffplug.spotless") version "8.9.0"
     id("org.sonarqube") version "7.3.1.8318"
-    id("com.github.ben-manes.versions") version "0.56.0"
+    id("com.github.ben-manes.versions") version "0.58.0"
     id("me.qoomon.git-versioning") version "6.4.4"
 }
 

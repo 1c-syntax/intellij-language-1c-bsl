@@ -99,7 +99,7 @@ dependencies {
 
     // JSpecify-аннотации нужны и в main, и в тестах (в т.ч. платформенных), поэтому implementation,
     // а не compileOnly: джар крошечный, аннотации с CLASS-retention.
-    implementation("org.jspecify:jspecify:1.0.0")
+    implementation("org.jspecify:jspecify:1.0.1")
 
     // JUnit 4 не поставляется IntelliJ Platform Gradle Plugin автоматически; нужен и для наших
     // тестов (org.junit), и для базовых классов платформы (junit.framework.TestCase).

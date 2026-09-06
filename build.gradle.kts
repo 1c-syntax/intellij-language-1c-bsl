@@ -10,7 +10,7 @@ plugins {
     idea
     id("org.jetbrains.intellij.platform") version "2.18.1"
     id("org.jetbrains.changelog") version "2.5.0"
-    id("com.diffplug.spotless") version "8.10.0"
+    id("com.diffplug.spotless") version "8.10.1"
     id("org.sonarqube") version "7.4.0.8496"
     id("com.github.ben-manes.versions") version "0.61.0"
     id("me.qoomon.git-versioning") version "6.4.4"

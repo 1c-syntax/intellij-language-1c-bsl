@@ -8,7 +8,7 @@ plugins {
     java
     jacoco
     idea
-    id("org.jetbrains.intellij.platform") version "2.18.1"
+    id("org.jetbrains.intellij.platform") version "2.19.0"
     id("org.jetbrains.changelog") version "2.5.0"
     id("com.diffplug.spotless") version "8.10.1"
     id("org.sonarqube") version "7.4.0.8496"
